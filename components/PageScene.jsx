@@ -117,6 +117,37 @@ function ServicesWorld() {
   );
 }
 
+/* AI: a neural knot with orbiting nodes — the AI universe's own object */
+function AiWorld() {
+  const orbit = useRef(null);
+  useFrame((state) => { if (orbit.current) { orbit.current.rotation.y = state.clock.elapsedTime * 0.45; orbit.current.rotation.x = state.clock.elapsedTime * 0.18; } });
+  const node = (pos, color, size = 0.09) => (
+    <mesh position={pos}><sphereGeometry args={[size, 18, 18]} />{std(color, { emissive: color, emissiveIntensity: 0.8 })}</mesh>
+  );
+  return (
+    <Journey baseX={2.25} mobileY={1.3}>
+      <Float speed={1.5} rotationIntensity={0.35} floatIntensity={0.6}>
+        <mesh>
+          <torusKnotGeometry args={[0.68, 0.21, 120, 16]} />
+          {std("#ff4d1c", { emissive: "#ff4d1c", emissiveIntensity: 0.45, roughness: 0.35 })}
+        </mesh>
+        <mesh>
+          <icosahedronGeometry args={[0.3, 0]} />
+          {std("#f4f1ea", { wireframe: true, emissive: "#f4f1ea", emissiveIntensity: 0.3 })}
+        </mesh>
+      </Float>
+      <group ref={orbit}>
+        <mesh><torusGeometry args={[1.8, 0.01, 8, 110]} />{std("#f4f1ea", { transparent: true, opacity: 0.25 })}</mesh>
+        {node([1.8, 0, 0], "#ffb020", 0.1)}
+        {node([-1.8, 0.1, 0], "#34d399")}
+        {node([0.4, 1.55, -0.9], "#ff4d1c")}
+        {node([-0.7, -1.6, 0.5], "#f4f1ea", 0.07)}
+      </group>
+      <Sparkles count={55} scale={[6.5, 4.5, 2.5]} size={2.1} speed={0.35} color="#ff8a5c" opacity={0.65} />
+    </Journey>
+  );
+}
+
 export default function PageScene({ variant = "audit" }) {
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden>
@@ -124,7 +155,7 @@ export default function PageScene({ variant = "audit" }) {
         <ambientLight intensity={0.85} />
         <directionalLight position={[4, 5, 6]} intensity={1.5} />
         <pointLight position={[-5, -2, 3]} intensity={10} color="#ff4d1c" />
-        {variant === "portfolio" ? <PortfolioWorld /> : variant === "services" ? <ServicesWorld /> : <AuditWorld />}
+        {variant === "portfolio" ? <PortfolioWorld /> : variant === "services" ? <ServicesWorld /> : variant === "ai" ? <AiWorld /> : <AuditWorld />}
       </Canvas>
     </div>
   );

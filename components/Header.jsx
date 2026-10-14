@@ -58,13 +58,48 @@ export default function Header({ loaded, light = false }) {
             <LogoMark className="w-8 h-8 md:w-9 md:h-9 shrink-0" />
             <span className="font-display font-extrabold tracking-wide text-base sm:text-lg leading-none hidden min-[380px]:block">GREE<span className="text-orange">LOGIX</span></span>
           </a>
-          <nav className={`hidden lg:flex items-center gap-9 text-[13px] uppercase tracking-[0.18em] ${light ? "text-ink/65" : "text-cream/75"}`}>
-            {NAV.map((n) => (
-              <Link key={n.href} href={n.href} data-hover aria-current={pathname === n.href ? "page" : undefined}
-                className={`transition-colors ${pathname === n.href ? "text-orange" : light ? "hover:text-ink" : "hover:text-cream"}`}>
-                <RollText text={n.label} />
-              </Link>
-            ))}
+          <nav className={`hidden lg:flex items-center gap-7 xl:gap-9 text-[12px] xl:text-[13px] uppercase tracking-[0.18em] ${light ? "text-ink/65" : "text-cream/75"}`}>
+            {NAV.map((n) => {
+              const isActive = pathname === n.href || n.children?.some((c) => c.href === pathname);
+              const linkCls = `transition-colors ${isActive ? "text-orange" : light ? "hover:text-ink" : "hover:text-cream"}`;
+              if (!n.children) {
+                return (
+                  <Link key={n.href} href={n.href} data-hover aria-current={pathname === n.href ? "page" : undefined} className={linkCls}>
+                    <RollText text={n.label} />
+                  </Link>
+                );
+              }
+              return (
+                <div key={n.href} className="relative group">
+                  <Link href={n.href} data-hover aria-current={isActive ? "page" : undefined} aria-haspopup="true"
+                    className={`inline-flex items-center gap-1.5 ${linkCls}`}>
+                    <RollText text={n.label} />
+                    <svg className="transition-transform duration-300 group-hover:rotate-180" width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M1 3.5L5 7.5L9 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
+                  </Link>
+                  {/* Dropdown */}
+                  <div className="absolute left-1/2 -translate-x-1/2 top-full pt-5 opacity-0 invisible translate-y-3 pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:pointer-events-auto transition-all duration-300 ease-[cubic-bezier(.22,1,.36,1)]">
+                    <div className={`w-[352px] rounded-[1.4rem] border p-2 shadow-[0_36px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl ${light ? "bg-white/95 border-ink/10" : "bg-[#0e0e0d]/95 border-line"}`}>
+                      {n.children.map((c, ci) => (
+                        <Link key={c.href + c.label} href={c.href} data-hover
+                          className={`group/item flex items-center justify-between gap-4 rounded-2xl px-4 py-3 normal-case tracking-normal transition-colors duration-300 ${light ? "hover:bg-orange/[0.08]" : "hover:bg-white/[0.05]"}`}
+                          style={{ transitionDelay: `${ci * 12}ms` }}>
+                          <span>
+                            <span className={`block font-display font-bold text-[15px] leading-tight ${pathname === c.href ? "text-orange" : light ? "text-ink" : "text-cream"}`}>{c.label}</span>
+                            <span className={`block text-xs mt-1 leading-snug ${light ? "text-ink/55" : "text-mute"}`}>{c.desc}</span>
+                          </span>
+                          <span className="grid place-items-center w-8 h-8 shrink-0 rounded-full border border-current opacity-30 transition-all duration-300 group-hover/item:opacity-100 group-hover/item:bg-orange group-hover/item:border-orange group-hover/item:text-white group-hover/item:rotate-45">
+                            <svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
+                          </span>
+                        </Link>
+                      ))}
+                      <p className={`px-4 pt-2.5 pb-2 mt-1 border-t text-[10px] uppercase tracking-[0.2em] ${light ? "border-ink/10 text-ink/45" : "border-line text-mute"}`}>
+                        75+ AI systems in production <span className="text-orange float-right">✦</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </nav>
           <div className="flex items-center gap-3">
             <Magnetic className="hidden sm:block">
@@ -90,9 +125,20 @@ export default function Header({ loaded, light = false }) {
         <p className="text-[11px] tracking-widest2 uppercase text-mute mb-8">Menu — Where to?</p>
         <nav className="flex flex-col gap-1">
           {[...NAV, { label: "Book a Call ↗", href: "#cta" }].map((n, i) => (
-            <button key={n.label} onClick={() => go(n.href)} className="menu-link text-left font-display font-extrabold uppercase text-[11vw] min-[420px]:text-5xl sm:text-6xl leading-[1.05] py-1 hover:text-orange transition-colors">
-              <span className="text-sm align-top text-orange mr-3 font-body font-medium">0{i + 1}</span><RollText text={n.label} />
-            </button>
+            <span key={n.label} className="block">
+              <button onClick={() => go(n.href)} className="menu-link block text-left font-display font-extrabold uppercase text-[11vw] min-[420px]:text-5xl sm:text-6xl leading-[1.05] py-1 hover:text-orange transition-colors">
+                <span className="text-sm align-top text-orange mr-3 font-body font-medium">0{i + 1}</span><RollText text={n.label} />
+              </button>
+              {n.children && (
+                <span className="menu-link flex flex-wrap gap-2 mt-3 mb-4 pl-1">
+                  {n.children.slice(1).map((c) => (
+                    <button key={c.href} onClick={() => go(c.href)} className="rounded-full border border-line px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-cream/70 hover:border-orange hover:text-orange transition-colors">
+                      {c.label}
+                    </button>
+                  ))}
+                </span>
+              )}
+            </span>
           ))}
         </nav>
         <div className="menu-foot mt-auto flex flex-wrap gap-x-8 gap-y-2 text-sm text-mute">
