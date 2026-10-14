@@ -51,8 +51,8 @@ function StoryCard({ p, index, open, onToggle }) {
           </p>
           <h3 data-glitch className="mt-4 font-display font-extrabold leading-[0.98] text-4xl min-[420px]:text-5xl xl:text-6xl">{p.title}</h3>
           <p className="mt-2 font-display font-bold text-orange text-lg">{p.sub}</p>
-          <p className="mt-5 text-ink/65 leading-[1.85] max-w-md">{p.desc}</p>
-          <blockquote className="mt-6 border-l-2 border-orange pl-4 text-ink/80 italic leading-relaxed max-w-md">“{p.note}”</blockquote>
+          <p data-words className="mt-5 text-ink/65 leading-[1.85] max-w-md">{p.desc}</p>
+          <blockquote data-anim={flipped ? "br" : "bl"} className="mt-6 border-l-2 border-orange pl-4 text-ink/80 italic leading-relaxed max-w-md">“{p.note}”</blockquote>
 
           <div className="grid transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)]" style={{ gridTemplateRows: open ? "1fr" : "0fr", opacity: open ? 1 : 0 }}>
             <div className="overflow-hidden">
@@ -226,7 +226,7 @@ export default function PortfolioClient() {
               <h3 className="mt-5 font-display font-extrabold text-3xl sm:text-4xl leading-tight">End-to-end, across every layer of the stack.</h3>
               <div className="mt-8 grid grid-cols-2 gap-3">
                 {["AI & Automation", "Mobile Apps", "Web & SaaS", "UI/UX Design"].map((t, i) => (
-                  <p key={t} data-anim="drop" data-delay={i * 0.07} className="rounded-2xl border border-ink/10 bg-[#f3efe7] px-5 py-4 font-display font-bold flex items-center gap-3"><span className="text-orange text-sm">0{i + 1}</span>{t}</p>
+                  <p key={t} data-anim={["drop-bounce", "mask-left", "mask-right", "zoom"][i % 4]} data-delay={i * 0.07} className="rounded-2xl border border-ink/10 bg-[#f3efe7] px-5 py-4 font-display font-bold flex items-center gap-3"><span className="text-orange text-sm">0{i + 1}</span>{t}</p>
                 ))}
               </div>
             </div>

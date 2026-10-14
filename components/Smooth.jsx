@@ -72,6 +72,12 @@ const ANIMS = {
   "mask-left": { from: { clipPath: "inset(0 100% 0 0)", x: -34, opacity: 0 }, to: { clipPath: "inset(0 0% 0 0)", x: 0 }, ease: "power4.out", dur: 1.15 },
   "mask-right": { from: { clipPath: "inset(0 0 0 100%)", x: 34, opacity: 0 }, to: { clipPath: "inset(0 0 0 0%)", x: 0 }, ease: "power4.out", dur: 1.15 },
   "drop-bounce": { from: { y: -92, opacity: 0 }, ease: "bounce.out", dur: 1.15 },
+  bl: { from: { x: -76, y: 88, rotation: -2.5, opacity: 0 }, ease: "power3.out", dur: 1.05 },
+  br: { from: { x: 76, y: 88, rotation: 2.5, opacity: 0 }, ease: "power3.out", dur: 1.05 },
+  tl: { from: { x: -76, y: -88, rotation: -2, opacity: 0 }, ease: "power3.out", dur: 1.05 },
+  tr: { from: { x: 76, y: -88, rotation: 2, opacity: 0 }, ease: "power3.out", dur: 1.05 },
+  "left-far": { from: { x: -160, opacity: 0 }, ease: "power4.out", dur: 1.2 },
+  "right-far": { from: { x: 160, opacity: 0 }, ease: "power4.out", dur: 1.2 },
 };
 
 export default function Smooth({ ready }) {

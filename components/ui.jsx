@@ -57,7 +57,7 @@ export function ArrowBtn({ href, children, dark = false, external = false }) {
         {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
         data-hover
         className={`group inline-flex items-center gap-3 rounded-full px-7 py-3.5 text-sm font-semibold tracking-wide transition-colors duration-300 ${
-          dark ? "bg-ink text-cream hover:bg-orange" : "bg-orange text-white hover:bg-cream hover:text-ink"
+          dark ? "bg-ink text-cream hover:bg-orange [--roll-accent:#ffffff]" : "bg-orange text-white hover:bg-cream hover:text-ink"
         }`}
       >
         {typeof children === "string" ? <RollText text={children} /> : children}

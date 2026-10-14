@@ -89,7 +89,7 @@ input, textarea { cursor: text !important; }
 .roll-char { display: inline-block; overflow: hidden; height: 1.14em; vertical-align: top; }
 .roll-char-inner { display: flex; flex-direction: column; transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1); will-change: transform; }
 .roll-char-inner > span { display: block; height: 1.14em; line-height: 1.14; }
-.roll-char-inner > span:last-child { color: #ff4d1c; }
+.roll-char-inner > span:last-child { color: var(--roll-accent, #ff4d1c); }
 a:hover .roll-char-inner, button:hover .roll-char-inner { transform: translateY(-1.14em); }
 
 /* Mori-like tight grotesk headlines (GSAP's Archivo-adjacent voice) */

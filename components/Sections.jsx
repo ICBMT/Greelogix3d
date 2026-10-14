@@ -18,14 +18,14 @@ export function Problems() {
       </h2>
       <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {PROBLEMS.map((p, i) => (
-          <article key={p.n} data-anim="zoom" data-tilt data-delay={(i % 3) * 0.08} data-hover
+          <article key={p.n} data-anim={["zoom", "drop-bounce", "flip", "mask-left", "rotate", "slam"][i % 6]} data-tilt data-delay={(i % 3) * 0.08} data-hover
             className="card-sheen spot-card group rounded-3xl border border-line bg-coal/80 backdrop-blur p-6 sm:p-7 md:p-8 transition-all duration-500 hover:-translate-y-2 hover:border-orange/50 hover:bg-smoke">
             <div className="flex items-start justify-between">
               <span data-glitch className="font-display font-extrabold text-stroke-faint text-4xl group-hover:text-orange group-hover:[-webkit-text-stroke:0px] transition-all duration-500">{p.n}</span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-orange border border-orange/40 rounded-full px-3 py-1">{p.tag}</span>
             </div>
             <h3 className="mt-8 font-display font-bold text-xl md:text-2xl leading-tight">{p.t}</h3>
-            <p className="mt-3 text-sm leading-relaxed text-mute">{p.d}</p>
+            <p data-words className="mt-3 text-sm leading-relaxed text-mute">{p.d}</p>
             <span className="mt-6 block h-px bg-line relative overflow-hidden"><span className="absolute inset-y-0 left-0 w-full bg-orange origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></span>
           </article>
         ))}
@@ -115,7 +115,7 @@ export function Process() {
               <span className="font-display font-extrabold text-5xl sm:text-6xl md:text-8xl text-stroke-orange" data-anim="spin-in leading-none">{p.n}</span>
               <div>
                 <h3 className="font-display font-extrabold uppercase text-2xl md:text-4xl">{p.t}</h3>
-                <p className="mt-3 text-mute leading-relaxed max-w-xl">{p.d}</p>
+                <p data-words className="mt-3 text-mute leading-relaxed max-w-xl">{p.d}</p>
               </div>
               <span className="justify-self-start md:justify-self-auto text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-orange border border-orange/40 rounded-full px-4 py-2 md:whitespace-nowrap">{p.meta}</span>
             </div>
@@ -180,13 +180,13 @@ export function Work() {
 
       <div className="mt-5 grid md:grid-cols-3 gap-5">
         {WORK.map((w, i) => (
-          <article key={w.t} data-anim="flip" data-delay={i * 0.1} data-hover
+          <article key={w.t} data-anim={["flip", "mask-left", "mask-right"][i % 3]} data-delay={i * 0.1} data-hover
             className="group rounded-[1.6rem] border border-line bg-coal/85 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:border-cream/25">
             <MockUI g={w.g} glyph={w.glyph} />
             <div className="p-7">
               <p className="text-[11px] uppercase tracking-[0.2em] text-orange">{w.c}</p>
               <h3 className="mt-2 font-display font-extrabold text-2xl group-hover:text-orange transition-colors">{w.t}</h3>
-              <p className="mt-2.5 text-sm text-mute leading-relaxed">{w.d}</p>
+              <p data-words className="mt-2.5 text-sm text-mute leading-relaxed">{w.d}</p>
               <div className="mt-5 flex flex-wrap gap-2">{w.tags.map((t) => (<span key={t} className="text-[11px] border border-line rounded-full px-3 py-1 text-cream/70">{t}</span>))}</div>
             </div>
           </article>
@@ -212,7 +212,7 @@ export function Studio() {
       </h2>
       <div className="mt-14 grid md:grid-cols-2 gap-4">
         {points.map((p, i) => (
-          <article key={p.t} data-anim="drop" data-delay={(i % 2) * 0.08} data-hover className="spot-card group rounded-3xl border border-line bg-coal/80 p-8 md:p-10 flex gap-6 transition-all duration-500 hover:border-orange/50 hover:-translate-y-1.5">
+          <article key={p.t} data-anim={i % 2 ? "br" : "bl"} data-delay={(i % 2) * 0.08} data-hover className="spot-card group rounded-3xl border border-line bg-coal/80 p-8 md:p-10 flex gap-6 transition-all duration-500 hover:border-orange/50 hover:-translate-y-1.5">
             <span className="font-display font-extrabold text-orange text-lg shrink-0 mt-1">✦</span>
             <div><h3 className="font-display font-bold text-xl md:text-2xl">{p.t}</h3><p className="mt-2.5 text-mute leading-relaxed text-[15px]">{p.d}</p></div>
           </article>
@@ -282,7 +282,7 @@ export function Faq() {
           {FAQS.map((f, i) => {
             const isOpen = open === i;
             return (
-              <div key={f.q} data-anim="slide-left" data-delay={i * 0.07} className={`border-b border-line ${i === 0 ? "border-t" : ""}`}>
+              <div key={f.q} data-anim={i % 2 ? "right-far" : "left-far"} data-delay={i * 0.07} className={`border-b border-line ${i === 0 ? "border-t" : ""}`}>
                 <button onClick={() => setOpen(isOpen ? -1 : i)} data-hover aria-expanded={isOpen}
                   className="w-full flex items-center justify-between gap-6 py-6 text-left group">
                   <span className={`font-display font-bold text-base min-[420px]:text-lg md:text-[1.35rem] leading-snug transition-colors ${isOpen ? "text-orange" : "group-hover:text-orange"}`}>{f.q}</span>

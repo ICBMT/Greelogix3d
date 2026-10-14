@@ -310,10 +310,10 @@ export default function AuditClient() {
         <div className="mt-12 grid sm:grid-cols-2 gap-4">
           {CHALLENGES.map((c, i) => (
             <article key={c.t} data-delay={(i % 2) * 0.08} data-hover
-              data-anim="flip" data-tilt className="card-sheen spot-card group rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9 transition-all duration-500 hover:-translate-y-1.5 hover:border-orange/50">
+              data-anim={["flip", "mask-left", "mask-right", "cinematic"][i % 4]} data-tilt className="card-sheen spot-card group rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9 transition-all duration-500 hover:-translate-y-1.5 hover:border-orange/50">
               <span data-glitch className="font-display text-4xl text-orange/85 block transition-transform duration-500 group-hover:-rotate-12 group-hover:scale-110 origin-left w-max">{c.glyph}</span>
               <h3 className="mt-6 font-display font-bold text-xl sm:text-2xl leading-tight">{c.t}</h3>
-              <p className="mt-3 text-mute leading-[1.8] text-[15px]">{c.d}</p>
+              <p data-words className="mt-3 text-mute leading-[1.8] text-[15px]">{c.d}</p>
             </article>
           ))}
         </div>
@@ -325,12 +325,12 @@ export default function AuditClient() {
         <ChapterHead num="03" label="Why GreeLogix" title={<>Why teams<br /><span className="text-orange">choose us</span></>} sub="150+ products shipped · Specialists in hardening AI-generated and rescued codebases." />
         <div className="mt-12 grid md:grid-cols-3 gap-4">
           {WHY.map((w, i) => (
-            <article key={w.t} data-anim="zoom" data-delay={(i % 3) * 0.07} data-hover
+            <article key={w.t} data-anim={w.big ? "cinematic" : "zoom"} data-delay={(i % 3) * 0.07} data-hover
               className={`group rounded-[1.8rem] border p-7 sm:p-9 flex flex-col transition-all duration-500 hover:-translate-y-1.5 ${
                 w.big ? "md:col-span-2 bg-gradient-to-br from-orange-dim/70 via-coal to-coal border-orange/35" : "border-line bg-coal/80 hover:border-orange/40"}`}>
               <span className="font-display font-extrabold text-stroke-faint text-4xl group-hover:text-orange group-hover:[-webkit-text-stroke:0px] transition-all duration-500">0{i + 1}</span>
               <h3 className="mt-8 font-display font-extrabold text-2xl sm:text-[1.7rem] leading-tight">{w.t}</h3>
-              <p className="mt-3 text-mute leading-[1.8] text-[15px] max-w-lg">{w.d}</p>
+              <p data-words className="mt-3 text-mute leading-[1.8] text-[15px] max-w-lg">{w.d}</p>
             </article>
           ))}
           <div data-anim="rotate" className="rounded-[1.8rem] bg-orange text-white p-7 sm:p-9 flex flex-col justify-between overflow-hidden relative">
@@ -349,7 +349,7 @@ export default function AuditClient() {
           <span ref={lineRef} className="hidden lg:block absolute left-0 right-0 top-[26px] h-[2px] bg-orange origin-left" style={{ transform: "scaleX(0)" }} aria-hidden />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-6">
             {TIMELINE.map((s, i) => (
-              <article key={s.t} data-anim="drop" data-delay={i * 0.1} className="relative">
+              <article key={s.t} data-anim={i % 2 ? "br" : "bl"} data-delay={i * 0.1} className="relative">
                 <span data-anim="spin-in" data-delay={i * 0.08} className="relative z-10 grid place-items-center w-[52px] h-[52px] rounded-full bg-ink border-2 border-orange font-display font-extrabold text-orange">{pad2(i + 1)}</span>
                 <p className="mt-6 text-[10px] uppercase tracking-[0.24em] text-orange">{s.when}</p>
                 <h3 className="mt-2 font-display font-extrabold text-xl sm:text-2xl">{s.t}</h3>
