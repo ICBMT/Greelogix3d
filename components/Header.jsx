@@ -44,10 +44,10 @@ export default function Header({ loaded }) {
         className="fixed top-0 inset-x-0 z-[80] transition-all duration-500"
         style={{ transform: loaded ? (hidden ? "translateY(-110%)" : "translateY(0)") : "translateY(-110%)", opacity: loaded ? 1 : 0 }}
       >
-        <div className="mx-auto max-w-[1500px] px-5 md:px-10 h-[72px] flex items-center justify-between backdrop-blur-md bg-ink/55 border-b border-line">
-          <a href="#top" data-hover className="flex items-center gap-3" aria-label="GreeLogix home">
-            <span className="relative w-10 h-10 block"><Image src="/logo.png" alt="" fill className="object-contain" /></span>
-            <span className="font-display font-extrabold tracking-wide text-lg leading-none">GREE<span className="text-orange">LOGIX</span></span>
+        <div className="mx-auto max-w-[1500px] px-4 sm:px-6 md:px-10 h-16 md:h-[72px] flex items-center justify-between gap-3 backdrop-blur-md bg-ink/55 border-b border-line">
+          <a href="#top" data-hover className="flex items-center gap-2.5 sm:gap-3 shrink-0 min-w-0" aria-label="GreeLogix home">
+            <span className="relative w-9 h-9 md:w-10 md:h-10 block shrink-0"><Image src="/logo.png" alt="" fill className="object-contain" /></span>
+            <span className="font-display font-extrabold tracking-wide text-base sm:text-lg leading-none hidden min-[380px]:block">GREE<span className="text-orange">LOGIX</span></span>
           </a>
           <nav className="hidden lg:flex items-center gap-9 text-[13px] uppercase tracking-[0.18em] text-cream/75">
             {NAV.map((n) => (<a key={n.href} href={n.href} className="link-line hover:text-cream transition-colors">{n.label}</a>))}

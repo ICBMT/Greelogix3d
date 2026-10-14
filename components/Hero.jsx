@@ -51,11 +51,11 @@ export default function Hero({ loaded }) {
         </div>
 
         {/* stats */}
-        <dl style={fade(1)} className="mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-4 border-t border-line">
-          {STATS.map((s) => (
-            <div key={s.l} className="pt-5 pr-4 border-r border-line last:border-r-0 pl-4 first:pl-0">
-              <dd className="font-display font-extrabold text-3xl md:text-5xl"><span data-count={s.v}>0</span><span className="text-orange">{s.s}</span></dd>
-              <dt className="mt-1 text-[11px] uppercase tracking-[0.2em] text-mute">{s.l}</dt>
+        <dl style={fade(1)} className="mt-10 md:mt-16 grid grid-cols-2 md:grid-cols-4 border-t border-line">
+          {STATS.map((s, i) => (
+            <div key={s.l} className={`pt-5 pr-3 ${i % 2 === 0 ? "pl-0" : "pl-4"} md:pl-5 md:first:pl-0 border-line ${i % 2 === 0 ? "border-r" : ""} md:border-r md:last:border-r-0`}>
+              <dd className="font-display font-extrabold text-[1.7rem] leading-none sm:text-4xl md:text-5xl"><span data-count={s.v}>0</span><span className="text-orange">{s.s}</span></dd>
+              <dt className="mt-2 text-[10px] md:text-[11px] uppercase tracking-[0.18em] text-mute leading-relaxed">{s.l}</dt>
             </div>
           ))}
         </dl>
