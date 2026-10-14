@@ -252,6 +252,39 @@ function BlogWorld() {
   );
 }
 
+/* Resources: a floating archive — stacked tomes and orbiting files */
+function ResourcesWorld() {
+  const orbit = useRef(null);
+  useFrame((state) => { if (orbit.current) { orbit.current.rotation.y = state.clock.elapsedTime * 0.32; orbit.current.rotation.x = state.clock.elapsedTime * 0.1; } });
+  const book = (pos, rot, size, color, e = 0.25) => (
+    <mesh position={pos} rotation={rot}>
+      <boxGeometry args={size} />
+      {std(color, { emissive: color, emissiveIntensity: e, roughness: 0.5 })}
+    </mesh>
+  );
+  return (
+    <Journey baseX={2.25} mobileY={1.3}>
+      <Float speed={1.4} rotationIntensity={0.3} floatIntensity={0.55}>
+        {book([0, -0.72, 0], [0, -0.25, 0.06], [1.3, 0.3, 0.95], "#2a2a28", 0.06)}
+        {book([0.05, -0.38, 0], [0, 0.18, -0.05], [1.12, 0.34, 0.85], "#ff4d1c", 0.5)}
+        {book([-0.04, 0.02, 0], [0, -0.12, 0.09], [0.95, 0.3, 0.75], "#f4f1ea", 0.08)}
+        {book([0.02, 0.36, 0], [0, 0.3, -0.07], [0.72, 0.26, 0.6], "#ffb020", 0.45)}
+        <mesh position={[0, 0.1, -0.75]}>
+          <icosahedronGeometry args={[0.3, 0]} />
+          {std("#f4f1ea", { wireframe: true, emissive: "#f4f1ea", emissiveIntensity: 0.3 })}
+        </mesh>
+      </Float>
+      <group ref={orbit}>
+        <mesh><torusGeometry args={[1.9, 0.012, 8, 110]} />{std("#ff4d1c", { transparent: true, opacity: 0.5 })}</mesh>
+        <mesh position={[1.9, 0, 0]}><sphereGeometry args={[0.09, 16, 16]} />{std("#ffb020", { emissive: "#ffb020", emissiveIntensity: 0.7 })}</mesh>
+        <mesh position={[-1.9, 0.2, 0]}><sphereGeometry args={[0.07, 16, 16]} />{std("#34d399", { emissive: "#34d399", emissiveIntensity: 0.6 })}</mesh>
+        <mesh position={[0.2, -1.85, 0.4]}><octahedronGeometry args={[0.13, 0]} />{std("#f4f1ea", { emissive: "#f4f1ea", emissiveIntensity: 0.35 })}</mesh>
+      </group>
+      <Sparkles count={45} scale={[6, 4.5, 2.5]} size={2} speed={0.3} color="#ff8a5c" opacity={0.6} />
+    </Journey>
+  );
+}
+
 export default function PageScene({ variant = "audit" }) {
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden>
@@ -259,7 +292,7 @@ export default function PageScene({ variant = "audit" }) {
         <ambientLight intensity={0.85} />
         <directionalLight position={[4, 5, 6]} intensity={1.5} />
         <pointLight position={[-5, -2, 3]} intensity={10} color="#ff4d1c" />
-        {variant === "portfolio" ? <PortfolioWorld /> : variant === "services" ? <ServicesWorld /> : variant === "ai" ? <AiWorld /> : variant === "stories" ? <StoriesWorld /> : variant === "about" ? <AboutWorld /> : variant === "blog" ? <BlogWorld /> : <AuditWorld />}
+        {variant === "portfolio" ? <PortfolioWorld /> : variant === "services" ? <ServicesWorld /> : variant === "ai" ? <AiWorld /> : variant === "stories" ? <StoriesWorld /> : variant === "about" ? <AboutWorld /> : variant === "blog" ? <BlogWorld /> : variant === "resources" ? <ResourcesWorld /> : <AuditWorld />}
       </Canvas>
     </div>
   );

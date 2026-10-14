@@ -59,7 +59,7 @@ function Block({ b }) {
   return null;
 }
 
-function BlogModal({ post, onClose, onSwap }) {
+export function BlogModal({ post, onClose, onSwap }) {
   const backdrop = useRef(null);
   const panel = useRef(null);
   const first = useRef(true);

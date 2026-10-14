@@ -58,7 +58,7 @@ export default function Header({ loaded, light = false }) {
             <LogoMark className="w-8 h-8 md:w-9 md:h-9 shrink-0" />
             <span className="font-display font-extrabold tracking-wide text-base sm:text-lg leading-none hidden min-[380px]:block">GREE<span className="text-orange">LOGIX</span></span>
           </a>
-          <nav data-dock className={`hidden xl:flex items-center gap-7 2xl:gap-9 text-[12px] xl:text-[13px] uppercase tracking-[0.18em] ${light ? "text-ink/65" : "text-cream/75"}`}>
+          <nav data-dock className={`hidden min-[1440px]:flex items-center gap-7 2xl:gap-9 text-[12px] xl:text-[13px] uppercase tracking-[0.18em] ${light ? "text-ink/65" : "text-cream/75"}`}>
             {NAV.map((n) => {
               const isActive = pathname === n.href || n.children?.some((c) => c.href === pathname);
               const linkCls = `transition-colors ${isActive ? "text-orange" : light ? "hover:text-ink" : "hover:text-cream"}`;
@@ -108,7 +108,7 @@ export default function Header({ loaded, light = false }) {
               </a>
             </Magnetic>
             <button onClick={() => setOpen(!open)} data-hover aria-label={open ? "Close menu" : "Open menu"}
-              className={`xl:hidden grid place-items-center w-11 h-11 shrink-0 rounded-full border ${light ? "border-ink/15 bg-ink/5" : "border-line bg-white/5"}`}>
+              className={`min-[1440px]:hidden grid place-items-center w-11 h-11 shrink-0 rounded-full border ${light ? "border-ink/15 bg-ink/5" : "border-line bg-white/5"}`}>
               <span className="relative block w-5 h-3">
                 <span className={`absolute left-0 w-full h-[2px] transition-all duration-300 ${light ? "bg-ink" : "bg-cream"} ${open ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"}`} />
                 <span className={`absolute left-0 w-full h-[2px] transition-all duration-300 ${light ? "bg-ink" : "bg-cream"} ${open ? "top-1/2 -translate-y-1/2 -rotate-45" : "bottom-0"}`} />
