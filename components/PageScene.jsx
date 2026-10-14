@@ -89,6 +89,34 @@ function PortfolioWorld() {
   );
 }
 
+/* Services: a rising stack of building blocks under an orbit ring */
+function ServicesWorld() {
+  const orbit = useRef(null);
+  useFrame((state) => { if (orbit.current) { orbit.current.rotation.z = state.clock.elapsedTime * 0.4; orbit.current.rotation.y = state.clock.elapsedTime * 0.25; } });
+  const cube = (pos, size, color, emissive = 0.3) => (
+    <mesh position={pos}>
+      <boxGeometry args={[size, size, size]} />
+      {std(color, { emissive: color, emissiveIntensity: emissive })}
+    </mesh>
+  );
+  return (
+    <Journey baseX={2.2} mobileY={1.3}>
+      <Float speed={1.4} rotationIntensity={0.25} floatIntensity={0.55}>
+        {cube([0, -0.85, 0], 0.92, "#2a2a28", 0.05)}
+        {cube([0.08, 0.02, 0], 0.7, "#ff4d1c", 0.5)}
+        {cube([-0.05, 0.72, 0], 0.48, "#f4f1ea", 0.06)}
+        {cube([0, 1.28, 0], 0.28, "#ffb020", 0.45)}
+      </Float>
+      <group ref={orbit}>
+        <mesh><torusGeometry args={[1.85, 0.014, 8, 110]} />{std("#ff4d1c", { transparent: true, opacity: 0.55 })}</mesh>
+        <mesh position={[1.85, 0, 0]}><sphereGeometry args={[0.09, 16, 16]} />{std("#ffb020", { emissive: "#ffb020", emissiveIntensity: 0.7 })}</mesh>
+        <mesh position={[-1.3, -1.3, 0]}><octahedronGeometry args={[0.14, 0]} />{std("#34d399", { emissive: "#34d399", emissiveIntensity: 0.4 })}</mesh>
+      </group>
+      <Sparkles count={45} scale={[6, 4.5, 2.5]} size={2} speed={0.3} color="#ff8a5c" opacity={0.6} />
+    </Journey>
+  );
+}
+
 export default function PageScene({ variant = "audit" }) {
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden>
@@ -96,7 +124,7 @@ export default function PageScene({ variant = "audit" }) {
         <ambientLight intensity={0.85} />
         <directionalLight position={[4, 5, 6]} intensity={1.5} />
         <pointLight position={[-5, -2, 3]} intensity={10} color="#ff4d1c" />
-        {variant === "portfolio" ? <PortfolioWorld /> : <AuditWorld />}
+        {variant === "portfolio" ? <PortfolioWorld /> : variant === "services" ? <ServicesWorld /> : <AuditWorld />}
       </Canvas>
     </div>
   );

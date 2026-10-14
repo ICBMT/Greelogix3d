@@ -11,7 +11,6 @@ export default function Header({ loaded, light = false }) {
   const pathname = usePathname();
   const router = useRouter();
   const onHome = pathname === "/";
-  const anchor = (h) => (onHome ? h : `/${h}`);
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const menu = useRef(null);
@@ -60,8 +59,12 @@ export default function Header({ loaded, light = false }) {
             <span className="font-display font-extrabold tracking-wide text-base sm:text-lg leading-none hidden min-[380px]:block">GREE<span className="text-orange">LOGIX</span></span>
           </a>
           <nav className={`hidden lg:flex items-center gap-9 text-[13px] uppercase tracking-[0.18em] ${light ? "text-ink/65" : "text-cream/75"}`}>
-            {NAV.map((n) => (<a key={n.href} href={anchor(n.href)} data-hover className={`transition-colors ${light ? "hover:text-ink" : "hover:text-cream"}`}><RollText text={n.label} /></a>))}
-            <Link href="/portfolio" data-hover className={`transition-colors ${pathname === "/portfolio" ? "text-orange" : light ? "hover:text-ink" : "hover:text-cream"}`}><RollText text="Portfolio" /></Link>
+            {NAV.map((n) => (
+              <Link key={n.href} href={n.href} data-hover aria-current={pathname === n.href ? "page" : undefined}
+                className={`transition-colors ${pathname === n.href ? "text-orange" : light ? "hover:text-ink" : "hover:text-cream"}`}>
+                <RollText text={n.label} />
+              </Link>
+            ))}
           </nav>
           <div className="flex items-center gap-3">
             <Magnetic className="hidden sm:block">
@@ -86,7 +89,7 @@ export default function Header({ loaded, light = false }) {
       <div ref={menu} className="fixed inset-0 z-[75] hidden flex-col overflow-y-auto overscroll-contain bg-[#0a0a09] pt-24 md:pt-28 px-5 sm:px-8 pb-10" style={{ clipPath: "inset(0 0 100% 0)" }}>
         <p className="text-[11px] tracking-widest2 uppercase text-mute mb-8">Menu — Where to?</p>
         <nav className="flex flex-col gap-1">
-          {[...NAV.map((n) => ({ ...n, href: anchor(n.href) })), { label: "Portfolio", href: "/portfolio" }, { label: "Book a Call ↗", href: "#cta" }].map((n, i) => (
+          {[...NAV, { label: "Book a Call ↗", href: "#cta" }].map((n, i) => (
             <button key={n.label} onClick={() => go(n.href)} className="menu-link text-left font-display font-extrabold uppercase text-[11vw] min-[420px]:text-5xl sm:text-6xl leading-[1.05] py-1 hover:text-orange transition-colors">
               <span className="text-sm align-top text-orange mr-3 font-body font-medium">0{i + 1}</span><RollText text={n.label} />
             </button>

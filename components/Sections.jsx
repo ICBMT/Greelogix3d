@@ -91,7 +91,10 @@ export function Services() {
           <div>
             <p className="font-display font-bold text-2xl">Not sure where<br />to start?</p>
             <p className="text-mute text-sm mt-3 mb-6">Take the free 5-question readiness audit.</p>
-            <ArrowBtn href="/free-ai-audit">Free AI audit</ArrowBtn>
+            <div className="flex flex-col items-center gap-3">
+              <ArrowBtn href="/free-ai-audit">Free AI audit</ArrowBtn>
+              <a href="/services" data-hover className="link-line text-sm font-medium text-cream/85">Explore all 29 services →</a>
+            </div>
           </div>
         </div>
       </div>
