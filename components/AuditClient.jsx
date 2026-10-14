@@ -334,7 +334,7 @@ export default function AuditClient() {
             </article>
           ))}
           <div data-anim="rotate" className="rounded-[1.8rem] bg-orange text-white p-7 sm:p-9 flex flex-col justify-between overflow-hidden relative">
-            <span aria-hidden className="absolute -right-6 -bottom-10 font-display font-extrabold text-[9rem] leading-none text-white/10 select-none">✓</span>
+            <span data-scrub-scale aria-hidden className="absolute -right-6 -bottom-10 font-display font-extrabold text-[9rem] leading-none text-white/10 select-none">✓</span>
             <p className="font-display font-extrabold text-5xl sm:text-6xl leading-none"><span data-count={150}>0</span>+</p>
             <p className="mt-4 text-white/85 leading-relaxed text-[15px] relative">products shipped — including rescues of AI-generated codebases exactly like the ones this audit is built for.</p>
           </div>
@@ -369,7 +369,7 @@ export default function AuditClient() {
         <div className="mt-12 grid md:grid-cols-3 gap-4">
           <div data-anim="slide-left" className="rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9">
             <h3 className="text-[11px] uppercase tracking-[0.24em] text-mute">Technologies</h3>
-            <div data-stagger className="mt-5 flex flex-wrap gap-2">
+            <div data-stagger data-proximity className="mt-5 flex flex-wrap gap-2">
               {["Laravel", "React / Next.js", "Flutter", "Node.js", "Supabase", "PostgreSQL", "OpenAI", "Lovable", "Cursor", "AWS"].map((s) => (
                 <span key={s} data-hover className="rounded-full border border-line px-3.5 py-1.5 text-[13px] text-cream/75 hover:border-orange hover:text-orange transition-colors">{s}</span>
               ))}

@@ -65,7 +65,7 @@ function StoryCard({ p, index, open, onToggle }) {
             </div>
           </div>
 
-          <div data-batch className="mt-7 flex flex-wrap items-center gap-2">
+          <div data-batch data-proximity className="mt-7 flex flex-wrap items-center gap-2">
             {p.stack.map((s) => (<span key={s} className="text-[11px] rounded-full border border-ink/15 bg-white/50 px-3 py-1.5 text-ink/70">{s}</span>))}
           </div>
           <button onClick={onToggle} data-hover aria-expanded={open}
@@ -205,7 +205,7 @@ export default function PortfolioClient() {
                 <StoryCard p={p} index={i} open={openSlug === p.slug} onToggle={() => setOpenSlug(openSlug === p.slug ? null : p.slug)} />
                 {INTERLUDES[i] && filter === "all" && (
                   <aside data-anim="cinematic" className="my-4 rounded-[2rem] bg-ink text-[#f3efe7] px-7 py-10 sm:p-12 grid md:grid-cols-[auto_1fr] items-center gap-6 overflow-hidden relative">
-                    <span aria-hidden className="absolute -right-8 -bottom-14 font-display font-extrabold text-[10rem] leading-none text-white/[0.05] select-none">✦</span>
+                    <span data-scrub-rotate aria-hidden className="absolute -right-8 -bottom-14 font-display font-extrabold text-[10rem] leading-none text-white/[0.05] select-none">✦</span>
                     <p className="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl text-orange whitespace-nowrap">{INTERLUDES[i].big}</p>
                     <p className="text-[#f3efe7]/70 leading-[1.85] max-w-md relative">{INTERLUDES[i].small}</p>
                   </aside>

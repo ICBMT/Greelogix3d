@@ -24,7 +24,7 @@ export function SectionTag({ index, label, light = false }) {
   return (
     <div data-reveal className="flex items-center gap-3 mb-8">
       <span className="w-2 h-2 rounded-full bg-orange animate-pulse-dot" />
-      <span className={`text-[11px] font-medium uppercase tracking-widest2 ${light ? "text-ink/60" : "text-mute"}`}>
+      <span data-scramble className={`text-[11px] font-medium uppercase tracking-widest2 ${light ? "text-ink/60" : "text-mute"}`}>
         {index} — {label}
       </span>
       <span data-line className={`h-px flex-1 origin-left ${light ? "bg-ink/15" : "bg-line"}`} />

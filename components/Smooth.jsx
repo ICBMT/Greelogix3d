@@ -126,6 +126,57 @@ export default function Smooth({ ready }) {
       });
     });
 
+    // Text scramble — labels decode from noise into place (GSAP demo classic)
+    const GLYPHS = "!<>-_/[]{}=+*^?#";
+    gsap.utils.toArray("[data-scramble]").forEach((el) => {
+      if (el.children.length) return; // plain-text labels only
+      const finalText = el.textContent;
+      ScrollTrigger.create({
+        trigger: el, start: "top 90%", once: true,
+        onEnter: () => {
+          const start = performance.now(), dur = 850;
+          const tickScramble = (now) => {
+            const progress = Math.min((now - start) / dur, 1);
+            const settled = Math.floor(progress * finalText.length);
+            el.textContent = finalText.slice(0, settled) + [...finalText.slice(settled)].map((c) => (c === " " ? " " : GLYPHS[Math.floor(Math.random() * GLYPHS.length)])).join("");
+            if (progress < 1) requestAnimationFrame(tickScramble);
+            else el.textContent = finalText;
+          };
+          requestAnimationFrame(tickScramble);
+        },
+      });
+    });
+
+    // Proximity scale — neighbours swell as the cursor passes (dock/grid demo)
+    if (window.matchMedia("(hover: hover)").matches) {
+      document.querySelectorAll("[data-proximity]").forEach((wrap) => {
+        const items = [...wrap.children];
+        wrap.addEventListener("pointermove", (e) => {
+          items.forEach((item) => {
+            const r = item.getBoundingClientRect();
+            const d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+            const strength = Math.max(0, 1 - d / 150);
+            gsap.to(item, { scale: 1 + strength * 0.16, duration: 0.4, ease: "power2.out", overwrite: "auto" });
+          });
+        }, { signal });
+        wrap.addEventListener("pointerleave", () => items.forEach((item) => gsap.to(item, { scale: 1, duration: 0.5, ease: "elastic.out(1,0.5)", overwrite: "auto" })), { signal });
+      });
+    }
+
+    // Scrub-linked scale & rotation — glued to the scrollbar both ways
+    gsap.utils.toArray("[data-scrub-scale]").forEach((el) => {
+      gsap.fromTo(el, { scale: 0.86 }, {
+        scale: 1.05, ease: "none",
+        scrollTrigger: { trigger: el.closest("section") || el, start: "top bottom", end: "bottom top", scrub: 1 },
+      });
+    });
+    gsap.utils.toArray("[data-scrub-rotate]").forEach((el) => {
+      gsap.fromTo(el, { rotation: -14 }, {
+        rotation: 14, ease: "none",
+        scrollTrigger: { trigger: el.closest("section") || el, start: "top bottom", end: "bottom top", scrub: 1 },
+      });
+    });
+
     // Glitch-flash entrances — a quick signal tear, then lock-in
     gsap.utils.toArray("[data-glitch]").forEach((el) => {
       const tl = gsap.timeline({ scrollTrigger: { trigger: el, start: "top 88%" } });

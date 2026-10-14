@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import gsap from "gsap";
 
 export default function Cursor() {
   const dot = useRef(null);
@@ -19,9 +20,26 @@ export default function Cursor() {
       raf = requestAnimationFrame(loop);
     };
     loop();
+    // Spark trail — tiny embers that flare and drift off the cursor path
+    let lastSpawn = 0;
+    const onTrail = (e) => {
+      const now = performance.now();
+      if (now - lastSpawn < 55) return;
+      lastSpawn = now;
+      const spark = document.createElement("span");
+      const size = 2.5 + Math.random() * 4;
+      spark.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;width:${size}px;height:${size}px;border-radius:9999px;background:${Math.random() > 0.35 ? "#ff4d1c" : "#ffb020"};pointer-events:none;z-index:118;`;
+      document.body.appendChild(spark);
+      gsap.to(spark, {
+        x: (Math.random() - 0.5) * 46, y: (Math.random() - 0.35) * 46,
+        opacity: 0, scale: 0.1, duration: 0.75 + Math.random() * 0.4, ease: "power2.out",
+        onComplete: () => spark.remove(),
+      });
+    };
+    addEventListener("mousemove", onTrail);
     addEventListener("mousemove", onMove);
     addEventListener("mouseover", onOver);
-    return () => { cancelAnimationFrame(raf); removeEventListener("mousemove", onMove); removeEventListener("mouseover", onOver); };
+    return () => { cancelAnimationFrame(raf); removeEventListener("mousemove", onMove); removeEventListener("mouseover", onOver); removeEventListener("mousemove", onTrail); };
   }, []);
 
   return (

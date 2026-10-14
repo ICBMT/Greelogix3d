@@ -170,7 +170,7 @@ export function Work() {
             </div>
           </div>
           <div className="relative min-h-[220px] sm:min-h-[260px] bg-[radial-gradient(circle_at_70%_30%,rgba(255,77,28,0.35),transparent_60%)] grid place-items-center p-10">
-            <p className="font-display font-extrabold uppercase text-center leading-[0.95] text-4xl min-[420px]:text-5xl md:text-7xl">
+            <p data-scrub-scale className="font-display font-extrabold uppercase text-center leading-[0.95] text-4xl min-[420px]:text-5xl md:text-7xl">
               <span className="text-stroke block">Stuck?</span><span className="text-orange block mt-2">→ Live.</span>
             </p>
             <span className="absolute bottom-6 right-8 text-mute text-xs tracking-widest2 uppercase">MTS · Case Study</span>
@@ -220,7 +220,7 @@ export function Studio() {
       </div>
 
       {/* deliverables strip */}
-      <div data-stagger className="mt-5 rounded-3xl border border-line bg-smoke/70 px-8 py-7 flex flex-wrap items-center gap-x-10 gap-y-4 justify-between">
+      <div data-stagger data-proximity className="mt-5 rounded-3xl border border-line bg-smoke/70 px-8 py-7 flex flex-wrap items-center gap-x-10 gap-y-4 justify-between">
         {[["100%", "Code ownership"], ["Full", "Documentation"], ["90 days", "Free support"], ["Weekly", "Live demos"]].map(([v, l]) => (
           <p key={l} className="text-sm text-mute"><span className="font-display font-extrabold text-cream text-xl mr-2">{v}</span>{l}</p>
         ))}
