@@ -6,6 +6,7 @@ import Cursor from "@/components/Cursor";
 import Header from "@/components/Header";
 import Smooth from "@/components/Smooth";
 import Hero, { LogoMarquee, OrangeMarquee } from "@/components/Hero";
+import AnchorNav from "@/components/AnchorNav";
 import { Problems, Services, Process, Work, Studio, Voices, Faq, Footer } from "@/components/Sections";
 
 const Scene3D = dynamic(() => import("@/components/Scene3D"), { ssr: false });
@@ -21,6 +22,13 @@ export default function Home() {
       <Smooth ready={loaded} />
       <Scene3D />
       <Header loaded={loaded} />
+      {loaded && (
+        <AnchorNav items={[
+          { id: "top", label: "Intro" }, { id: "services", label: "Services" },
+          { id: "process", label: "Process" }, { id: "work", label: "Work" },
+          { id: "studio", label: "Studio" }, { id: "faq", label: "FAQ" }, { id: "cta", label: "Start" },
+        ]} />
+      )}
 
       <div className="relative z-10">
         <Hero loaded={loaded} />
@@ -34,6 +42,7 @@ export default function Home() {
         <Voices />
         <Faq />
         <Footer />
+        <div className="h-16 xl:h-0" aria-hidden />
       </div>
     </main>
   );

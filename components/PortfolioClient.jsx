@@ -7,6 +7,7 @@ import Cursor from "./Cursor";
 import Header from "./Header";
 import Smooth from "./Smooth";
 import { Footer } from "./Sections";
+import AnchorNav from "./AnchorNav";
 import { PROJECTS, FILTERS, CALENDLY } from "@/lib/data";
 import { ArrowBtn, Magnetic } from "./ui";
 
@@ -134,6 +135,10 @@ export default function PortfolioClient() {
       <Cursor />
       <Smooth ready={ready} />
       <Header loaded={ready} light />
+      <AnchorNav light items={[
+        { id: "top", label: "Intro" }, { id: "stories", label: "Stories" },
+        { id: "build", label: "Studio" }, { id: "cta", label: "Start" },
+      ]} />
 
       {/* drifting air */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -144,7 +149,7 @@ export default function PortfolioClient() {
 
       <div className="relative">
         {/* ---------- Hero ---------- */}
-        <section className="relative px-4 sm:px-6 md:px-10 pt-32 md:pt-44 pb-16 md:pb-24 max-w-[1500px] mx-auto w-full">
+        <section id="top" className="relative px-4 sm:px-6 md:px-10 pt-32 md:pt-44 pb-16 md:pb-24 max-w-[1500px] mx-auto w-full">
           <span aria-hidden className="hidden xl:block absolute right-10 top-44 text-[10px] uppercase tracking-[0.4em] text-ink/40 [writing-mode:vertical-rl]">Selected work — scroll gently ↓</span>
           <nav style={fade(0.05)} aria-label="Breadcrumb" className="flex items-center gap-2.5 text-[11px] uppercase tracking-[0.22em] text-ink/50">
             <Link href="/" className="hover:text-orange transition-colors">Home</Link><span className="text-orange">/</span><span className="text-ink font-semibold">Portfolio</span>
@@ -229,7 +234,7 @@ export default function PortfolioClient() {
         </section>
 
         {/* ---------- What we build / why ---------- */}
-        <section className="relative px-4 sm:px-6 md:px-10 pb-24 md:pb-36 max-w-[1500px] mx-auto w-full">
+        <section id="build" className="relative px-4 sm:px-6 md:px-10 pb-24 md:pb-36 max-w-[1500px] mx-auto w-full scroll-mt-24">
           <div className="grid lg:grid-cols-2 gap-5">
             <div data-reveal className="rounded-[2rem] border border-ink/10 bg-white/55 backdrop-blur p-7 sm:p-10">
               <p className="text-[10px] uppercase tracking-[0.26em] text-ink/50 flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-orange" />What we build</p>
@@ -266,6 +271,7 @@ export default function PortfolioClient() {
             <p className="mt-5 text-xs text-ink/45">We reply within 4 business hours — with a plan, timeline and honest estimate.</p>
           </div>
         </section>
+        <div className="h-12 xl:h-0" aria-hidden />
       </div>
 
       {/* ---------- Dark footer (shared with home) ---------- */}

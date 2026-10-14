@@ -90,7 +90,7 @@ export function Services() {
           <div>
             <p className="font-display font-bold text-2xl">Not sure where<br />to start?</p>
             <p className="text-mute text-sm mt-3 mb-6">Take the free 5-question readiness audit.</p>
-            <ArrowBtn href={`${"https://greelogix.com/free-ai-audit/"}`} external>Free AI audit</ArrowBtn>
+            <ArrowBtn href="/free-ai-audit">Free AI audit</ArrowBtn>
           </div>
         </div>
       </div>
@@ -316,7 +316,7 @@ export function Footer() {
         <div data-reveal className="mt-10 flex flex-wrap justify-center gap-4">
           <ArrowBtn href={CALENDLY} external>Book your free 30-min call</ArrowBtn>
           <Magnetic>
-            <a href="https://greelogix.com/free-ai-audit/" target="_blank" rel="noreferrer" data-hover
+            <a href="/free-ai-audit" data-hover
               className="inline-flex items-center gap-3 rounded-full border border-cream/25 px-7 py-3.5 text-sm font-semibold hover:border-orange hover:text-orange transition-colors">
               Free AI audit <span aria-hidden>↗</span>
             </a>
