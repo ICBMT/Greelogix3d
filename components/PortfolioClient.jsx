@@ -8,6 +8,9 @@ import Header from "./Header";
 import Smooth from "./Smooth";
 import { Footer } from "./Sections";
 import AnchorNav from "./AnchorNav";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+const PageScene = dynamic(() => import("./PageScene"), { ssr: false });
 import { PROJECTS, FILTERS, CALENDLY } from "@/lib/data";
 import { ArrowBtn, Magnetic } from "./ui";
 
@@ -15,41 +18,22 @@ gsap.registerPlugin(ScrollTrigger);
 
 const pad = (n) => String(n).padStart(2, "0");
 
-/* Soft product visual — a browser window or a phone, drawn per project */
+/* Product artwork — generated per project, unveiled with a cinematic wipe */
 function Visual({ p }) {
   return (
-    <div className={`relative overflow-hidden rounded-[1.8rem] sm:rounded-[2.2rem] bg-gradient-to-br ${p.g} aspect-[4/3] sm:aspect-[16/10] shadow-[0_30px_80px_rgba(20,16,8,0.18)]`} aria-hidden>
-      <span className="absolute -top-10 -right-4 text-[12rem] sm:text-[16rem] leading-none font-display font-extrabold text-white/10 select-none">{p.glyph}</span>
-      <span className="absolute top-5 left-6 text-[10px] uppercase tracking-[0.28em] text-white/75">{p.industry}</span>
-      <div data-parallax="-22" className="absolute inset-0 grid place-items-center pt-8">
-        {p.device === "phone" ? (
-          <div className="w-[42%] max-w-[190px] aspect-[9/17] rounded-[1.6rem] bg-[#111110] p-2 shadow-2xl rotate-[-4deg]">
-            <div className="w-full h-full rounded-[1.25rem] bg-[#faf8f2] p-3.5 flex flex-col gap-2 overflow-hidden">
-              <span className="w-10 h-1.5 rounded-full bg-ink/15 mx-auto mb-1" />
-              <span className="h-2.5 w-3/5 rounded bg-ink/70" /><span className="h-2 w-4/5 rounded bg-ink/20" /><span className="h-2 w-2/3 rounded bg-ink/15" />
-              <span className="mt-2 h-16 rounded-xl bg-orange/85" />
-              <span className="h-9 rounded-xl bg-ink/[0.07]" /><span className="h-9 rounded-xl bg-ink/[0.07]" /><span className="h-9 rounded-xl bg-ink/[0.05]" />
-              <span className="mt-auto h-8 rounded-full bg-ink grid place-items-center"><span className="w-12 h-1.5 rounded bg-white/70" /></span>
-            </div>
-          </div>
-        ) : (
-          <div className="w-[76%] aspect-[16/10] rounded-xl bg-[#faf8f2] shadow-2xl rotate-[-2deg] overflow-hidden">
-            <div className="flex items-center gap-1.5 px-3.5 h-8 bg-ink/[0.06] border-b border-ink/10">
-              <span className="w-2 h-2 rounded-full bg-ink/20" /><span className="w-2 h-2 rounded-full bg-ink/20" /><span className="w-2 h-2 rounded-full bg-orange" />
-              <span className="ml-3 h-3.5 flex-1 rounded-full bg-white border border-ink/10" />
-            </div>
-            <div className="p-4 sm:p-5 flex gap-4">
-              <div className="hidden sm:flex flex-col gap-2 w-1/4"><span className="h-2 rounded bg-orange/80 w-4/5" /><span className="h-2 rounded bg-ink/20" /><span className="h-2 rounded bg-ink/15" /><span className="h-2 rounded bg-ink/15" /><span className="h-2 rounded bg-ink/10 w-2/3" /></div>
-              <div className="flex-1 space-y-2.5">
-                <span className="block h-3 w-2/5 rounded bg-ink/75" /><span className="block h-2 w-3/5 rounded bg-ink/20" />
-                <span className="flex gap-2 pt-1"><span className="h-12 sm:h-16 flex-1 rounded-lg bg-orange/85" /><span className="h-12 sm:h-16 flex-1 rounded-lg bg-ink/[0.08]" /><span className="h-12 sm:h-16 flex-1 rounded-lg bg-ink/[0.05]" /></span>
-                <span className="block h-2 w-1/2 rounded bg-ink/15" /><span className="block h-2 w-2/3 rounded bg-ink/10" />
-              </div>
-            </div>
-          </div>
-        )}
+    <div data-wipe className={`group/visual relative overflow-hidden rounded-[1.8rem] sm:rounded-[2.2rem] bg-gradient-to-br ${p.g} aspect-[4/3] sm:aspect-[16/10] shadow-[0_30px_80px_rgba(20,16,8,0.22)]`} aria-hidden>
+      <div data-parallax="-14" className="absolute inset-0">
+        <div data-wipe-img className="absolute inset-[-6%]">
+          <Image src={`/projects/${p.slug}.jpg`} alt="" fill sizes="(max-width: 1024px) 92vw, 760px" className="object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover/visual:scale-[1.06]" />
+        </div>
       </div>
-      <span className="absolute bottom-5 right-6 font-display font-extrabold text-white/85 text-lg">{p.title}</span>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/10 pointer-events-none" />
+      <span className="absolute top-5 left-6 text-[10px] uppercase tracking-[0.28em] text-white/85 backdrop-blur-sm bg-black/20 rounded-full px-3 py-1.5">{p.industry}</span>
+      <span className="absolute -top-8 right-3 text-[9rem] sm:text-[12rem] leading-none font-display font-extrabold text-white/10 select-none">{p.glyph}</span>
+      <span className="absolute bottom-5 left-6 right-6 flex items-end justify-between gap-4">
+        <span className="font-display font-extrabold text-white text-xl drop-shadow">{p.title}</span>
+        <span className="text-[10px] uppercase tracking-[0.22em] text-white/75">{p.device === "phone" ? "Mobile app" : "Web platform"}</span>
+      </span>
     </div>
   );
 }
@@ -135,6 +119,7 @@ export default function PortfolioClient() {
       <Cursor />
       <Smooth ready={ready} />
       <Header loaded={ready} light />
+      <PageScene variant="portfolio" />
       <AnchorNav light items={[
         { id: "top", label: "Intro" }, { id: "stories", label: "Stories" },
         { id: "build", label: "Studio" }, { id: "cta", label: "Start" },
@@ -147,7 +132,7 @@ export default function PortfolioClient() {
         <div className="animate-drift absolute top-[72%] right-[-10rem] w-[28rem] h-[28rem] rounded-full bg-[#c8d8c0]/40 blur-3xl" />
       </div>
 
-      <div className="relative">
+      <div className="relative z-10">
         {/* ---------- Hero ---------- */}
         <section id="top" className="relative px-4 sm:px-6 md:px-10 pt-32 md:pt-44 pb-16 md:pb-24 max-w-[1500px] mx-auto w-full">
           <span aria-hidden className="hidden xl:block absolute right-10 top-44 text-[10px] uppercase tracking-[0.4em] text-ink/40 [writing-mode:vertical-rl]">Selected work — scroll gently ↓</span>
@@ -275,7 +260,7 @@ export default function PortfolioClient() {
       </div>
 
       {/* ---------- Dark footer (shared with home) ---------- */}
-      <div className="relative bg-ink text-cream rounded-t-[2rem] sm:rounded-t-[2.5rem] overflow-hidden">
+      <div className="relative z-10 bg-ink text-cream rounded-t-[2rem] sm:rounded-t-[2.5rem] overflow-hidden">
         <Footer />
       </div>
     </main>

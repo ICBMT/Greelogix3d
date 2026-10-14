@@ -8,6 +8,8 @@ import Header from "./Header";
 import Smooth from "./Smooth";
 import AnchorNav from "./AnchorNav";
 import { Footer } from "./Sections";
+import dynamic from "next/dynamic";
+const PageScene = dynamic(() => import("./PageScene"), { ssr: false });
 import { CALENDLY } from "@/lib/data";
 import { ArrowBtn, Magnetic, RevealLines } from "./ui";
 
@@ -253,7 +255,9 @@ export default function AuditClient() {
       <Smooth ready={ready} />
       <Header loaded={ready} />
       <AnchorNav items={AUDIT_NAV} />
+      <PageScene variant="audit" />
 
+      <div className="relative z-10">
       {/* ---------- Hero / Intro ---------- */}
       <section id="top" className="relative px-4 sm:px-6 md:px-10 pt-36 md:pt-44 pb-20 md:pb-28 max-w-[1500px] mx-auto w-full">
         <div aria-hidden className="pointer-events-none absolute -top-24 right-[4%] w-[30rem] h-[30rem] rounded-full bg-orange/[0.14] blur-3xl animate-drift" />
@@ -432,7 +436,8 @@ export default function AuditClient() {
         <div className="h-10 xl:h-0" aria-hidden />
       </section>
 
-      <Footer />
+      </div>
+      <div className="relative z-10"><Footer /></div>
     </main>
   );
 }

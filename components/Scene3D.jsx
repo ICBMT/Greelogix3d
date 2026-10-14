@@ -162,6 +162,38 @@ function LogoMark() {
   );
 }
 
+/* Small satellite objects that keep the logo company on its journey */
+function Satellites() {
+  const ref = useRef(null);
+  useFrame((state) => {
+    if (!ref.current) return;
+    ref.current.rotation.y = state.clock.elapsedTime * 0.3;
+    ref.current.rotation.z = state.clock.elapsedTime * 0.1;
+  });
+  return (
+    <group ref={ref}>
+      <Float speed={2} floatIntensity={0.9}>
+        <mesh position={[-2.7, 1.35, -1]}>
+          <boxGeometry args={[0.26, 0.26, 0.26]} />
+          <meshStandardMaterial color="#ffb020" roughness={0.3} metalness={0.3} emissive="#ffb020" emissiveIntensity={0.35} />
+        </mesh>
+      </Float>
+      <Float speed={1.7} floatIntensity={1.1}>
+        <mesh position={[2.75, -1.45, -0.8]}>
+          <octahedronGeometry args={[0.24, 0]} />
+          <meshStandardMaterial color="#34d399" roughness={0.3} metalness={0.3} emissive="#34d399" emissiveIntensity={0.3} />
+        </mesh>
+      </Float>
+      <Float speed={2.3} floatIntensity={0.8}>
+        <mesh position={[2.45, 1.75, -1.4]}>
+          <torusGeometry args={[0.2, 0.07, 12, 32]} />
+          <meshStandardMaterial color="#f4f1ea" roughness={0.35} metalness={0.4} />
+        </mesh>
+      </Float>
+    </group>
+  );
+}
+
 function Backdrop() {
   const ref = useRef(null);
   useFrame((state) => {
@@ -189,6 +221,7 @@ export default function Scene3D() {
         <directionalLight position={[4, 5, 6]} intensity={1.6} />
         <pointLight position={[-5, -2, 3]} intensity={12} color="#ff4d1c" />
         <LogoMark />
+        <Satellites />
         <Backdrop />
       </Canvas>
       {/* legibility gradients */}

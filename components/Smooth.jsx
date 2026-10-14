@@ -27,10 +27,22 @@ export default function Smooth({ ready }) {
 
     // Generic reveals
     gsap.utils.toArray("[data-reveal]").forEach((el) => {
-      gsap.fromTo(el, { y: 44, opacity: 0 }, {
-        y: 0, opacity: 1, duration: 1.05, ease: "power3.out",
+      gsap.fromTo(el, { y: 44, opacity: 0, filter: "blur(6px)" }, {
+        y: 0, opacity: 1, filter: "blur(0px)", duration: 1.05, ease: "power3.out", clearProps: "filter",
         delay: parseFloat(el.dataset.delay || 0),
         scrollTrigger: { trigger: el, start: "top 88%" },
+      });
+    });
+    // Cinematic clip-wipe reveals (images/sections unveil top-to-bottom)
+    gsap.utils.toArray("[data-wipe]").forEach((el) => {
+      gsap.fromTo(el, { clipPath: "inset(0 0 100% 0 round 28px)" }, {
+        clipPath: "inset(0 0 0% 0 round 28px)", duration: 1.25, ease: "power4.out",
+        scrollTrigger: { trigger: el, start: "top 86%" },
+      });
+      const img = el.querySelector("[data-wipe-img]");
+      if (img) gsap.fromTo(img, { scale: 1.22 }, {
+        scale: 1, duration: 1.6, ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 86%" },
       });
     });
     // Parallax drift
