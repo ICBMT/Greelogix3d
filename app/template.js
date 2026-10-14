@@ -11,7 +11,7 @@ export default function Template({ children }) {
   const label = useRef(null);
 
   useEffect(() => {
-    const names = { "/": "GreeLogix", "/portfolio": "Portfolio", "/free-ai-audit": "Free AI Audit", "/services": "Services", "/case-studies": "Case Studies", "/about": "About", "/ai-solutions": "AI Solutions" };
+    const names = { "/": "GreeLogix", "/portfolio": "Portfolio", "/free-ai-audit": "Free AI Audit", "/services": "Services", "/case-studies": "Case Studies", "/about": "About", "/blog": "Blog", "/ai-solutions": "AI Solutions" };
     if (label.current) label.current.textContent = names[pathname] || (pathname.startsWith("/ai") ? "AI Solutions" : "GreeLogix");
     const tl = gsap.timeline();
     tl.set(panel.current, { scaleY: 1, transformOrigin: "top" })

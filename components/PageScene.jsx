@@ -214,6 +214,44 @@ function AboutWorld() {
   );
 }
 
+/* Blog: a floating manuscript page, its lines of light in orbit */
+function BlogWorld() {
+  const orbit = useRef(null);
+  useFrame((state) => { if (orbit.current) { orbit.current.rotation.y = state.clock.elapsedTime * 0.35; orbit.current.rotation.z = state.clock.elapsedTime * 0.09; } });
+  const line = (pos, w, color, e = 0.35) => (
+    <mesh position={pos}><boxGeometry args={[w, 0.05, 0.05]} />{std(color, { emissive: color, emissiveIntensity: e })}</mesh>
+  );
+  return (
+    <Journey baseX={2.25} mobileY={1.3}>
+      <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.6}>
+        <mesh rotation={[0.08, -0.3, 0.04]}>
+          <boxGeometry args={[1.15, 1.5, 0.05]} />
+          {std("#f4f1ea", { emissive: "#f4f1ea", emissiveIntensity: 0.07, roughness: 0.5 })}
+        </mesh>
+        <group rotation={[0.08, -0.3, 0.04]}>
+          {line([-0.08, 0.52, 0.06], 0.8, "#ff4d1c", 0.7)}
+          {line([-0.16, 0.32, 0.06], 0.64, "#f4f1ea", 0.25)}
+          {line([-0.1, 0.14, 0.06], 0.76, "#f4f1ea", 0.25)}
+          {line([-0.22, -0.04, 0.06], 0.52, "#ffb020", 0.5)}
+          {line([-0.13, -0.22, 0.06], 0.7, "#f4f1ea", 0.25)}
+          {line([-0.19, -0.4, 0.06], 0.58, "#f4f1ea", 0.25)}
+          {line([-0.3, -0.58, 0.06], 0.36, "#ff4d1c", 0.7)}
+        </group>
+        <mesh position={[0.15, -0.1, -0.7]}>
+          <octahedronGeometry args={[0.3, 0]} />
+          {std("#ffb020", { wireframe: true, emissive: "#ffb020", emissiveIntensity: 0.5 })}
+        </mesh>
+      </Float>
+      <group ref={orbit}>
+        <mesh><torusGeometry args={[1.9, 0.012, 8, 110]} />{std("#ff4d1c", { transparent: true, opacity: 0.5 })}</mesh>
+        <mesh position={[1.9, 0, 0]}><sphereGeometry args={[0.09, 16, 16]} />{std("#34d399", { emissive: "#34d399", emissiveIntensity: 0.7 })}</mesh>
+        <mesh position={[-1.9, 0.2, 0]}><sphereGeometry args={[0.07, 16, 16]} />{std("#f4f1ea", { emissive: "#f4f1ea", emissiveIntensity: 0.4 })}</mesh>
+      </group>
+      <Sparkles count={45} scale={[6, 4.5, 2.5]} size={2} speed={0.3} color="#ff8a5c" opacity={0.6} />
+    </Journey>
+  );
+}
+
 export default function PageScene({ variant = "audit" }) {
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden>
@@ -221,7 +259,7 @@ export default function PageScene({ variant = "audit" }) {
         <ambientLight intensity={0.85} />
         <directionalLight position={[4, 5, 6]} intensity={1.5} />
         <pointLight position={[-5, -2, 3]} intensity={10} color="#ff4d1c" />
-        {variant === "portfolio" ? <PortfolioWorld /> : variant === "services" ? <ServicesWorld /> : variant === "ai" ? <AiWorld /> : variant === "stories" ? <StoriesWorld /> : variant === "about" ? <AboutWorld /> : <AuditWorld />}
+        {variant === "portfolio" ? <PortfolioWorld /> : variant === "services" ? <ServicesWorld /> : variant === "ai" ? <AiWorld /> : variant === "stories" ? <StoriesWorld /> : variant === "about" ? <AboutWorld /> : variant === "blog" ? <BlogWorld /> : <AuditWorld />}
       </Canvas>
     </div>
   );
