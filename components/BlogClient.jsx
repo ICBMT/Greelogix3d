@@ -172,6 +172,8 @@ export default function BlogClient() {
 
   const shown = BLOG_POSTS.filter((p) => filter === "all" || p.cat === filter);
   const featured = BLOG_POSTS.find((p) => p.featured);
+  const cluster = ["ai-prototype-to-production-hardening-checklist-2026", "ai-mvp-in-4-weeks-playbook", "rag-architecture-guide-2026", "ai-phone-agents-replacing-call-centers", "n8n-vs-zapier-vs-make-2026", "how-ai-chatbots-cut-customer-support-costs"]
+    .map((slug) => BLOG_POSTS.find((p) => p.slug === slug)).filter(Boolean);
 
   const chooseFilter = (id) => {
     if (id === filter) return;
@@ -189,6 +191,20 @@ export default function BlogClient() {
     const t = setTimeout(() => ScrollTrigger.refresh(), 700);
     return () => clearTimeout(t);
   }, [filter]);
+
+  // The AI cluster — a pinned gallery that slides sideways as you scroll
+  const hWrap = useRef(null);
+  const hTrack = useRef(null);
+  useEffect(() => {
+    const wrap = hWrap.current, track = hTrack.current;
+    if (!wrap || !track) return;
+    const dist = () => Math.max(track.scrollWidth - wrap.clientWidth, 0);
+    const tween = gsap.to(track, {
+      x: () => -dist(), ease: "none",
+      scrollTrigger: { trigger: wrap, start: "top top", end: () => "+=" + dist(), pin: true, scrub: 1, anticipatePin: 1, invalidateOnRefresh: true },
+    });
+    return () => { tween.scrollTrigger?.kill(); tween.kill(); };
+  }, []);
 
   return (
     <main className="relative min-h-screen overflow-x-clip">
@@ -259,6 +275,42 @@ export default function BlogClient() {
           </article>
         </section>
 
+        {/* AI cluster — pinned horizontal gallery */}
+        <section ref={hWrap} aria-label="The AI cluster" className="relative overflow-hidden border-y border-line bg-coal/40 py-20 md:py-24">
+          <div className="max-w-[1500px] mx-auto px-4 sm:px-6 md:px-10 flex items-center gap-3">
+            <p data-scramble className="text-[11px] uppercase tracking-[0.28em] text-mute shrink-0">The AI cluster</p>
+            <span data-line className="h-px flex-1 bg-line origin-left" />
+            <span className="hidden sm:block text-[11px] uppercase tracking-[0.18em] text-orange shrink-0">Keep scrolling — it slides sideways</span>
+          </div>
+          <div ref={hTrack} className="mt-10 flex w-max gap-4 px-4 sm:px-6 md:px-10 will-change-transform">
+            {cluster.map((post, i) => (
+              <button key={post.slug} onClick={() => setPicked(post)} data-hover data-cursor="Read"
+                className="group relative w-[78vw] sm:w-[30rem] shrink-0 text-left rounded-[1.8rem] border border-line bg-coal/90 overflow-hidden transition-colors duration-500 hover:border-orange/60">
+                <span className="relative block h-52 sm:h-60 overflow-hidden">
+                  {post.img && <Image src={post.img} alt="" fill sizes="(max-width: 768px) 80vw, 480px" className="object-cover" />}
+                  <span className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <span className="absolute top-4 left-5 text-[10px] uppercase tracking-[0.2em] text-white/85 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1.5">{post.cat}</span>
+                  <span aria-hidden className="absolute bottom-3 right-5 font-display font-extrabold text-stroke text-5xl">{String(i + 1).padStart(2, "0")}</span>
+                </span>
+                <span className="block p-6 sm:p-7">
+                  <span className="block font-display font-extrabold text-xl sm:text-2xl leading-tight group-hover:text-orange transition-colors line-clamp-2">{post.title}</span>
+                  <span className="mt-3 block text-sm text-mute leading-[1.75] line-clamp-2">{post.excerpt}</span>
+                  <span className="mt-5 flex items-center justify-between">
+                    <span className="text-[11px] uppercase tracking-[0.16em] text-cream/50">{post.read} min read</span>
+                    <span className="text-[11px] uppercase tracking-[0.16em] text-orange font-semibold"><RollText text="Read" /> →</span>
+                  </span>
+                </span>
+              </button>
+            ))}
+            <a href="#articles" data-hover className="group grid place-items-center w-[62vw] sm:w-[24rem] shrink-0 rounded-[1.8rem] border border-dashed border-orange/40 bg-orange/[0.06] text-center p-8 transition-colors duration-500 hover:border-orange">
+              <span>
+                <span className="block font-display font-extrabold text-3xl leading-tight">All 15<br />articles</span>
+                <span className="mt-3 block text-[11px] uppercase tracking-[0.18em] text-orange font-semibold">Browse the grid ↓</span>
+              </span>
+            </a>
+          </div>
+        </section>
+
         {/* Sticky filter */}
         <div className="sticky top-16 md:top-[72px] z-40 bg-ink/85 backdrop-blur-md border-y border-line">
           <div className="max-w-[1500px] mx-auto px-4 sm:px-6 md:px-10 py-3.5 flex items-center gap-3 overflow-x-auto">
@@ -277,7 +329,7 @@ export default function BlogClient() {
 
         {/* Articles grid */}
         <section id="articles" className="relative px-4 sm:px-6 md:px-10 py-16 md:py-24 max-w-[1500px] mx-auto w-full scroll-mt-24">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div data-proximity="0.045" className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {shown.map((post) => {
               const gi = BLOG_POSTS.indexOf(post);
               return (

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 import gsap from "gsap";
 
 /* Magnetic hover — element leans toward the cursor, springs back on leave */
@@ -8,11 +8,18 @@ export function Magnetic({ children, strength = 0.35, className = "" }) {
   useEffect(() => {
     const el = ref.current;
     if (!el || window.matchMedia("(hover: none)").matches) return;
+    const inner = el.firstElementChild;
     const move = (e) => {
       const r = el.getBoundingClientRect();
-      gsap.to(el, { x: (e.clientX - r.left - r.width / 2) * strength, y: (e.clientY - r.top - r.height / 2) * strength, duration: 0.4, ease: "power3.out" });
+      const dx = (e.clientX - r.left - r.width / 2) * strength;
+      const dy = (e.clientY - r.top - r.height / 2) * strength;
+      gsap.to(el, { x: dx, y: dy, duration: 0.4, ease: "power3.out", overwrite: "auto" });
+      if (inner) gsap.to(inner, { x: dx * 0.35, y: dy * 0.35, duration: 0.55, ease: "power3.out", overwrite: "auto" });
     };
-    const leave = () => gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1,0.4)" });
+    const leave = () => {
+      gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1,0.4)", overwrite: "auto" });
+      if (inner) gsap.to(inner, { x: 0, y: 0, duration: 0.85, ease: "elastic.out(1,0.4)", overwrite: "auto" });
+    };
     el.addEventListener("mousemove", move);
     el.addEventListener("mouseleave", leave);
     return () => { el.removeEventListener("mousemove", move); el.removeEventListener("mouseleave", leave); };
@@ -86,6 +93,23 @@ export function RevealLines({ lines, loaded, className = "", lineClassName = "" 
           </span>
         </span>
       ))}
+    </span>
+  );
+}
+
+/* Rotating circular text badge — the demo-hall signature, spinning forever */
+export function SpinBadge({ text = "GreeLogix · Production AI · Since 2019 · ", className = "" }) {
+  const raw = useId();
+  const id = `badge-${raw.replace(/:/g, "")}`;
+  return (
+    <span aria-hidden className={`relative place-items-center ${className}`}>
+      <svg viewBox="0 0 100 100" className="w-28 h-28 animate-[spin_22s_linear_infinite]">
+        <defs><path id={id} d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" fill="none" /></defs>
+        <text className="fill-cream/50 uppercase font-display font-bold" style={{ fontSize: "7.4px", letterSpacing: "2.1px" }}>
+          <textPath href={`#${id}`}>{text}</textPath>
+        </text>
+      </svg>
+      <span className="absolute inset-0 grid place-items-center text-orange text-lg">✦</span>
     </span>
   );
 }

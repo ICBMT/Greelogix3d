@@ -248,12 +248,13 @@ export default function Smooth({ ready }) {
     if (window.matchMedia("(hover: hover)").matches) {
       document.querySelectorAll("[data-proximity]").forEach((wrap) => {
         const items = [...wrap.children];
+        const amt = parseFloat(wrap.dataset.proximity) || 0.16;
         wrap.addEventListener("pointermove", (e) => {
           items.forEach((item) => {
             const r = item.getBoundingClientRect();
             const d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
             const strength = Math.max(0, 1 - d / 150);
-            gsap.to(item, { scale: 1 + strength * 0.16, duration: 0.4, ease: "power2.out", overwrite: "auto" });
+            gsap.to(item, { scale: 1 + strength * amt, duration: 0.4, ease: "power2.out", overwrite: "auto" });
           });
         }, { signal });
         wrap.addEventListener("pointerleave", () => items.forEach((item) => gsap.to(item, { scale: 1, duration: 0.5, ease: "elastic.out(1,0.5)", overwrite: "auto" })), { signal });
@@ -417,16 +418,40 @@ export default function Smooth({ ready }) {
       });
     });
 
-    // Scrubbed bento zoom — card imagery breathes as it crosses the viewport
+    // Scrubbed bento zoom — card imagery breathes & blooms from grey to colour
     gsap.utils.toArray("[data-zoom-img]").forEach((img) => {
-      gsap.fromTo(img, { scale: 1.3, yPercent: -5 }, {
-        scale: 1.05, yPercent: 5, ease: "none",
+      gsap.fromTo(img, { scale: 1.3, yPercent: -5, filter: "grayscale(0.85) contrast(1.06)" }, {
+        scale: 1.05, yPercent: 5, filter: "grayscale(0) contrast(1)", ease: "none",
         scrollTrigger: { trigger: img.parentElement, start: "top bottom", end: "bottom top", scrub: true },
       });
     });
 
+    // Scroll progress ring — fills as you read; click it to fly back up
+    const ringBtn = document.createElement("button");
+    ringBtn.type = "button";
+    ringBtn.setAttribute("aria-label", "Back to top");
+    ringBtn.className = "fixed z-[72] right-4 bottom-24 sm:right-6 sm:bottom-6 w-12 h-12 rounded-full border border-line bg-coal/80 backdrop-blur-md grid place-items-center text-orange opacity-0 pointer-events-none transition-opacity duration-500 hover:border-orange";
+    ringBtn.innerHTML = '<svg width="44" height="44" viewBox="0 0 44 44" class="absolute inset-0 -rotate-90" aria-hidden="true"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(244,241,234,0.15)" stroke-width="2"/><circle data-ring cx="22" cy="22" r="19" fill="none" stroke="#ff4d1c" stroke-width="2" stroke-linecap="round"/></svg><span aria-hidden="true" style="font-size:13px">↑</span>';
+    document.body.appendChild(ringBtn);
+    const ringCircle = ringBtn.querySelector("[data-ring]");
+    const RING_LEN = 2 * Math.PI * 19;
+    gsap.set(ringCircle, { strokeDasharray: RING_LEN, strokeDashoffset: RING_LEN });
+    ScrollTrigger.create({
+      start: 0, end: "max",
+      onUpdate: (self) => {
+        gsap.set(ringCircle, { strokeDashoffset: RING_LEN * (1 - self.progress) });
+        const show = self.progress > 0.04;
+        ringBtn.style.opacity = show ? "1" : "0";
+        ringBtn.style.pointerEvents = show ? "auto" : "none";
+      },
+    });
+    const ringClick = () => lenis.scrollTo(0, { duration: 1.5 });
+    ringBtn.addEventListener("click", ringClick);
+
     const refresh = setTimeout(() => ScrollTrigger.refresh(), 400);
     return () => {
+      ringBtn.removeEventListener("click", ringClick);
+      ringBtn.remove();
       clearTimeout(refresh);
       ctrl.abort();
       document.removeEventListener("click", onClick);

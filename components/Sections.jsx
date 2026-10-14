@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PROBLEMS, SERVICES, PROCESS, WORK, TESTIMONIALS, STACK, FAQS, CALENDLY } from "@/lib/data";
 import Link from "next/link";
 import Image from "next/image";
-import { SectionTag, ArrowBtn, Magnetic } from "./ui";
+import { SectionTag, ArrowBtn, Magnetic , SpinBadge } from "./ui";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -318,6 +318,7 @@ export function Footer() {
   return (
     <footer id="cta" className="relative">
       <section className="px-4 sm:px-6 md:px-10 pt-20 sm:pt-28 md:pt-40 pb-14 md:pb-16 max-w-[1500px] mx-auto text-center relative w-full">
+        <SpinBadge className="absolute right-2 md:right-10 top-16 hidden lg:grid" />
         <p data-reveal className="text-[11px] uppercase tracking-widest2 text-mute">( Next step — 30 minutes, no sales deck )</p>
         <h2 data-reveal className="mt-7 font-display font-extrabold uppercase leading-[0.92] text-[11.5vw] lg:text-[7.5rem]">
           Let's build<br /><span className="text-stroke">something</span> <span className="text-orange">real.</span>

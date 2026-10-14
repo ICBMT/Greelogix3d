@@ -286,7 +286,7 @@ export default function CasesClient() {
 
         {/* Stories grid */}
         <section id="stories" className="relative px-4 sm:px-6 md:px-10 py-16 md:py-24 max-w-[1500px] mx-auto w-full scroll-mt-24">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div data-proximity="0.045" className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {shown.map((cs, i) => (
               <article key={cs.title}
                 onClick={() => setPicked(cs)} role="button" tabIndex={0}

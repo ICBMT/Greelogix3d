@@ -10,7 +10,7 @@ import AnchorNav from "./AnchorNav";
 import { Footer } from "./Sections";
 import { AI_LINKS } from "@/lib/aiData";
 import { CALENDLY } from "@/lib/data";
-import { ArrowBtn, Magnetic, RevealLines, RollText } from "./ui";
+import { ArrowBtn, Magnetic, RevealLines, RollText, SpinBadge } from "./ui";
 
 const PageScene = dynamic(() => import("./PageScene"), { ssr: false });
 const CARD_ANIMS = ["flip", "mask-left", "zoom", "mask-right", "rotate", "perspective"];
@@ -101,6 +101,7 @@ export default function AiTemplate({ page, hub = false }) {
         {/* ---------- Hero ---------- */}
         <section id="top" className="relative px-4 sm:px-6 md:px-10 pt-36 md:pt-44 pb-20 md:pb-28 max-w-[1500px] mx-auto w-full">
           <div aria-hidden className="pointer-events-none absolute -top-24 right-[4%] w-[30rem] h-[30rem] rounded-full bg-orange/[0.13] blur-3xl animate-drift" />
+          <SpinBadge className="absolute right-[4%] top-40 hidden xl:grid z-10" />
           <nav aria-label="Breadcrumb" className="relative flex flex-wrap items-center gap-2.5 text-[11px] uppercase tracking-[0.22em] text-mute">
             <Link href="/" className="hover:text-orange transition-colors">Home</Link>
             <span className="text-orange">/</span>
