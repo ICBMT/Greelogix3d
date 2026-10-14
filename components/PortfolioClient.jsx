@@ -49,7 +49,7 @@ function StoryCard({ p, index, open, onToggle }) {
           <p className="flex flex-wrap items-center gap-3 text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-ink/50">
             <span className="text-orange font-semibold">Story {pad(index + 1)}</span><span aria-hidden>·</span><span>{p.industry}</span>
           </p>
-          <h3 className="mt-4 font-display font-extrabold leading-[0.98] text-4xl min-[420px]:text-5xl xl:text-6xl">{p.title}</h3>
+          <h3 data-glitch className="mt-4 font-display font-extrabold leading-[0.98] text-4xl min-[420px]:text-5xl xl:text-6xl">{p.title}</h3>
           <p className="mt-2 font-display font-bold text-orange text-lg">{p.sub}</p>
           <p className="mt-5 text-ink/65 leading-[1.85] max-w-md">{p.desc}</p>
           <blockquote className="mt-6 border-l-2 border-orange pl-4 text-ink/80 italic leading-relaxed max-w-md">“{p.note}”</blockquote>
@@ -65,7 +65,7 @@ function StoryCard({ p, index, open, onToggle }) {
             </div>
           </div>
 
-          <div className="mt-7 flex flex-wrap items-center gap-2">
+          <div data-batch className="mt-7 flex flex-wrap items-center gap-2">
             {p.stack.map((s) => (<span key={s} className="text-[11px] rounded-full border border-ink/15 bg-white/50 px-3 py-1.5 text-ink/70">{s}</span>))}
           </div>
           <button onClick={onToggle} data-hover aria-expanded={open}
@@ -161,7 +161,7 @@ export default function PortfolioClient() {
             </div>
           </div>
 
-          <dl style={fade(0.65)} className="mt-14 md:mt-20 pt-8 border-t border-ink/10 grid grid-cols-2 md:grid-cols-4 gap-8">
+          <dl data-batch style={fade(0.65)} className="mt-14 md:mt-20 pt-8 border-t border-ink/10 grid grid-cols-2 md:grid-cols-4 gap-8">
             {[[150, "+", "Projects delivered"], [75, "+", "AI solutions built"], [90, "+", "Happy clients"], [20, "+", "Apps on Play Store"]].map(([v, s, l]) => (
               <div key={l}>
                 <dd className="font-display font-extrabold text-4xl md:text-5xl"><span data-count={v}>0</span><span className="text-orange">{s}</span></dd>
@@ -176,7 +176,7 @@ export default function PortfolioClient() {
         <div id="stories" className="sticky top-16 md:top-[72px] z-40 bg-[#f3efe7]/85 backdrop-blur-md border-y border-ink/10">
           <div className="max-w-[1500px] mx-auto px-4 sm:px-6 md:px-10 py-3.5 flex items-center gap-3 overflow-x-auto">
             <span className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-ink/50 shrink-0"><span className="w-1.5 h-1.5 rounded-full bg-orange animate-pulse-dot" />Browse</span>
-            <div className="flex gap-2" role="tablist" aria-label="Filter projects">
+            <div data-anim="mask-left" className="flex gap-2" role="tablist" aria-label="Filter projects">
               {FILTERS.map((f) => (
                 <button key={f.id} role="tab" aria-selected={filter === f.id} onClick={() => setFilter(f.id)} data-hover
                   className={`shrink-0 rounded-full px-5 py-2.5 text-[13px] font-semibold transition-all duration-300 ${filter === f.id ? "bg-ink text-[#f3efe7] shadow-lg" : "border border-ink/20 text-ink/65 hover:border-orange hover:text-orange"}`}>
@@ -204,7 +204,7 @@ export default function PortfolioClient() {
               <div key={p.slug}>
                 <StoryCard p={p} index={i} open={openSlug === p.slug} onToggle={() => setOpenSlug(openSlug === p.slug ? null : p.slug)} />
                 {INTERLUDES[i] && filter === "all" && (
-                  <aside data-anim="zoom" className="my-4 rounded-[2rem] bg-ink text-[#f3efe7] px-7 py-10 sm:p-12 grid md:grid-cols-[auto_1fr] items-center gap-6 overflow-hidden relative">
+                  <aside data-anim="cinematic" className="my-4 rounded-[2rem] bg-ink text-[#f3efe7] px-7 py-10 sm:p-12 grid md:grid-cols-[auto_1fr] items-center gap-6 overflow-hidden relative">
                     <span aria-hidden className="absolute -right-8 -bottom-14 font-display font-extrabold text-[10rem] leading-none text-white/[0.05] select-none">✦</span>
                     <p className="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl text-orange whitespace-nowrap">{INTERLUDES[i].big}</p>
                     <p className="text-[#f3efe7]/70 leading-[1.85] max-w-md relative">{INTERLUDES[i].small}</p>

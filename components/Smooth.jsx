@@ -61,6 +61,17 @@ const ANIMS = {
   rotate: { from: { rotation: -7, scale: 0.9, opacity: 0, transformOrigin: "0% 100%" }, ease: "back.out(1.5)", dur: 1 },
   blur: { from: { opacity: 0, filter: "blur(18px)", scale: 1.045 }, ease: "power2.out", dur: 1.2 },
   skew: { from: { skewY: 5, y: 56, opacity: 0 }, ease: "power3.out", dur: 1 },
+  cinematic: {
+    from: { clipPath: "inset(0 16% 0 16% round 26px)", scale: 0.94, opacity: 0, filter: "blur(10px)" },
+    to: { clipPath: "inset(0 0% 0 0% round 26px)", scale: 1 },
+    ease: "power2.inOut", dur: 1.5,
+  },
+  slam: { from: { scale: 1.3, y: -52, opacity: 0, filter: "blur(10px)" }, ease: "power4.out", dur: 0.7 },
+  "zoom-out": { from: { scale: 1.22, opacity: 0, filter: "blur(8px)" }, ease: "power2.out", dur: 1.25 },
+  "spin-in": { from: { rotation: -150, scale: 0.35, opacity: 0 }, ease: "back.out(1.8)", dur: 0.9 },
+  "mask-left": { from: { clipPath: "inset(0 100% 0 0)", x: -34, opacity: 0 }, to: { clipPath: "inset(0 0% 0 0)", x: 0 }, ease: "power4.out", dur: 1.15 },
+  "mask-right": { from: { clipPath: "inset(0 0 0 100%)", x: 34, opacity: 0 }, to: { clipPath: "inset(0 0 0 0%)", x: 0 }, ease: "power4.out", dur: 1.15 },
+  "drop-bounce": { from: { y: -92, opacity: 0 }, ease: "bounce.out", dur: 1.15 },
 };
 
 export default function Smooth({ ready }) {
@@ -98,6 +109,7 @@ export default function Smooth({ ready }) {
       gsap.utils.toArray(`[data-anim="${name}"]`).forEach((el) => {
         gsap.fromTo(el, cfg.from, {
           x: 0, y: 0, scale: 1, rotation: 0, rotationX: 0, skewY: 0, opacity: 1, filter: "blur(0px)",
+          ...(cfg.to || {}),
           duration: cfg.dur, ease: cfg.ease, clearProps: "filter",
           delay: parseFloat(el.dataset.delay || 0),
           scrollTrigger: { trigger: el, start: "top 88%" },
@@ -112,6 +124,26 @@ export default function Smooth({ ready }) {
         y: "0em", opacity: 1, rotate: 0, duration: 0.75, ease: "back.out(1.7)", stagger: 0.016, clearProps: "transform",
         scrollTrigger: { trigger: el, start: "top 86%" },
       });
+    });
+
+    // Glitch-flash entrances — a quick signal tear, then lock-in
+    gsap.utils.toArray("[data-glitch]").forEach((el) => {
+      const tl = gsap.timeline({ scrollTrigger: { trigger: el, start: "top 88%" } });
+      tl.fromTo(el, { opacity: 0, x: 0 }, { opacity: 1, duration: 0.08 })
+        .to(el, { x: -9, skewX: -7, duration: 0.055 })
+        .to(el, { x: 7, skewX: 5, duration: 0.055 })
+        .to(el, { x: -4, duration: 0.05 })
+        .to(el, { x: 0, skewX: 0, duration: 0.09, ease: "power2.out", clearProps: "transform,opacity" });
+    });
+
+    // Batch cascades — grid children arrive one after another, slightly askew
+    gsap.utils.toArray("[data-batch]").forEach((group) => {
+      gsap.fromTo(group.children,
+        { y: 48, opacity: 0, rotation: (i) => ((i % 3) - 1) * 2.2 },
+        {
+          y: 0, opacity: 1, rotation: 0, duration: 0.85, ease: "power3.out", stagger: 0.09, clearProps: "transform",
+          scrollTrigger: { trigger: group, start: "top 86%" },
+        });
     });
 
     // Word-by-word masked rises for lead paragraphs

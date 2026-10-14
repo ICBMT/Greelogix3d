@@ -21,7 +21,7 @@ export function Problems() {
           <article key={p.n} data-anim="zoom" data-tilt data-delay={(i % 3) * 0.08} data-hover
             className="card-sheen spot-card group rounded-3xl border border-line bg-coal/80 backdrop-blur p-6 sm:p-7 md:p-8 transition-all duration-500 hover:-translate-y-2 hover:border-orange/50 hover:bg-smoke">
             <div className="flex items-start justify-between">
-              <span className="font-display font-extrabold text-stroke-faint text-4xl group-hover:text-orange group-hover:[-webkit-text-stroke:0px] transition-all duration-500">{p.n}</span>
+              <span data-glitch className="font-display font-extrabold text-stroke-faint text-4xl group-hover:text-orange group-hover:[-webkit-text-stroke:0px] transition-all duration-500">{p.n}</span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-orange border border-orange/40 rounded-full px-3 py-1">{p.tag}</span>
             </div>
             <h3 className="mt-8 font-display font-bold text-xl md:text-2xl leading-tight">{p.t}</h3>
@@ -55,7 +55,7 @@ export function Services() {
 
   return (
     <section id="services" ref={wrap} className="relative overflow-hidden lg:min-h-screen flex flex-col justify-center py-20 sm:py-28 lg:py-24 w-full">
-      <div className="px-4 sm:px-6 md:px-10 max-w-[1500px] mx-auto w-full">
+      <div data-anim="cinematic" className="px-4 sm:px-6 md:px-10 max-w-[1500px] mx-auto w-full">
         <SectionTag index="02" label="What we build" />
         <div className="flex flex-wrap items-end justify-between gap-6">
           <h2 data-split className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl">
@@ -112,7 +112,7 @@ export function Process() {
           <article key={p.n} data-anim={i % 2 ? "slide-right" : "slide-left"} className="sticky rounded-[2rem] border border-line overflow-hidden"
             style={{ top: `calc(76px + ${i * 14}px)`, background: i % 2 ? "#101010" : "#0c0c0b" }}>
             <div className="grid md:grid-cols-[auto_1fr_auto] items-start md:items-center gap-5 md:gap-12 p-6 sm:p-8 md:p-12">
-              <span className="font-display font-extrabold text-5xl sm:text-6xl md:text-8xl text-stroke-orange leading-none">{p.n}</span>
+              <span className="font-display font-extrabold text-5xl sm:text-6xl md:text-8xl text-stroke-orange" data-anim="spin-in leading-none">{p.n}</span>
               <div>
                 <h3 className="font-display font-extrabold uppercase text-2xl md:text-4xl">{p.t}</h3>
                 <p className="mt-3 text-mute leading-relaxed max-w-xl">{p.d}</p>
@@ -157,7 +157,7 @@ export function Work() {
       </div>
 
       {/* Featured rescue case study */}
-      <article data-reveal data-hover className="card-sheen group mt-14 rounded-[2rem] border border-orange/35 bg-gradient-to-br from-orange-dim/60 via-coal to-coal overflow-hidden">
+      <article data-anim="cinematic" data-hover className="card-sheen group mt-14 rounded-[2rem] border border-orange/35 bg-gradient-to-br from-orange-dim/60 via-coal to-coal overflow-hidden">
         <div className="grid lg:grid-cols-2">
           <div className="p-6 sm:p-8 md:p-12">
             <span className="text-[10px] uppercase tracking-widest2 bg-orange text-white font-semibold rounded-full px-3 py-1.5">Featured · EdTech Rescue</span>
@@ -238,7 +238,7 @@ export function Voices() {
         <h2 data-split className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl">Trusted by founders <span className="text-stroke">worldwide</span></h2>
       </div>
       <div className="mt-14 overflow-hidden marquee-paused" aria-label="Client testimonials">
-        <div className="flex w-max animate-marquee-slow gap-4 sm:gap-5 px-4 sm:px-6">
+        <div data-batch className="flex w-max animate-marquee-slow gap-4 sm:gap-5 px-4 sm:px-6">
           {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
             <figure key={i} data-hover className="w-[85vw] max-w-[480px] sm:w-[480px] shrink-0 rounded-[1.8rem] border border-line bg-coal/85 backdrop-blur p-6 sm:p-8 md:p-10 flex flex-col">
               <span className="text-orange text-2xl" aria-hidden>★★★★★</span>

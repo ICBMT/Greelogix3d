@@ -264,7 +264,7 @@ export default function AuditClient() {
         <nav aria-label="Breadcrumb" className="relative flex items-center gap-2.5 text-[11px] uppercase tracking-[0.22em] text-mute">
           <Link href="/" className="hover:text-orange transition-colors">Home</Link><span className="text-orange">/</span><span className="text-cream font-semibold">Free AI Audit</span>
         </nav>
-        <p className="relative mt-12 flex flex-wrap gap-2.5 text-[10px] sm:text-[11px] uppercase tracking-[0.22em]">
+        <p data-batch className="relative mt-12 flex flex-wrap gap-2.5 text-[10px] sm:text-[11px] uppercase tracking-[0.22em]">
           {["Free", "2 minutes", "No spam", "Senior engineer debrief"].map((c) => (
             <span key={c} className="rounded-full border border-line bg-white/[0.04] px-4 py-2 text-cream/75">{c}</span>
           ))}
@@ -301,7 +301,7 @@ export default function AuditClient() {
       <section id="quiz" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
         <div aria-hidden className="pointer-events-none absolute top-1/3 -left-40 w-[26rem] h-[26rem] rounded-full bg-[#ffb020]/[0.07] blur-3xl animate-drift-slow" />
         <ChapterHead num="01" label="The audit" title={<>Five questions.<br /><span className="text-orange">One honest score.</span></>} sub="No email gate before your score, no 40-page PDF you'll never read. Just the signals a senior engineer would look for first — and a conversation about what to fix in what order." />
-        <div data-anim="zoom" className="relative mt-12 max-w-4xl"><Quiz /></div>
+        <div data-anim="cinematic" className="relative mt-12 max-w-4xl"><Quiz /></div>
       </section>
 
       {/* ---------- Challenges ---------- */}
@@ -311,7 +311,7 @@ export default function AuditClient() {
           {CHALLENGES.map((c, i) => (
             <article key={c.t} data-delay={(i % 2) * 0.08} data-hover
               data-anim="flip" data-tilt className="card-sheen spot-card group rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9 transition-all duration-500 hover:-translate-y-1.5 hover:border-orange/50">
-              <span className="font-display text-4xl text-orange/85 block transition-transform duration-500 group-hover:-rotate-12 group-hover:scale-110 origin-left w-max">{c.glyph}</span>
+              <span data-glitch className="font-display text-4xl text-orange/85 block transition-transform duration-500 group-hover:-rotate-12 group-hover:scale-110 origin-left w-max">{c.glyph}</span>
               <h3 className="mt-6 font-display font-bold text-xl sm:text-2xl leading-tight">{c.t}</h3>
               <p className="mt-3 text-mute leading-[1.8] text-[15px]">{c.d}</p>
             </article>
@@ -350,7 +350,7 @@ export default function AuditClient() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-6">
             {TIMELINE.map((s, i) => (
               <article key={s.t} data-anim="drop" data-delay={i * 0.1} className="relative">
-                <span className="relative z-10 grid place-items-center w-[52px] h-[52px] rounded-full bg-ink border-2 border-orange font-display font-extrabold text-orange">{pad2(i + 1)}</span>
+                <span data-anim="spin-in" data-delay={i * 0.08} className="relative z-10 grid place-items-center w-[52px] h-[52px] rounded-full bg-ink border-2 border-orange font-display font-extrabold text-orange">{pad2(i + 1)}</span>
                 <p className="mt-6 text-[10px] uppercase tracking-[0.24em] text-orange">{s.when}</p>
                 <h3 className="mt-2 font-display font-extrabold text-xl sm:text-2xl">{s.t}</h3>
                 <ul className="mt-4 space-y-2">
@@ -383,7 +383,7 @@ export default function AuditClient() {
           </div>
           <div data-anim="zoom" data-delay="0.08" className="rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9">
             <h3 className="text-[11px] uppercase tracking-[0.24em] text-mute">Industries served</h3>
-            <ul className="mt-5 space-y-1">
+            <ul data-batch className="mt-5 space-y-1">
               {["SaaS", "EdTech", "E-commerce", "Healthcare", "Fintech", "Marketplaces"].map((s, i) => (
                 <li key={s} className="flex items-center justify-between border-b border-line/60 py-3 font-display font-bold text-lg last:border-0">
                   {s}<span className="text-orange text-xs font-body">0{i + 1}</span>
