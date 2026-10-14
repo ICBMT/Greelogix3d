@@ -148,6 +148,36 @@ function AiWorld() {
   );
 }
 
+/* Case studies: story pages drifting around a reading ring */
+function StoriesWorld() {
+  const orbit = useRef(null);
+  useFrame((state) => { if (orbit.current) { orbit.current.rotation.y = state.clock.elapsedTime * 0.3; orbit.current.rotation.z = state.clock.elapsedTime * 0.08; } });
+  const page = (pos, rot, color, emissive = 0.25) => (
+    <mesh position={pos} rotation={rot}>
+      <boxGeometry args={[0.85, 1.15, 0.05]} />
+      {std(color, { emissive: color, emissiveIntensity: emissive, roughness: 0.5 })}
+    </mesh>
+  );
+  return (
+    <Journey baseX={2.25} mobileY={1.3}>
+      <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.6}>
+        {page([-0.55, 0.15, 0], [0.1, -0.35, 0.08], "#f4f1ea", 0.08)}
+        {page([0.45, -0.1, -0.25], [-0.06, 0.4, -0.06], "#ff4d1c", 0.5)}
+        <mesh position={[0, 0, -0.7]}>
+          <icosahedronGeometry args={[0.28, 0]} />
+          {std("#ffb020", { wireframe: true, emissive: "#ffb020", emissiveIntensity: 0.5 })}
+        </mesh>
+      </Float>
+      <group ref={orbit}>
+        <mesh><torusGeometry args={[1.9, 0.012, 8, 110]} />{std("#ff4d1c", { transparent: true, opacity: 0.5 })}</mesh>
+        <mesh position={[1.9, 0, 0]}><sphereGeometry args={[0.09, 16, 16]} />{std("#34d399", { emissive: "#34d399", emissiveIntensity: 0.7 })}</mesh>
+        <mesh position={[-1.9, 0.2, 0]}><sphereGeometry args={[0.07, 16, 16]} />{std("#f4f1ea", { emissive: "#f4f1ea", emissiveIntensity: 0.4 })}</mesh>
+      </group>
+      <Sparkles count={45} scale={[6, 4.5, 2.5]} size={2} speed={0.3} color="#ff8a5c" opacity={0.6} />
+    </Journey>
+  );
+}
+
 export default function PageScene({ variant = "audit" }) {
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden>
@@ -155,7 +185,7 @@ export default function PageScene({ variant = "audit" }) {
         <ambientLight intensity={0.85} />
         <directionalLight position={[4, 5, 6]} intensity={1.5} />
         <pointLight position={[-5, -2, 3]} intensity={10} color="#ff4d1c" />
-        {variant === "portfolio" ? <PortfolioWorld /> : variant === "services" ? <ServicesWorld /> : variant === "ai" ? <AiWorld /> : <AuditWorld />}
+        {variant === "portfolio" ? <PortfolioWorld /> : variant === "services" ? <ServicesWorld /> : variant === "ai" ? <AiWorld /> : variant === "stories" ? <StoriesWorld /> : <AuditWorld />}
       </Canvas>
     </div>
   );
