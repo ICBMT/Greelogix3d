@@ -3,8 +3,9 @@ import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import { Draggable } from "gsap/Draggable";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Draggable);
 
 /* Split text into masked words that rise one after another */
 function splitWords(el) {
@@ -104,6 +105,54 @@ export default function Smooth({ ready }) {
     };
     document.addEventListener("click", onClick);
 
+    // Velocity marquees — GSAP loops that surge when you fling the scroll
+    const decayCalls = [];
+    gsap.utils.toArray("[data-gsap-marquee]").forEach((el) => {
+      const tween = gsap.to(el, { xPercent: -50, repeat: -1, duration: parseFloat(el.dataset.gsapMarquee) || 22, ease: "none" });
+      let decay;
+      ScrollTrigger.create({
+        onUpdate: (self) => {
+          const boost = gsap.utils.clamp(1, 5.5, 1 + Math.abs(self.getVelocity()) / 900);
+          tween.timeScale(boost);
+          if (decay) decay.kill();
+          decay = gsap.delayedCall(0.45, () => gsap.to(tween, { timeScale: 1, duration: 0.9, ease: "power2.out" }));
+          decayCalls.push(decay);
+        },
+      });
+    });
+
+    // Scroll-drawn SVG paths — ink that traces itself as you travel
+    gsap.utils.toArray("[data-draw-path]").forEach((path) => {
+      const len = path.getTotalLength();
+      gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+      gsap.to(path, {
+        strokeDashoffset: 0, ease: "none",
+        scrollTrigger: { trigger: path.closest("section") || path, start: "top 75%", end: "bottom 60%", scrub: 1 },
+      });
+    });
+
+    // Chapter mood — the page canvas itself re-tints as chapters change
+    gsap.utils.toArray("[data-theme]").forEach((el) => {
+      const main = el.closest("main");
+      if (!main) return;
+      ScrollTrigger.create({
+        trigger: el, start: "top 55%", end: "bottom 55%",
+        onEnter: () => gsap.to(main, { backgroundColor: el.dataset.theme, duration: 0.9, ease: "power2.out" }),
+        onEnterBack: () => gsap.to(main, { backgroundColor: el.dataset.theme, duration: 0.9, ease: "power2.out" }),
+      });
+    });
+
+    // Draggable delights — grab the badge and throw it around
+    gsap.utils.toArray("[data-drag]").forEach((el) => {
+      Draggable.create(el, {
+        type: "x,y",
+        bounds: el.closest("section") || el.parentElement,
+        edgeResistance: 0.75,
+        onDrag() { gsap.to(el, { rotation: this.deltaX * 0.6, duration: 0.3 }); },
+        onDragEnd() { gsap.to(el, { rotation: 0, duration: 0.7, ease: "elastic.out(1,0.4)" }); },
+      });
+    });
+
     // Signature reveal — rise + de-blur
     gsap.utils.toArray("[data-reveal]").forEach((el) => {
       gsap.fromTo(el, { y: 44, opacity: 0, filter: "blur(6px)" }, {
@@ -129,8 +178,14 @@ export default function Smooth({ ready }) {
     // Character-by-character headline entrances
     gsap.utils.toArray("[data-split]").forEach((el) => {
       const chars = splitChars(el);
-      gsap.fromTo(chars, { y: "0.85em", opacity: 0, rotate: 4 }, {
-        y: "0em", opacity: 1, rotate: 0, duration: 0.75, ease: "back.out(1.7)", stagger: 0.016, clearProps: "transform",
+      const mode = el.dataset.splitMode || "start";
+      gsap.fromTo(chars,
+        mode === "random"
+          ? { y: "1em", opacity: 0, rotate: () => gsap.utils.random(-16, 16), scale: () => gsap.utils.random(0.6, 1.3) }
+          : { y: "0.85em", opacity: 0, rotate: 4 },
+        {
+          y: "0em", opacity: 1, rotate: 0, scale: 1, duration: 0.75, ease: "back.out(1.7)",
+          stagger: { each: 0.016, from: mode === "random" ? "random" : mode }, clearProps: "transform",
         scrollTrigger: { trigger: el, start: "top 86%" },
       });
     });

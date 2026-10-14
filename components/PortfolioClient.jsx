@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,6 +15,8 @@ import { PROJECTS, FILTERS, CALENDLY } from "@/lib/data";
 import { ArrowBtn, Magnetic } from "./ui";
 
 gsap.registerPlugin(ScrollTrigger);
+import { Flip } from "gsap/Flip";
+gsap.registerPlugin(Flip);
 
 const pad = (n) => String(n).padStart(2, "0");
 
@@ -96,13 +98,31 @@ export default function PortfolioClient() {
   useEffect(() => { const r = requestAnimationFrame(() => setReady(true)); return () => cancelAnimationFrame(r); }, []);
 
   const shown = PROJECTS.filter((p) => filter === "all" || p.cats.includes(filter));
+  const flipState = useRef(null);
 
-  useEffect(() => {
-    if (!listRef.current) return;
-    gsap.fromTo(listRef.current.querySelectorAll(".project-card"),
-      { y: 36, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.85, stagger: 0.07, ease: "power3.out", overwrite: true, clearProps: "transform" });
-    const t = setTimeout(() => ScrollTrigger.refresh(), 500);
+  // GSAP Flip: capture the grid, swap the filter, then let Flip choreograph
+  // every card from its old seat to its new one.
+  const chooseFilter = (id) => {
+    if (id === filter) return;
+    flipState.current = Flip.getState(".project-card");
+    setFilter(id);
+  };
+
+  useLayoutEffect(() => {
+    if (!flipState.current) return;
+    const state = flipState.current;
+    flipState.current = null;
+    Flip.from(state, {
+      targets: ".project-card",
+      duration: 0.8,
+      ease: "power3.inOut",
+      stagger: 0.045,
+      absolute: true,
+      scale: false,
+      onEnter: (els) => gsap.fromTo(els, { opacity: 0, y: 40, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out", delay: 0.1 }),
+      onComplete: () => ScrollTrigger.refresh(),
+    });
+    const t = setTimeout(() => ScrollTrigger.refresh(), 700);
     return () => clearTimeout(t);
   }, [filter]);
 
@@ -178,7 +198,7 @@ export default function PortfolioClient() {
             <span className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-ink/50 shrink-0"><span className="w-1.5 h-1.5 rounded-full bg-orange animate-pulse-dot" />Browse</span>
             <div data-anim="mask-left" className="flex gap-2" role="tablist" aria-label="Filter projects">
               {FILTERS.map((f) => (
-                <button key={f.id} role="tab" aria-selected={filter === f.id} onClick={() => setFilter(f.id)} data-hover
+                <button key={f.id} role="tab" aria-selected={filter === f.id} onClick={() => chooseFilter(f.id)} data-hover
                   className={`shrink-0 rounded-full px-5 py-2.5 text-[13px] font-semibold transition-all duration-300 ${filter === f.id ? "bg-ink text-[#f3efe7] shadow-lg" : "border border-ink/20 text-ink/65 hover:border-orange hover:text-orange"}`}>
                   {f.label}
                 </button>

@@ -111,7 +111,10 @@ export function Process() {
       <h2 data-split className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl">
         First call → <span className="text-orange">production</span><br /><span className="text-stroke">in weeks</span>
       </h2>
-      <div className="mt-16 space-y-5">
+      <svg aria-hidden className="hidden lg:block w-full h-16 mb-2 text-orange/50" viewBox="0 0 1200 80" preserveAspectRatio="none" fill="none">
+        <path data-draw-path d="M0 52 C 180 8, 320 74, 520 34 S 900 70, 1200 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeDasharray="1" />
+      </svg>
+      <div className="mt-8 lg:mt-4 space-y-5">
         {PROCESS.map((p, i) => (
           <article key={p.n} data-anim={i % 2 ? "slide-right" : "slide-left"} className="sticky rounded-[2rem] border border-line overflow-hidden"
             style={{ top: `calc(76px + ${i * 14}px)`, background: i % 2 ? "#101010" : "#0c0c0b" }}>
@@ -261,7 +264,7 @@ export function Voices() {
 
       {/* tech stack river */}
       <div className="mt-20 border-y border-line py-6 overflow-hidden" aria-label="Our tech stack">
-        <div data-velocity className="flex w-max animate-marquee gap-0">
+        <div data-velocity data-gsap-marquee="26" className="flex w-max gap-0">
           {[...STACK, ...STACK].map((s, i) => (
             <span key={i} className="flex items-center whitespace-nowrap px-5 font-display font-bold uppercase text-xl md:text-2xl text-cream/35 hover:text-orange transition-colors">
               {s}<span className="text-orange/60 text-sm ml-10">✦</span>

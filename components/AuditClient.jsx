@@ -198,7 +198,7 @@ function ChapterHead({ num, label, title, sub }) {
         Chapter — {label}
         <span className="h-px flex-1 bg-line" />
       </p>
-      <h2 data-split className="mt-7 font-display font-extrabold uppercase leading-[1.0] text-[2rem] min-[420px]:text-5xl lg:text-6xl">{title}</h2>
+      <h2 data-split data-split-mode={parseInt(num, 10) % 2 ? "random" : "edges"} className="mt-7 font-display font-extrabold uppercase leading-[1.0] text-[2rem] min-[420px]:text-5xl lg:text-6xl">{title}</h2>
       {sub && <p data-words className="mt-5 text-mute leading-[1.85] max-w-xl">{sub}</p>}
     </div>
   );
@@ -298,14 +298,14 @@ export default function AuditClient() {
       </section>
 
       {/* ---------- Quiz chapter ---------- */}
-      <section id="quiz" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
+      <section id="quiz" data-theme="#0a0806" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
         <div aria-hidden className="pointer-events-none absolute top-1/3 -left-40 w-[26rem] h-[26rem] rounded-full bg-[#ffb020]/[0.07] blur-3xl animate-drift-slow" />
         <ChapterHead num="01" label="The audit" title={<>Five questions.<br /><span className="text-orange">One honest score.</span></>} sub="No email gate before your score, no 40-page PDF you'll never read. Just the signals a senior engineer would look for first — and a conversation about what to fix in what order." />
         <div data-anim="cinematic" className="relative mt-12 max-w-4xl"><Quiz /></div>
       </section>
 
       {/* ---------- Challenges ---------- */}
-      <section id="challenges" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
+      <section id="challenges" data-theme="#070708" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
         <ChapterHead num="02" label="Common challenges" title={<>Problems we help<br />buyers <span className="text-stroke">solve</span></>} sub="Teams searching for a free AI or code audit usually need answers to these questions before committing budget." />
         <div className="mt-12 grid sm:grid-cols-2 gap-4">
           {CHALLENGES.map((c, i) => (
@@ -320,7 +320,7 @@ export default function AuditClient() {
       </section>
 
       {/* ---------- Why (bento) ---------- */}
-      <section id="why" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
+      <section id="why" data-theme="#060907" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
         <div aria-hidden className="pointer-events-none absolute top-0 right-[10%] w-[24rem] h-[24rem] rounded-full bg-emerald-400/[0.06] blur-3xl animate-drift" />
         <ChapterHead num="03" label="Why GreeLogix" title={<>Why teams<br /><span className="text-orange">choose us</span></>} sub="150+ products shipped · Specialists in hardening AI-generated and rescued codebases." />
         <div className="mt-12 grid md:grid-cols-3 gap-4">
@@ -342,11 +342,14 @@ export default function AuditClient() {
       </section>
 
       {/* ---------- Timeline ---------- */}
-      <section id="timeline" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
+      <section id="timeline" data-theme="#090708" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
         <ChapterHead num="04" label="Typical timeline" title={<>What to expect,<br /><span className="text-stroke">week by week</span></>} sub="What happens after you complete the free audit quiz — no black box, no waiting in the dark." />
         <div id="timeline-track" className="relative mt-16">
           <span className="hidden lg:block absolute left-0 right-0 top-[26px] h-px bg-white/10" aria-hidden />
           <span ref={lineRef} className="hidden lg:block absolute left-0 right-0 top-[26px] h-[2px] bg-orange origin-left" style={{ transform: "scaleX(0)" }} aria-hidden />
+          <svg aria-hidden className="hidden lg:block absolute left-0 right-0 -top-8 w-full h-10 text-orange/40" viewBox="0 0 1200 60" preserveAspectRatio="none" fill="none">
+            <path data-draw-path d="M0 40 C 200 6, 420 54, 640 24 S 1020 50, 1200 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-6">
             {TIMELINE.map((s, i) => (
               <article key={s.t} data-anim={i % 2 ? "br" : "bl"} data-delay={i * 0.1} className="relative">
@@ -363,7 +366,7 @@ export default function AuditClient() {
       </section>
 
       {/* ---------- Stack chapter ---------- */}
-      <section id="stack" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
+      <section id="stack" data-theme="#060809" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
         <div aria-hidden className="pointer-events-none absolute bottom-0 left-[20%] w-[26rem] h-[26rem] rounded-full bg-sky-400/[0.05] blur-3xl animate-drift-slow" />
         <ChapterHead num="05" label="Stack & scope" title={<>We audit the stack<br /><span className="text-orange">you actually run</span></>} sub="AI-generated scaffolds, monoliths and microservices — with findings mapped to your deployment target." />
         <div className="mt-12 grid md:grid-cols-3 gap-4">
@@ -406,7 +409,7 @@ export default function AuditClient() {
       </section>
 
       {/* ---------- FAQ ---------- */}
-      <section id="faq" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
+      <section id="faq" data-theme="#080808" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
         <ChapterHead num="06" label="FAQ" title={<>Questions,<br /><span className="text-stroke">answered</span></>} />
         <div className="mt-12 max-w-4xl">
           {FAQS.map((f, i) => {

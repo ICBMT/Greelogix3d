@@ -41,7 +41,7 @@ export default function Hero({ loaded }) {
           </div>
 
           {/* rotating badge */}
-          <div style={fade(0.9)} className="hidden lg:block ml-auto relative w-28 h-28 shrink-0" aria-hidden>
+          <div data-drag data-cursor="Drag me" style={fade(0.9)} className="hidden lg:block ml-auto relative w-28 h-28 shrink-0 cursor-grab active:cursor-grabbing" aria-hidden>
             <svg viewBox="0 0 100 100" className="w-full h-full animate-spin-slow fill-cream/60 text-[8.2px] uppercase tracking-[0.22em]">
               <defs><path id="circ" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" /></defs>
               <text><textPath href="#circ">Senior engineers · No junior hand-offs · </textPath></text>
@@ -88,10 +88,10 @@ export function LogoMarquee() {
 
 export function OrangeMarquee() {
   const items = ["AI Automation", "MVP Development", "Laravel", "Flutter", "QA & Testing", "Code Audit"];
-  const row = [...items, ...items, ...items];
+  const row = [...items, ...items];
   return (
     <div aria-hidden className="relative bg-orange text-white overflow-hidden py-3.5 -rotate-1 scale-[1.02] my-4 shadow-[0_20px_60px_rgba(255,77,28,0.25)]">
-      <div data-velocity className="flex w-max animate-marquee">
+      <div data-velocity data-gsap-marquee="16" className="flex w-max">
         {row.map((t, i) => (
           <span key={i} className="flex items-center gap-6 px-6 whitespace-nowrap font-display font-bold uppercase tracking-wide text-lg">
             {t} <span>✦</span>
