@@ -137,7 +137,7 @@ export function Process() {
 /* ---------------- Work / case study ---------------- */
 function MockUI({ g, glyph, img, title }) {
   return (
-    <div data-wipe className={`relative h-48 sm:h-56 md:h-64 rounded-t-[1.4rem] bg-gradient-to-br ${g} overflow-hidden`} aria-hidden>
+    <div data-wipe data-wipe-dur="0.8" className={`relative h-48 sm:h-56 md:h-64 rounded-t-[1.4rem] bg-gradient-to-br ${g} overflow-hidden`} aria-hidden>
       <div data-parallax="-14" className="absolute inset-0">
         <div data-wipe-img className="absolute inset-[-6%]">
           <Image src={img} alt="" fill sizes="(max-width: 768px) 92vw, 460px" data-zoom-img className="object-cover" />
@@ -190,7 +190,7 @@ export function Work() {
 
       <div className="mt-5 grid md:grid-cols-3 gap-5">
         {WORK.map((w, i) => (
-          <article key={w.t} data-cursor="View" data-anim={["flip", "mask-left", "mask-right"][i % 3]} data-delay={i * 0.1} data-hover
+          <article key={w.t} data-cursor="View" data-anim={["flip", "mask-left", "mask-right"][i % 3]} data-delay={i * 0.06} data-anim-dur="0.7" data-anim-start="top 94%" data-hover
             className="group rounded-[1.6rem] border border-line bg-coal/85 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:border-cream/25 [&_img]:transition-transform [&_img]:duration-[1300ms] hover:[&_img]:scale-[1.06]">
             <MockUI g={w.g} glyph={w.glyph} img={w.img} title={w.t} />
             <div className="p-7">

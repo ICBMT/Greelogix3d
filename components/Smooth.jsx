@@ -168,9 +168,9 @@ export default function Smooth({ ready }) {
         gsap.fromTo(el, cfg.from, {
           x: 0, y: 0, scale: 1, rotation: 0, rotationX: 0, skewY: 0, opacity: 1, filter: "blur(0px)",
           ...(cfg.to || {}),
-          duration: cfg.dur, ease: cfg.ease, clearProps: "filter",
+          duration: parseFloat(el.dataset.animDur) || cfg.dur, ease: cfg.ease, clearProps: "filter",
           delay: parseFloat(el.dataset.delay || 0),
-          scrollTrigger: { trigger: el, start: "top 88%" },
+          scrollTrigger: { trigger: el, start: el.dataset.animStart || "top 88%" },
         });
       });
     });
@@ -322,13 +322,14 @@ export default function Smooth({ ready }) {
 
     // Cinematic clip-wipe reveals
     gsap.utils.toArray("[data-wipe]").forEach((el) => {
+      const dur = parseFloat(el.dataset.wipeDur) || 1.25;
       gsap.fromTo(el, { clipPath: "inset(0 0 100% 0 round 28px)" }, {
-        clipPath: "inset(0 0 0% 0 round 28px)", duration: 1.25, ease: "power4.out",
+        clipPath: "inset(0 0 0% 0 round 28px)", duration: dur, ease: "power4.out",
         scrollTrigger: { trigger: el, start: "top 86%" },
       });
       const img = el.querySelector("[data-wipe-img]");
       if (img) gsap.fromTo(img, { scale: 1.22 }, {
-        scale: 1, duration: 1.6, ease: "power3.out",
+        scale: 1, duration: dur * 1.28, ease: "power3.out",
         scrollTrigger: { trigger: el, start: "top 86%" },
       });
     });
