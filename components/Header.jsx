@@ -58,7 +58,7 @@ export default function Header({ loaded, light = false }) {
             <LogoMark className="w-8 h-8 md:w-9 md:h-9 shrink-0" />
             <span className="font-display font-extrabold tracking-wide text-base sm:text-lg leading-none hidden min-[380px]:block">GREE<span className="text-orange">LOGIX</span></span>
           </a>
-          <nav data-dock className={`hidden lg:flex items-center gap-7 xl:gap-9 text-[12px] xl:text-[13px] uppercase tracking-[0.18em] ${light ? "text-ink/65" : "text-cream/75"}`}>
+          <nav data-dock className={`hidden lg:flex items-center gap-6 xl:gap-8 text-[12px] xl:text-[13px] uppercase tracking-[0.18em] ${light ? "text-ink/65" : "text-cream/75"}`}>
             {NAV.map((n) => {
               const isActive = pathname === n.href || n.children?.some((c) => c.href === pathname);
               const linkCls = `transition-colors ${isActive ? "text-orange" : light ? "hover:text-ink" : "hover:text-cream"}`;

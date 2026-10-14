@@ -178,6 +178,42 @@ function StoriesWorld() {
   );
 }
 
+/* About: a wireframe globe with the five client regions in orbit */
+function AboutWorld() {
+  const orbit = useRef(null);
+  useFrame((state) => { if (orbit.current) { orbit.current.rotation.y = state.clock.elapsedTime * 0.4; orbit.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.2; } });
+  const city = (pos, color, size = 0.08) => (
+    <mesh position={pos}><sphereGeometry args={[size, 16, 16]} />{std(color, { emissive: color, emissiveIntensity: 0.8 })}</mesh>
+  );
+  return (
+    <Journey baseX={2.25} mobileY={1.3}>
+      <Float speed={1.4} rotationIntensity={0.25} floatIntensity={0.5}>
+        <mesh>
+          <icosahedronGeometry args={[1.05, 2]} />
+          {std("#f4f1ea", { wireframe: true, emissive: "#f4f1ea", emissiveIntensity: 0.22, transparent: true, opacity: 0.5 })}
+        </mesh>
+        <mesh>
+          <sphereGeometry args={[0.3, 24, 24]} />
+          {std("#ff4d1c", { emissive: "#ff4d1c", emissiveIntensity: 0.7 })}
+        </mesh>
+        <mesh rotation={[Math.PI / 2.4, 0, 0]}>
+          <torusGeometry args={[1.05, 0.012, 8, 90]} />
+          {std("#ffb020", { emissive: "#ffb020", emissiveIntensity: 0.4, transparent: true, opacity: 0.8 })}
+        </mesh>
+      </Float>
+      <group ref={orbit}>
+        <mesh><torusGeometry args={[1.9, 0.01, 8, 110]} />{std("#ff4d1c", { transparent: true, opacity: 0.45 })}</mesh>
+        {city([1.9, 0, 0], "#ffb020", 0.1)}
+        {city([-1.9, 0.15, 0], "#34d399")}
+        {city([0.3, 1.7, -0.85], "#f4f1ea")}
+        {city([-0.5, -1.75, 0.6], "#ff4d1c")}
+        {city([1.35, -1.3, -0.3], "#ffb020", 0.07)}
+      </group>
+      <Sparkles count={50} scale={[6.5, 4.5, 2.5]} size={2} speed={0.3} color="#ff8a5c" opacity={0.6} />
+    </Journey>
+  );
+}
+
 export default function PageScene({ variant = "audit" }) {
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden>
@@ -185,7 +221,7 @@ export default function PageScene({ variant = "audit" }) {
         <ambientLight intensity={0.85} />
         <directionalLight position={[4, 5, 6]} intensity={1.5} />
         <pointLight position={[-5, -2, 3]} intensity={10} color="#ff4d1c" />
-        {variant === "portfolio" ? <PortfolioWorld /> : variant === "services" ? <ServicesWorld /> : variant === "ai" ? <AiWorld /> : variant === "stories" ? <StoriesWorld /> : <AuditWorld />}
+        {variant === "portfolio" ? <PortfolioWorld /> : variant === "services" ? <ServicesWorld /> : variant === "ai" ? <AiWorld /> : variant === "stories" ? <StoriesWorld /> : variant === "about" ? <AboutWorld /> : <AuditWorld />}
       </Canvas>
     </div>
   );
