@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PROBLEMS, SERVICES, PROCESS, WORK, TESTIMONIALS, STACK, FAQS, CALENDLY } from "@/lib/data";
+import Link from "next/link";
 import { SectionTag, ArrowBtn, Magnetic } from "./ui";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -146,7 +147,13 @@ export function Work() {
       <SectionTag index="04" label="Selected work" />
       <div className="flex flex-wrap items-end justify-between gap-6">
         <h2 data-reveal className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl">Real outcomes,<br /><span className="text-stroke">not fluff</span></h2>
-        <p data-reveal className="text-mute max-w-xs leading-relaxed">150+ products in production for founders in the US, UK, UAE, Australia & Canada.</p>
+        <div data-reveal>
+          <p className="text-mute max-w-xs leading-relaxed">150+ products in production for founders in the US, UK, UAE, Australia & Canada.</p>
+          <Link href="/portfolio" data-hover className="group mt-5 inline-flex items-center gap-3 text-sm font-semibold text-orange">
+            View the full portfolio
+            <span className="grid place-items-center w-9 h-9 rounded-full border border-orange/50 transition-transform duration-300 group-hover:rotate-45">↗</span>
+          </Link>
+        </div>
       </div>
 
       {/* Featured rescue case study */}

@@ -2,10 +2,16 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { NAV, CALENDLY } from "@/lib/data";
 import { Magnetic } from "./ui";
 
-export default function Header({ loaded }) {
+export default function Header({ loaded, light = false }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const onHome = pathname === "/";
+  const anchor = (h) => (onHome ? h : `/${h}`);
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const menu = useRef(null);
@@ -36,7 +42,11 @@ export default function Header({ loaded }) {
     }
   }, [open ]);
 
-  const go = (href) => { setOpen(false); setTimeout(() => window.__lenis?.scrollTo(href, { offset: -70, duration: 1.4 }), 450); };
+  const go = (href) => {
+    setOpen(false);
+    if (href.startsWith("/")) { setTimeout(() => router.push(href), 350); return; }
+    setTimeout(() => window.__lenis?.scrollTo(href, { offset: -70, duration: 1.4 }), 450);
+  };
 
   return (
     <>
@@ -44,13 +54,14 @@ export default function Header({ loaded }) {
         className="fixed top-0 inset-x-0 z-[80] transition-all duration-500"
         style={{ transform: loaded ? (hidden ? "translateY(-110%)" : "translateY(0)") : "translateY(-110%)", opacity: loaded ? 1 : 0 }}
       >
-        <div className="mx-auto max-w-[1500px] px-4 sm:px-6 md:px-10 h-16 md:h-[72px] flex items-center justify-between gap-3 backdrop-blur-md bg-ink/55 border-b border-line">
-          <a href="#top" data-hover className="flex items-center gap-2.5 sm:gap-3 shrink-0 min-w-0" aria-label="GreeLogix home">
+        <div className={`mx-auto max-w-[1500px] px-4 sm:px-6 md:px-10 h-16 md:h-[72px] flex items-center justify-between gap-3 backdrop-blur-md border-b ${light ? "bg-[#f3efe7]/80 border-ink/10" : "bg-ink/55 border-line"}`}>
+          <a href={onHome ? "#top" : "/"} data-hover className="flex items-center gap-2.5 sm:gap-3 shrink-0 min-w-0" aria-label="GreeLogix home">
             <span className="relative w-9 h-9 md:w-10 md:h-10 block shrink-0"><Image src="/logo.png" alt="" fill className="object-contain" /></span>
             <span className="font-display font-extrabold tracking-wide text-base sm:text-lg leading-none hidden min-[380px]:block">GREE<span className="text-orange">LOGIX</span></span>
           </a>
-          <nav className="hidden lg:flex items-center gap-9 text-[13px] uppercase tracking-[0.18em] text-cream/75">
-            {NAV.map((n) => (<a key={n.href} href={n.href} className="link-line hover:text-cream transition-colors">{n.label}</a>))}
+          <nav className={`hidden lg:flex items-center gap-9 text-[13px] uppercase tracking-[0.18em] ${light ? "text-ink/65" : "text-cream/75"}`}>
+            {NAV.map((n) => (<a key={n.href} href={anchor(n.href)} className={`link-line transition-colors ${light ? "hover:text-ink" : "hover:text-cream"}`}>{n.label}</a>))}
+            <Link href="/portfolio" className={`link-line transition-colors ${pathname === "/portfolio" ? "text-orange" : light ? "hover:text-ink" : "hover:text-cream"}`}>Portfolio</Link>
           </nav>
           <div className="flex items-center gap-3">
             <Magnetic className="hidden sm:block">
@@ -59,10 +70,10 @@ export default function Header({ loaded }) {
               </a>
             </Magnetic>
             <button onClick={() => setOpen(!open)} data-hover aria-label={open ? "Close menu" : "Open menu"}
-              className="lg:hidden grid place-items-center w-11 h-11 rounded-full border border-line bg-white/5">
+              className={`lg:hidden grid place-items-center w-11 h-11 shrink-0 rounded-full border ${light ? "border-ink/15 bg-ink/5" : "border-line bg-white/5"}`}>
               <span className="relative block w-5 h-3">
-                <span className={`absolute left-0 w-full h-[2px] bg-cream transition-all duration-300 ${open ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"}`} />
-                <span className={`absolute left-0 w-full h-[2px] bg-cream transition-all duration-300 ${open ? "top-1/2 -translate-y-1/2 -rotate-45" : "bottom-0"}`} />
+                <span className={`absolute left-0 w-full h-[2px] transition-all duration-300 ${light ? "bg-ink" : "bg-cream"} ${open ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"}`} />
+                <span className={`absolute left-0 w-full h-[2px] transition-all duration-300 ${light ? "bg-ink" : "bg-cream"} ${open ? "top-1/2 -translate-y-1/2 -rotate-45" : "bottom-0"}`} />
               </span>
             </button>
           </div>
@@ -72,11 +83,11 @@ export default function Header({ loaded }) {
       </header>
 
       {/* Full-screen menu */}
-      <div ref={menu} className="fixed inset-0 z-[75] hidden flex-col bg-[#0a0a09] pt-28 px-6 pb-10" style={{ clipPath: "inset(0 0 100% 0)" }}>
+      <div ref={menu} className="fixed inset-0 z-[75] hidden flex-col overflow-y-auto overscroll-contain bg-[#0a0a09] pt-24 md:pt-28 px-5 sm:px-8 pb-10" style={{ clipPath: "inset(0 0 100% 0)" }}>
         <p className="text-[11px] tracking-widest2 uppercase text-mute mb-8">Menu — Where to?</p>
         <nav className="flex flex-col gap-1">
-          {[...NAV, { label: "Book a Call ↗", href: "#cta" }].map((n, i) => (
-            <button key={n.label} onClick={() => go(n.href)} className="menu-link text-left font-display font-extrabold uppercase text-[13vw] sm:text-6xl leading-[1.02] hover:text-orange transition-colors">
+          {[...NAV.map((n) => ({ ...n, href: anchor(n.href) })), { label: "Portfolio", href: "/portfolio" }, { label: "Book a Call ↗", href: "#cta" }].map((n, i) => (
+            <button key={n.label} onClick={() => go(n.href)} className="menu-link text-left font-display font-extrabold uppercase text-[11vw] min-[420px]:text-5xl sm:text-6xl leading-[1.05] py-1 hover:text-orange transition-colors">
               <span className="text-sm align-top text-orange mr-3 font-body font-medium">0{i + 1}</span>{n.label}
             </button>
           ))}

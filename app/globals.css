@@ -46,6 +46,15 @@ body { @apply bg-ink text-cream font-body antialiased overflow-x-hidden; }
 @keyframes float-y { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-10px);} }
 .animate-float { animation: float-y 5s ease-in-out infinite; }
 
+/* slow drifting "air" blobs — the calm Otsuka-style breeze */
+@keyframes drift {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(46px,-34px) scale(1.07); }
+  66% { transform: translate(-30px,26px) scale(0.95); }
+}
+.animate-drift { animation: drift 15s ease-in-out infinite; }
+.animate-drift-slow { animation: drift 23s ease-in-out infinite reverse; }
+
 @keyframes pulse-dot { 0%,100%{ opacity:1; transform:scale(1);} 50%{ opacity:.35; transform:scale(.7);} }
 .animate-pulse-dot { animation: pulse-dot 1.8s ease-in-out infinite; }
 
