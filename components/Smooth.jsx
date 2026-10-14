@@ -385,6 +385,46 @@ export default function Smooth({ ready }) {
       });
     }
 
+    // macOS dock — header links swell & lift as the cursor sweeps the nav
+    if (window.matchMedia("(hover: hover)").matches) {
+      gsap.utils.toArray("[data-dock]").forEach((bar) => {
+        const items = [...bar.querySelectorAll("[data-dock-item]")];
+        if (!items.length) return;
+        const setScale = items.map((it) => gsap.quickTo(it, "scale", { duration: 0.45, ease: "power3.out" }));
+        const setY = items.map((it) => gsap.quickTo(it, "y", { duration: 0.45, ease: "power3.out" }));
+        bar.addEventListener("pointermove", (e) => {
+          items.forEach((it, i) => {
+            const r = it.getBoundingClientRect();
+            const d = Math.abs(e.clientX - (r.left + r.width / 2));
+            const p = Math.max(0, 1 - d / 150);
+            setScale[i](1 + p * 0.16);
+            setY[i](-p * 3);
+          });
+        }, { signal });
+        bar.addEventListener("pointerleave", () => items.forEach((_, i) => { setScale[i](1); setY[i](0); }), { signal });
+      });
+    }
+
+    // Card stack — each featured story settles & dims as the next slides over it
+    gsap.utils.toArray("[data-stack]").forEach((wrap) => {
+      const cards = [...wrap.querySelectorAll("[data-stack-card]")];
+      cards.forEach((card, i) => {
+        if (i === cards.length - 1) return;
+        gsap.to(card, {
+          scale: 0.93, filter: "brightness(0.45)", transformOrigin: "50% 0%", ease: "none",
+          scrollTrigger: { trigger: cards[i + 1], start: "top bottom", end: "top top+=170", scrub: true },
+        });
+      });
+    });
+
+    // Scrubbed bento zoom — card imagery breathes as it crosses the viewport
+    gsap.utils.toArray("[data-zoom-img]").forEach((img) => {
+      gsap.fromTo(img, { scale: 1.3, yPercent: -5 }, {
+        scale: 1.05, yPercent: 5, ease: "none",
+        scrollTrigger: { trigger: img.parentElement, start: "top bottom", end: "bottom top", scrub: true },
+      });
+    });
+
     const refresh = setTimeout(() => ScrollTrigger.refresh(), 400);
     return () => {
       clearTimeout(refresh);

@@ -92,6 +92,43 @@ function CaseModal({ cs, onClose }) {
   );
 }
 
+function FeaturedBand({ cs, index, kicker, title, stats, onOpen }) {
+  return (
+    <article data-stack-card data-cursor="Read" data-hover role="button" tabIndex={0}
+      onClick={() => onOpen(cs)} onKeyDown={(e) => { if (e.key === "Enter") onOpen(cs); }}
+      className="group relative cursor-pointer rounded-[2rem] border border-orange/35 bg-[#0c0c0b] overflow-hidden shadow-[0_36px_90px_rgba(0,0,0,0.5)] mb-6 last:mb-0 will-change-transform"
+      style={{ position: "sticky", top: `calc(5.4rem + ${index * 14}px)`, zIndex: index + 1 }}>
+      <div className="grid lg:grid-cols-2">
+        <div className="p-7 sm:p-10 md:p-12 flex flex-col justify-center">
+          <span className="w-max max-w-full text-[10px] uppercase tracking-[0.22em] bg-orange text-white font-semibold rounded-full px-3.5 py-1.5">{kicker}</span>
+          <h3 className="mt-7 font-display font-extrabold text-3xl sm:text-4xl leading-[1.05]">{title}</h3>
+          <p data-words className="mt-5 text-cream/70 leading-[1.85] max-w-lg">{cs.desc}</p>
+          <div className="mt-8 flex flex-wrap gap-x-8 gap-y-5">
+            {stats.map(([v, l]) => (
+              <div key={l}><p className="font-display font-extrabold text-2xl md:text-[1.7rem] leading-none">{v}</p><p className="text-[11px] uppercase tracking-[0.18em] text-mute mt-1.5">{l}</p></div>
+            ))}
+          </div>
+          <p className="mt-9 inline-flex items-center gap-3 text-sm font-semibold text-orange">
+            <span className="grid place-items-center w-10 h-10 rounded-full border border-orange/50 transition-transform duration-500 group-hover:rotate-45">
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+            </span>
+            <RollText text="Read the full story" />
+          </p>
+        </div>
+        <div className="relative min-h-[230px] lg:min-h-[430px] overflow-hidden">
+          {cs.img && <Image src={cs.img} alt="" fill sizes="(max-width: 1024px) 92vw, 720px" data-zoom-img className="object-cover" />}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+          <span data-bob className="absolute top-5 right-6 text-4xl select-none" aria-hidden>{cs.glyph}</span>
+          <p className="absolute bottom-6 left-6 right-6">
+            <span className="block text-[10px] uppercase tracking-[0.24em] text-white/70">The outcome</span>
+            <span className="block mt-2 font-display font-extrabold text-3xl md:text-4xl leading-tight">{cs.result}</span>
+          </p>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function CasesClient() {
   const [ready, setReady] = useState(false);
   const [filter, setFilter] = useState("all");
@@ -101,6 +138,8 @@ export default function CasesClient() {
 
   const shown = CASE_STUDIES.filter((c) => filter === "all" || c.cat === filter);
   const featured = CASE_STUDIES.find((c) => c.featured);
+  const shepherd = CASE_STUDIES.find((c) => c.title.startsWith("Shepherd"));
+  const Jalebi = CASE_STUDIES.find((c) => c.client === "Jalebi");
 
   const chooseFilter = (id) => {
     if (id === filter) return;
@@ -119,12 +158,35 @@ export default function CasesClient() {
     return () => clearTimeout(t);
   }, [filter]);
 
+  // Infinite story reel — GSAP card slider that surges with scroll velocity
+  const reelRef = useRef(null);
+  const reelTween = useRef(null);
+  const reelHover = useRef(false);
+  useEffect(() => {
+    const track = reelRef.current;
+    if (!track) return;
+    const tween = gsap.to(track, { xPercent: -50, ease: "none", duration: 52, repeat: -1 });
+    reelTween.current = tween;
+    let decay;
+    const st = ScrollTrigger.create({
+      onUpdate: (self) => {
+        if (reelHover.current) return;
+        tween.timeScale(gsap.utils.clamp(1, 4.5, 1 + Math.abs(self.getVelocity()) / 1000));
+        if (decay) decay.kill();
+        decay = gsap.delayedCall(0.5, () => gsap.to(tween, { timeScale: 1, duration: 0.8, ease: "power2.out" }));
+      },
+    });
+    return () => { if (decay) decay.kill(); st.kill(); tween.kill(); };
+  }, []);
+  const reelEnter = () => { reelHover.current = true; if (reelTween.current) gsap.to(reelTween.current, { timeScale: 0.08, duration: 0.6, ease: "power2.out" }); };
+  const reelLeave = () => { reelHover.current = false; if (reelTween.current) gsap.to(reelTween.current, { timeScale: 1, duration: 0.7, ease: "power2.out" }); };
+
   return (
     <main className="relative min-h-screen overflow-x-clip">
       <Cursor />
       <Smooth ready={ready} />
       <Header loaded={ready} />
-      <AnchorNav items={[{ id: "top", label: "Intro" }, { id: "featured", label: "Featured" }, { id: "stories", label: "Stories" }, { id: "cta", label: "Start" }]} />
+      <AnchorNav items={[{ id: "top", label: "Intro" }, { id: "reel", label: "Reel" }, { id: "featured", label: "Featured" }, { id: "stories", label: "Stories" }, { id: "cta", label: "Start" }]} />
       <PageScene variant="stories" />
 
       <div className="relative z-10">
@@ -154,38 +216,56 @@ export default function CasesClient() {
           </dl>
         </section>
 
-        {/* Featured rescue */}
-        <section id="featured" className="relative px-4 sm:px-6 md:px-10 pb-20 md:pb-28 max-w-[1500px] mx-auto w-full scroll-mt-20">
-          <article data-anim="cinematic" data-cursor="Read" data-hover onClick={() => setPicked(featured)} role="button" tabIndex={0}
-            onKeyDown={(e) => { if (e.key === "Enter") setPicked(featured); }}
-            className="card-sheen group relative cursor-pointer rounded-[2rem] border border-orange/35 bg-gradient-to-br from-orange-dim/60 via-coal to-coal overflow-hidden">
-            <div className="grid lg:grid-cols-2">
-              <div className="p-7 sm:p-10 md:p-14">
-                <span className="text-[10px] uppercase tracking-[0.22em] bg-orange text-white font-semibold rounded-full px-3.5 py-1.5">Featured · {featured.client} — {featured.industry}</span>
-                <h2 className="mt-8 font-display font-extrabold text-3xl sm:text-4xl md:text-[2.8rem] leading-[1.04]">
-                  We shipped what <span className="text-orange">70 engineers</span> couldn't.
-                </h2>
-                <p data-words className="mt-5 text-cream/70 leading-[1.85] max-w-lg">{featured.desc}</p>
-                <div className="mt-9 flex flex-wrap gap-8">
-                  {[["Dead → Live", "Rescued & shipped"], ["3", "Platforms stabilized"], ["70+", "Engineers replaced"]].map(([v, l]) => (
-                    <div key={l}><p className="font-display font-extrabold text-2xl md:text-3xl">{v}</p><p className="text-[11px] uppercase tracking-[0.18em] text-mute mt-1">{l}</p></div>
-                  ))}
-                </div>
-                <p className="mt-10 inline-flex items-center gap-3 text-sm font-semibold text-orange">
-                  <span className="grid place-items-center w-10 h-10 rounded-full border border-orange/50 transition-transform duration-500 group-hover:rotate-45">
-                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+        {/* Story reel — infinite card slider */}
+        <section id="reel" aria-label="Story reel" className="relative pb-16 md:pb-24 scroll-mt-24">
+          <div className="max-w-[1500px] mx-auto px-4 sm:px-6 md:px-10 flex items-center gap-3 mb-7">
+            <p data-scramble className="text-[11px] uppercase tracking-[0.28em] text-mute shrink-0">The story reel</p>
+            <span data-line className="h-px flex-1 bg-line origin-left" />
+            <span className="text-[11px] uppercase tracking-[0.18em] text-orange shrink-0">16 stories · on loop</span>
+          </div>
+          <div className="relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_5%,black_95%,transparent)]" onMouseEnter={reelEnter} onMouseLeave={reelLeave}>
+            <div ref={reelRef} className="flex w-max will-change-transform">
+              {[...CASE_STUDIES, ...CASE_STUDIES].map((cs, i) => (
+                <button key={cs.title + "-" + i} type="button" onClick={() => setPicked(cs)} data-hover data-cursor="Read"
+                  aria-hidden={i >= CASE_STUDIES.length ? true : undefined} tabIndex={i >= CASE_STUDIES.length ? -1 : 0}
+                  className="group w-[268px] sm:w-[300px] shrink-0 mx-2 text-left rounded-[1.4rem] border border-line bg-coal/85 backdrop-blur overflow-hidden transition-colors duration-500 hover:border-orange/60">
+                  <span className={`relative block h-28 overflow-hidden bg-gradient-to-br ${GRADS[i % GRADS.length]}`}>
+                    {cs.img && <Image src={cs.img} alt="" fill sizes="300px" className="object-cover opacity-90" />}
+                    <span className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
+                    <span className="absolute bottom-2.5 left-4 text-[10px] uppercase tracking-[0.18em] text-white/85">{cs.client}</span>
+                    <span className="absolute top-2.5 right-3.5 text-lg" aria-hidden>{cs.glyph}</span>
                   </span>
-                  <RollText text="Read the rescue story" />
-                </p>
-              </div>
-              <div className="relative min-h-[240px] bg-[radial-gradient(circle_at_70%_30%,rgba(255,77,28,0.35),transparent_60%)] grid place-items-center p-10 overflow-hidden">
-                <span data-scrub-rotate aria-hidden className="absolute -right-6 -top-10 font-display font-extrabold text-[11rem] leading-none text-white/[0.05] select-none">🎓</span>
-                <p data-scrub-scale className="relative font-display font-extrabold uppercase text-center leading-[0.95] text-5xl md:text-7xl">
-                  <span className="text-stroke block">Stuck?</span><span className="text-orange block mt-2">→ Live.</span>
-                </p>
-              </div>
+                  <span className="block p-5">
+                    <span className="block font-display font-bold leading-snug line-clamp-2 min-h-[2.6em]">{cs.title}</span>
+                    <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-orange/10 border border-orange/30 text-orange px-3 py-1.5 text-[11px] font-semibold">✦ {cs.result}</span>
+                  </span>
+                </button>
+              ))}
             </div>
-          </article>
+          </div>
+        </section>
+
+        {/* Featured stack — the rescue files settle over each other */}
+        <section id="featured" className="relative px-4 sm:px-6 md:px-10 pb-20 md:pb-28 max-w-[1500px] mx-auto w-full scroll-mt-20">
+          <div className="flex items-center gap-3 mb-8">
+            <p data-scramble className="text-[11px] uppercase tracking-[0.28em] text-mute shrink-0">Featured — the rescue files</p>
+            <span data-line className="h-px flex-1 bg-line origin-left" />
+            <span className="hidden sm:block text-[11px] uppercase tracking-[0.18em] text-orange shrink-0">Keep scrolling — they stack</span>
+          </div>
+          <div data-stack className="relative">
+            <FeaturedBand index={0} cs={featured} onOpen={setPicked}
+              kicker={`Featured · ${featured.client} — ${featured.industry}`}
+              title={<>We shipped what <span className="text-orange">70 engineers</span> couldn’t.</>}
+              stats={[["Dead → Live", "Rescued & shipped"], ["3", "Platforms stabilized"], ["70+", "Engineers replaced"]]} />
+            <FeaturedBand index={1} cs={shepherd} onOpen={setPicked}
+              kicker={`Featured · Shepherd — ${shepherd.industry}`}
+              title={<>An AI study co-pilot students <span className="text-orange">carry everywhere.</span></>}
+              stats={[["iOS + Android", "Both app stores"], ["AI", "Tutor, notes, flashcards"], ["Live", "Summaries + study calendar"]]} />
+            <FeaturedBand index={2} cs={Jalebi} onOpen={setPicked}
+              kicker={`Featured · Jalebi — ${Jalebi.industry}`}
+              title={<>Every outlet’s stock &amp; food cost, <span className="text-orange">in one place.</span></>}
+              stats={[["POS · ZATCA", "Live integrations"], ["Food cost", "Tracked per outlet"], ["Multi-outlet", "Menus, recipes, batches"]]} />
+          </div>
         </section>
 
         {/* Sticky filter */}
@@ -214,7 +294,7 @@ export default function CasesClient() {
                 data-tilt data-cursor="Read" data-hover
                 className="case-card spot-card group relative cursor-pointer rounded-[1.8rem] border border-line bg-coal/85 backdrop-blur overflow-hidden flex flex-col transition-colors duration-500 hover:border-orange/60">
                 <div className={`relative h-36 sm:h-40 bg-gradient-to-br ${GRADS[i % GRADS.length]} overflow-hidden shrink-0`}>
-                  {cs.img && <Image src={cs.img} alt="" fill sizes="(max-width: 768px) 92vw, 460px" className="object-cover opacity-90 transition-transform duration-[1300ms] group-hover:scale-[1.06]" />}
+                  {cs.img && <Image src={cs.img} alt="" fill sizes="(max-width: 768px) 92vw, 460px" data-zoom-img className="object-cover opacity-90" />}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
                   <span data-bob className="absolute top-4 right-5 text-4xl select-none" aria-hidden>{cs.glyph}</span>
                   <span className="absolute bottom-4 left-5 right-5 flex items-end justify-between gap-3">
@@ -236,7 +316,7 @@ export default function CasesClient() {
           </div>
 
           {/* Rescue CTA */}
-          <div data-anim="cinematic" className="mt-20 rounded-[2rem] border border-orange/30 bg-gradient-to-br from-orange-dim/50 via-coal to-coal px-7 py-10 sm:p-12 relative overflow-hidden">
+          <div id="cta" data-anim="cinematic" className="mt-20 scroll-mt-24 rounded-[2rem] border border-orange/30 bg-gradient-to-br from-orange-dim/50 via-coal to-coal px-7 py-10 sm:p-12 relative overflow-hidden">
             <span data-scrub-rotate aria-hidden className="absolute -right-8 -bottom-14 font-display font-extrabold text-[10rem] leading-none text-white/[0.05] select-none">✦</span>
             <div className="grid lg:grid-cols-[1fr_auto] gap-10 items-center relative">
               <div>

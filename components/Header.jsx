@@ -58,20 +58,20 @@ export default function Header({ loaded, light = false }) {
             <LogoMark className="w-8 h-8 md:w-9 md:h-9 shrink-0" />
             <span className="font-display font-extrabold tracking-wide text-base sm:text-lg leading-none hidden min-[380px]:block">GREE<span className="text-orange">LOGIX</span></span>
           </a>
-          <nav className={`hidden lg:flex items-center gap-7 xl:gap-9 text-[12px] xl:text-[13px] uppercase tracking-[0.18em] ${light ? "text-ink/65" : "text-cream/75"}`}>
+          <nav data-dock className={`hidden lg:flex items-center gap-7 xl:gap-9 text-[12px] xl:text-[13px] uppercase tracking-[0.18em] ${light ? "text-ink/65" : "text-cream/75"}`}>
             {NAV.map((n) => {
               const isActive = pathname === n.href || n.children?.some((c) => c.href === pathname);
               const linkCls = `transition-colors ${isActive ? "text-orange" : light ? "hover:text-ink" : "hover:text-cream"}`;
               if (!n.children) {
                 return (
-                  <Link key={n.href} href={n.href} data-hover aria-current={pathname === n.href ? "page" : undefined} className={linkCls}>
+                  <Link key={n.href} href={n.href} data-hover data-dock-item aria-current={pathname === n.href ? "page" : undefined} className={linkCls}>
                     <RollText text={n.label} />
                   </Link>
                 );
               }
               return (
                 <div key={n.href} className="relative group">
-                  <Link href={n.href} data-hover aria-current={isActive ? "page" : undefined} aria-haspopup="true"
+                  <Link href={n.href} data-hover data-dock-item aria-current={isActive ? "page" : undefined} aria-haspopup="true"
                     className={`inline-flex items-center gap-1.5 ${linkCls}`}>
                     <RollText text={n.label} />
                     <svg className="transition-transform duration-300 group-hover:rotate-180" width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M1 3.5L5 7.5L9 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>

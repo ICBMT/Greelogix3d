@@ -140,7 +140,7 @@ function MockUI({ g, glyph, img, title }) {
     <div data-wipe className={`relative h-48 sm:h-56 md:h-64 rounded-t-[1.4rem] bg-gradient-to-br ${g} overflow-hidden`} aria-hidden>
       <div data-parallax="-14" className="absolute inset-0">
         <div data-wipe-img className="absolute inset-[-6%]">
-          <Image src={img} alt="" fill sizes="(max-width: 768px) 92vw, 460px" className="object-cover" />
+          <Image src={img} alt="" fill sizes="(max-width: 768px) 92vw, 460px" data-zoom-img className="object-cover" />
         </div>
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-black/15 pointer-events-none" />

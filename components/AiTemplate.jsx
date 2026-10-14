@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import Cursor from "./Cursor";
@@ -13,6 +14,12 @@ import { ArrowBtn, Magnetic, RevealLines, RollText } from "./ui";
 
 const PageScene = dynamic(() => import("./PageScene"), { ssr: false });
 const CARD_ANIMS = ["flip", "mask-left", "zoom", "mask-right", "rotate", "perspective"];
+const PREVIEW_GRADS = [
+  "linear-gradient(135deg,#ff7a45,#7a2408)", "linear-gradient(135deg,#5470b8,#1d2c52)",
+  "linear-gradient(135deg,#4d7d63,#173527)", "linear-gradient(135deg,#c99b45,#6b4a12)",
+  "linear-gradient(135deg,#b4527d,#571e38)", "linear-gradient(135deg,#3f8f8a,#173f3c)",
+  "linear-gradient(135deg,#779c46,#33491a)", "linear-gradient(135deg,#cf8438,#6e3e10)",
+];
 
 function Chapter({ num, label, title, sub, children, id, anim }) {
   return (
@@ -34,6 +41,38 @@ function Chapter({ num, label, title, sub, children, id, anim }) {
 export default function AiTemplate({ page, hub = false }) {
   const [ready, setReady] = useState(false);
   useEffect(() => { const r = requestAnimationFrame(() => setReady(true)); return () => cancelAnimationFrame(r); }, []);
+
+  // Cursor-tracking preview — a floating card chases the pointer across the explore rail
+  const previewRef = useRef(null);
+  useEffect(() => {
+    if (!window.matchMedia("(hover: hover)").matches) return;
+    const pv = previewRef.current;
+    if (!pv) return;
+    const title = pv.querySelector("[data-pv-title]");
+    const desc = pv.querySelector("[data-pv-desc]");
+    gsap.set(pv, { autoAlpha: 0, scale: 0.85, xPercent: -50, yPercent: -118, rotation: -5 });
+    const xTo = gsap.quickTo(pv, "x", { duration: 0.55, ease: "power3.out" });
+    const yTo = gsap.quickTo(pv, "y", { duration: 0.55, ease: "power3.out" });
+    const rTo = gsap.quickTo(pv, "rotation", { duration: 0.7, ease: "power3.out" });
+    let lastX = 0;
+    const items = [...document.querySelectorAll("[data-preview-item]")];
+    const cleanups = items.map((el) => {
+      const enter = (e) => {
+        title.textContent = el.dataset.previewLabel || "";
+        desc.textContent = el.dataset.previewDesc || "";
+        pv.style.background = PREVIEW_GRADS[Number(el.dataset.previewIndex || 0) % PREVIEW_GRADS.length];
+        xTo(e.clientX); yTo(e.clientY);
+        gsap.to(pv, { autoAlpha: 1, scale: 1, duration: 0.45, ease: "power3.out" });
+      };
+      const move = (e) => { rTo(gsap.utils.clamp(-11, 11, (e.clientX - lastX) * 0.6)); lastX = e.clientX; xTo(e.clientX); yTo(e.clientY); };
+      const leave = () => gsap.to(pv, { autoAlpha: 0, scale: 0.85, duration: 0.35, ease: "power3.in" });
+      el.addEventListener("pointerenter", enter);
+      el.addEventListener("pointermove", move);
+      el.addEventListener("pointerleave", leave);
+      return () => { el.removeEventListener("pointerenter", enter); el.removeEventListener("pointermove", move); el.removeEventListener("pointerleave", leave); };
+    });
+    return () => cleanups.forEach((fn) => fn());
+  }, []);
 
   const features = hub ? page.approach : page.features;
   const cases = hub ? page.opportunities : page.cases;
@@ -282,8 +321,8 @@ export default function AiTemplate({ page, hub = false }) {
         <Chapter id="related" num={hub ? "06" : "05"} label="Explore the AI universe" anim="left-far"
           title={<>Keep <span className="text-orange">exploring.</span></>}>
           <div data-batch className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {related.map((l) => (
-              <Link key={l.href} href={l.href} data-hover data-cursor="Open"
+            {related.map((l, i) => (
+              <Link key={l.href} href={l.href} data-hover data-cursor="Open" data-preview-item data-preview-label={l.label} data-preview-desc={l.desc} data-preview-index={i}
                 className="group rounded-[1.6rem] border border-line bg-coal/80 p-6 sm:p-7 transition-all duration-500 hover:-translate-y-1.5 hover:border-orange/60">
                 <span className="flex items-center justify-between">
                   <span className="font-display font-extrabold text-stroke-faint text-3xl group-hover:text-orange group-hover:[-webkit-text-stroke:0px] transition-all duration-500">✦</span>
@@ -296,6 +335,14 @@ export default function AiTemplate({ page, hub = false }) {
           </div>
           <div className="h-14 xl:h-0" aria-hidden />
         </Chapter>
+      </div>
+
+      {/* Cursor-tracking preview card (GSAP demo) */}
+      <div ref={previewRef} aria-hidden className="pointer-events-none fixed left-0 top-0 z-[65] w-[270px] rounded-[1.4rem] border border-white/15 p-5 opacity-0 invisible shadow-[0_30px_70px_rgba(0,0,0,0.55)]" style={{ background: PREVIEW_GRADS[0] }}>
+        <span className="font-display font-extrabold text-4xl text-white/90">✦</span>
+        <p data-pv-title className="mt-3 font-display font-extrabold text-xl leading-tight text-white" />
+        <p data-pv-desc className="mt-1.5 text-[13px] leading-relaxed text-white/75" />
+        <p className="mt-3 text-[10px] uppercase tracking-[0.2em] text-white/60">Open page →</p>
       </div>
 
       <div className="relative z-10"><Footer /></div>

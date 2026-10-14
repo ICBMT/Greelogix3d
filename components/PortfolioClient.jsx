@@ -26,7 +26,7 @@ function Visual({ p }) {
     <div data-cursor="View" data-wipe className={`group/visual relative overflow-hidden rounded-[1.8rem] sm:rounded-[2.2rem] bg-gradient-to-br ${p.g} aspect-[4/3] sm:aspect-[16/10] shadow-[0_30px_80px_rgba(20,16,8,0.22)]`} aria-hidden>
       <div data-parallax="-14" className="absolute inset-0">
         <div data-wipe-img className="absolute inset-[-6%]">
-          <Image src={`/projects/${p.slug}.jpg`} alt="" fill sizes="(max-width: 1024px) 92vw, 760px" className="object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover/visual:scale-[1.06]" />
+          <Image src={`/projects/${p.slug}.jpg`} alt="" fill sizes="(max-width: 1024px) 92vw, 760px" data-zoom-img className="object-cover" />
         </div>
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/10 pointer-events-none" />
