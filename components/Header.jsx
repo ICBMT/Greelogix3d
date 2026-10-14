@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { NAV, CALENDLY } from "@/lib/data";
-import { Magnetic } from "./ui";
+import { Magnetic, RollText } from "./ui";
 
 export default function Header({ loaded, light = false }) {
   const pathname = usePathname();
@@ -60,13 +60,13 @@ export default function Header({ loaded, light = false }) {
             <span className="font-display font-extrabold tracking-wide text-base sm:text-lg leading-none hidden min-[380px]:block">GREE<span className="text-orange">LOGIX</span></span>
           </a>
           <nav className={`hidden lg:flex items-center gap-9 text-[13px] uppercase tracking-[0.18em] ${light ? "text-ink/65" : "text-cream/75"}`}>
-            {NAV.map((n) => (<a key={n.href} href={anchor(n.href)} className={`link-line transition-colors ${light ? "hover:text-ink" : "hover:text-cream"}`}>{n.label}</a>))}
-            <Link href="/portfolio" className={`link-line transition-colors ${pathname === "/portfolio" ? "text-orange" : light ? "hover:text-ink" : "hover:text-cream"}`}>Portfolio</Link>
+            {NAV.map((n) => (<a key={n.href} href={anchor(n.href)} data-hover className={`transition-colors ${light ? "hover:text-ink" : "hover:text-cream"}`}><RollText text={n.label} /></a>))}
+            <Link href="/portfolio" data-hover className={`transition-colors ${pathname === "/portfolio" ? "text-orange" : light ? "hover:text-ink" : "hover:text-cream"}`}><RollText text="Portfolio" /></Link>
           </nav>
           <div className="flex items-center gap-3">
             <Magnetic className="hidden sm:block">
               <a href={CALENDLY} target="_blank" rel="noreferrer" data-hover className="inline-flex items-center gap-2 rounded-full bg-orange px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-cream hover:text-ink">
-                Book a free call <span aria-hidden>↗</span>
+                <RollText text="Book a free call" /> <span aria-hidden>↗</span>
               </a>
             </Magnetic>
             <button onClick={() => setOpen(!open)} data-hover aria-label={open ? "Close menu" : "Open menu"}
@@ -88,7 +88,7 @@ export default function Header({ loaded, light = false }) {
         <nav className="flex flex-col gap-1">
           {[...NAV.map((n) => ({ ...n, href: anchor(n.href) })), { label: "Portfolio", href: "/portfolio" }, { label: "Book a Call ↗", href: "#cta" }].map((n, i) => (
             <button key={n.label} onClick={() => go(n.href)} className="menu-link text-left font-display font-extrabold uppercase text-[11vw] min-[420px]:text-5xl sm:text-6xl leading-[1.05] py-1 hover:text-orange transition-colors">
-              <span className="text-sm align-top text-orange mr-3 font-body font-medium">0{i + 1}</span>{n.label}
+              <span className="text-sm align-top text-orange mr-3 font-body font-medium">0{i + 1}</span><RollText text={n.label} />
             </button>
           ))}
         </nav>

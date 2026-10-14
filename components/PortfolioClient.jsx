@@ -196,7 +196,7 @@ export default function PortfolioClient() {
             <h2 data-split className="font-display font-extrabold uppercase leading-[1.02] text-[2rem] min-[420px]:text-4xl sm:text-5xl lg:text-6xl">
               Selected <span className="text-orange">work</span>
             </h2>
-            <p data-reveal className="max-w-xs text-sm leading-relaxed text-ink/55">A curated selection across SaaS, AI, mobile and web. Open a story to see what went inside.</p>
+            <p data-words className="max-w-xs text-sm leading-relaxed text-ink/55">A curated selection across SaaS, AI, mobile and web. Open a story to see what went inside.</p>
           </div>
 
           <div ref={listRef}>

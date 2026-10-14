@@ -13,8 +13,8 @@ module.exports = {
         mute: "#9b978e",
       },
       fontFamily: {
-        display: ["Syne", "sans-serif"],
-        body: ["'Space Grotesk'", "sans-serif"],
+        display: ["Archivo", "sans-serif"],
+        body: ["Archivo", "sans-serif"],
       },
       letterSpacing: { widest2: "0.32em" },
     },

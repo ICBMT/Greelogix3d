@@ -32,6 +32,23 @@ export function SectionTag({ index, label, light = false }) {
   );
 }
 
+/* GSAP-style rolling letters: on hover each character flips up into an
+   orange twin, staggered left-to-right. Wrap any link label in this. */
+export function RollText({ text }) {
+  return (
+    <span className="roll" aria-label={text}>
+      {[...text].map((ch, i) => (
+        <span key={i} className="roll-char" aria-hidden>
+          <span className="roll-char-inner" style={{ transitionDelay: `${i * 22}ms` }}>
+            <span>{ch === " " ? "\u00A0" : ch}</span>
+            <span>{ch === " " ? "\u00A0" : ch}</span>
+          </span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export function ArrowBtn({ href, children, dark = false, external = false }) {
   return (
     <Magnetic>
@@ -43,7 +60,7 @@ export function ArrowBtn({ href, children, dark = false, external = false }) {
           dark ? "bg-ink text-cream hover:bg-orange" : "bg-orange text-white hover:bg-cream hover:text-ink"
         }`}
       >
-        {children}
+        {typeof children === "string" ? <RollText text={children} /> : children}
         <span className="grid place-items-center w-6 h-6 rounded-full bg-white/20 transition-transform duration-300 group-hover:rotate-45">
           <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
         </span>

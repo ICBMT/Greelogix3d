@@ -199,7 +199,7 @@ function ChapterHead({ num, label, title, sub }) {
         <span className="h-px flex-1 bg-line" />
       </p>
       <h2 data-split className="mt-7 font-display font-extrabold uppercase leading-[1.0] text-[2rem] min-[420px]:text-5xl lg:text-6xl">{title}</h2>
-      {sub && <p data-reveal className="mt-5 text-mute leading-[1.85] max-w-xl">{sub}</p>}
+      {sub && <p data-words className="mt-5 text-mute leading-[1.85] max-w-xl">{sub}</p>}
     </div>
   );
 }

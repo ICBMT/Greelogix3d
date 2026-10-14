@@ -77,7 +77,24 @@ body { @apply bg-ink text-cream font-body antialiased overflow-x-hidden; }
 input, textarea { cursor: text !important; }
 
 /* per-character split spans */
-.char { display: inline-block; will-change: transform, opacity; }
+.char { display: inline-block; will-change: transform, opacity; transition: color 0.3s ease; }
+[data-split] .char:hover { color: #ff4d1c; }
+
+/* word-mask reveals */
+.word-mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+.word { display: inline-block; will-change: transform; }
+
+/* GSAP-style rolling text hover — each letter flips up into its orange twin */
+.roll { display: inline-flex; }
+.roll-char { display: inline-block; overflow: hidden; height: 1.14em; vertical-align: top; }
+.roll-char-inner { display: flex; flex-direction: column; transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1); will-change: transform; }
+.roll-char-inner > span { display: block; height: 1.14em; line-height: 1.14; }
+.roll-char-inner > span:last-child { color: #ff4d1c; }
+a:hover .roll-char-inner, button:hover .roll-char-inner { transform: translateY(-1.14em); }
+
+/* Mori-like tight grotesk headlines (GSAP's Archivo-adjacent voice) */
+.font-display { letter-spacing: -0.022em; }
+body { letter-spacing: -0.011em; }
 
 /* cursor spotlight that follows the pointer across a card */
 .spot-card { position: relative; }

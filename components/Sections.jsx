@@ -61,7 +61,7 @@ export function Services() {
           <h2 data-split className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl">
             Built to <span className="text-orange">ship</span> <span className="text-stroke">→</span>
           </h2>
-          <p data-anim="slide-right" className="max-w-sm text-mute leading-relaxed hidden md:block">One senior team for AI products, web & mobile apps, MVPs — and the QA that gets them production-ready. Keep scrolling, the services travel with you.</p>
+          <p data-words className="max-w-sm text-mute leading-relaxed hidden md:block">One senior team for AI products, web & mobile apps, MVPs — and the QA that gets them production-ready. Keep scrolling, the services travel with you.</p>
         </div>
       </div>
 
@@ -337,7 +337,7 @@ export function Footer() {
 
       {/* giant wordmark */}
       <div aria-hidden className="overflow-hidden leading-none select-none pointer-events-none px-2">
-        <p data-parallax="-30" data-velocity className="font-display font-extrabold uppercase text-center whitespace-nowrap text-[13vw] text-stroke-faint hover:text-orange/10 transition-colors duration-700 translate-y-[18%]">
+        <p data-parallax="-30" data-velocity data-scrub-x className="font-display font-extrabold uppercase text-center whitespace-nowrap text-[13vw] text-stroke-faint hover:text-orange/10 transition-colors duration-700 translate-y-[18%]">
           GreeLogix
         </p>
       </div>

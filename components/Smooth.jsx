@@ -6,6 +6,31 @@ import Lenis from "lenis";
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* Split text into masked words that rise one after another */
+function splitWords(el) {
+  const walk = (node) => {
+    [...node.childNodes].forEach((child) => {
+      if (child.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        child.textContent.split(/(\s+)/).forEach((part) => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(" ")); return; }
+          const mask = document.createElement("span");
+          mask.className = "word-mask";
+          const word = document.createElement("span");
+          word.className = "word";
+          word.textContent = part;
+          mask.appendChild(word);
+          frag.appendChild(mask);
+        });
+        node.replaceChild(frag, child);
+      } else if (child.nodeType === 1 && child.tagName !== "BR") walk(child);
+    });
+  };
+  walk(el);
+  return el.querySelectorAll(".word");
+}
+
 /* Split every text node inside an element into per-character spans */
 function splitChars(el) {
   const walk = (node) => {
@@ -84,8 +109,25 @@ export default function Smooth({ ready }) {
     gsap.utils.toArray("[data-split]").forEach((el) => {
       const chars = splitChars(el);
       gsap.fromTo(chars, { y: "0.85em", opacity: 0, rotate: 4 }, {
-        y: "0em", opacity: 1, rotate: 0, duration: 0.75, ease: "back.out(1.7)", stagger: 0.016,
+        y: "0em", opacity: 1, rotate: 0, duration: 0.75, ease: "back.out(1.7)", stagger: 0.016, clearProps: "transform",
         scrollTrigger: { trigger: el, start: "top 86%" },
+      });
+    });
+
+    // Word-by-word masked rises for lead paragraphs
+    gsap.utils.toArray("[data-words]").forEach((el) => {
+      const words = splitWords(el);
+      gsap.fromTo(words, { yPercent: 115 }, {
+        yPercent: 0, duration: 0.85, ease: "power3.out", stagger: 0.018,
+        scrollTrigger: { trigger: el, start: "top 88%" },
+      });
+    });
+
+    // Horizontal scrub — giant words drift sideways with the scroll
+    gsap.utils.toArray("[data-scrub-x]").forEach((el) => {
+      gsap.fromTo(el, { x: 56 }, {
+        x: -56, ease: "none",
+        scrollTrigger: { trigger: el.closest("section") || el, start: "top bottom", end: "bottom top", scrub: 1.2 },
       });
     });
 
