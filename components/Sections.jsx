@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PROBLEMS, SERVICES, PROCESS, WORK, TESTIMONIALS, STACK, FAQS, CALENDLY } from "@/lib/data";
 import Link from "next/link";
+import Image from "next/image";
 import { SectionTag, ArrowBtn, Magnetic } from "./ui";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -128,15 +129,18 @@ export function Process() {
 }
 
 /* ---------------- Work / case study ---------------- */
-function MockUI({ g, glyph }) {
+function MockUI({ g, glyph, img, title }) {
   return (
-    <div className={`relative h-48 sm:h-56 md:h-64 rounded-t-[1.4rem] bg-gradient-to-br ${g} overflow-hidden`} aria-hidden>
-      <div className="absolute top-4 left-4 right-4 flex gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-white/30" /><span className="w-2.5 h-2.5 rounded-full bg-white/30" /><span className="w-2.5 h-2.5 rounded-full bg-orange" /></div>
-      <span className="absolute -bottom-8 -right-2 text-[11rem] leading-none text-white/[0.07] font-display font-extrabold select-none">{glyph}</span>
-      <div className="absolute left-5 right-8 top-14 space-y-2.5" data-parallax="-18">
-        <div className="h-3 w-2/5 rounded bg-white/50" /><div className="h-2 w-3/5 rounded bg-white/25" /><div className="h-2 w-1/2 rounded bg-white/20" />
-        <div className="flex gap-2 pt-2"><div className="h-14 w-1/3 rounded-xl bg-white/15 border border-white/20" /><div className="h-14 w-1/3 rounded-xl bg-orange/70" /><div className="h-14 w-1/3 rounded-xl bg-white/10 border border-white/15" /></div>
+    <div data-wipe className={`relative h-48 sm:h-56 md:h-64 rounded-t-[1.4rem] bg-gradient-to-br ${g} overflow-hidden`} aria-hidden>
+      <div data-parallax="-14" className="absolute inset-0">
+        <div data-wipe-img className="absolute inset-[-6%]">
+          <Image src={img} alt="" fill sizes="(max-width: 768px) 92vw, 460px" className="object-cover" />
+        </div>
       </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-black/15 pointer-events-none" />
+      <span data-bob className="absolute top-4 right-5 text-5xl leading-none text-white/35 select-none">{glyph}</span>
+      <span className="absolute bottom-4 left-5 text-[10px] uppercase tracking-[0.24em] text-white/85 bg-black/25 backdrop-blur-sm rounded-full px-3 py-1.5">{title}</span>
+      <span className="absolute bottom-4 right-5 flex gap-1.5"><span className="w-2 h-2 rounded-full bg-white/40" /><span className="w-2 h-2 rounded-full bg-white/40" /><span className="w-2 h-2 rounded-full bg-orange" /></span>
     </div>
   );
 }
@@ -180,9 +184,9 @@ export function Work() {
 
       <div className="mt-5 grid md:grid-cols-3 gap-5">
         {WORK.map((w, i) => (
-          <article key={w.t} data-anim={["flip", "mask-left", "mask-right"][i % 3]} data-delay={i * 0.1} data-hover
-            className="group rounded-[1.6rem] border border-line bg-coal/85 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:border-cream/25">
-            <MockUI g={w.g} glyph={w.glyph} />
+          <article key={w.t} data-cursor="View" data-anim={["flip", "mask-left", "mask-right"][i % 3]} data-delay={i * 0.1} data-hover
+            className="group rounded-[1.6rem] border border-line bg-coal/85 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:border-cream/25 [&_img]:transition-transform [&_img]:duration-[1300ms] hover:[&_img]:scale-[1.06]">
+            <MockUI g={w.g} glyph={w.glyph} img={w.img} title={w.t} />
             <div className="p-7">
               <p className="text-[11px] uppercase tracking-[0.2em] text-orange">{w.c}</p>
               <h3 className="mt-2 font-display font-extrabold text-2xl group-hover:text-orange transition-colors">{w.t}</h3>
