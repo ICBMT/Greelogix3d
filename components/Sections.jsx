@@ -13,13 +13,13 @@ export function Problems() {
   return (
     <section className="relative px-4 sm:px-6 md:px-10 py-20 sm:py-28 md:py-40 max-w-[1500px] mx-auto w-full">
       <SectionTag index="01" label="Problems we solve" />
-      <h2 data-reveal className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl max-w-4xl">
+      <h2 data-split className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl max-w-4xl">
         Sound familiar? <span className="text-stroke">We fix this</span> <span className="text-orange">every week.</span>
       </h2>
       <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {PROBLEMS.map((p, i) => (
-          <article key={p.n} data-reveal data-delay={(i % 3) * 0.08} data-hover
-            className="card-sheen group rounded-3xl border border-line bg-coal/80 backdrop-blur p-6 sm:p-7 md:p-8 transition-all duration-500 hover:-translate-y-2 hover:border-orange/50 hover:bg-smoke">
+          <article key={p.n} data-anim="zoom" data-tilt data-delay={(i % 3) * 0.08} data-hover
+            className="card-sheen spot-card group rounded-3xl border border-line bg-coal/80 backdrop-blur p-6 sm:p-7 md:p-8 transition-all duration-500 hover:-translate-y-2 hover:border-orange/50 hover:bg-smoke">
             <div className="flex items-start justify-between">
               <span className="font-display font-extrabold text-stroke-faint text-4xl group-hover:text-orange group-hover:[-webkit-text-stroke:0px] transition-all duration-500">{p.n}</span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-orange border border-orange/40 rounded-full px-3 py-1">{p.tag}</span>
@@ -58,17 +58,17 @@ export function Services() {
       <div className="px-4 sm:px-6 md:px-10 max-w-[1500px] mx-auto w-full">
         <SectionTag index="02" label="What we build" />
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <h2 data-reveal className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl">
+          <h2 data-split className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl">
             Built to <span className="text-orange">ship</span> <span className="text-stroke">→</span>
           </h2>
-          <p data-reveal className="max-w-sm text-mute leading-relaxed hidden md:block">One senior team for AI products, web & mobile apps, MVPs — and the QA that gets them production-ready. Keep scrolling, the services travel with you.</p>
+          <p data-anim="slide-right" className="max-w-sm text-mute leading-relaxed hidden md:block">One senior team for AI products, web & mobile apps, MVPs — and the QA that gets them production-ready. Keep scrolling, the services travel with you.</p>
         </div>
       </div>
 
       <div ref={track} className="mt-10 md:mt-12 grid grid-cols-1 min-[560px]:grid-cols-2 gap-4 sm:gap-5 px-4 sm:px-6 md:px-10 w-full lg:flex lg:flex-row lg:w-max will-change-transform">
         {SERVICES.map((s) => (
           <article key={s.n} data-hover
-            className={`group relative w-full lg:shrink-0 lg:w-[400px] rounded-[2rem] border p-6 sm:p-8 md:p-9 flex flex-col min-h-[300px] sm:min-h-[340px] transition-colors duration-500 ${
+            data-tilt className={`spot-card group relative w-full lg:shrink-0 lg:w-[400px] rounded-[2rem] border p-6 sm:p-8 md:p-9 flex flex-col min-h-[300px] sm:min-h-[340px] transition-colors duration-500 ${
               s.hot ? "bg-orange text-white border-orange" : "bg-coal/85 backdrop-blur border-line hover:border-orange/60"
             }`}>
             <div className="flex items-start justify-between">
@@ -104,12 +104,12 @@ export function Process() {
   return (
     <section id="process" className="relative px-4 sm:px-6 md:px-10 py-20 sm:py-28 md:py-40 max-w-[1500px] mx-auto w-full">
       <SectionTag index="03" label="How we work" />
-      <h2 data-reveal className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl">
+      <h2 data-split className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl">
         First call → <span className="text-orange">production</span><br /><span className="text-stroke">in weeks</span>
       </h2>
       <div className="mt-16 space-y-5">
         {PROCESS.map((p, i) => (
-          <article key={p.n} className="sticky rounded-[2rem] border border-line overflow-hidden"
+          <article key={p.n} data-anim={i % 2 ? "slide-right" : "slide-left"} className="sticky rounded-[2rem] border border-line overflow-hidden"
             style={{ top: `calc(76px + ${i * 14}px)`, background: i % 2 ? "#101010" : "#0c0c0b" }}>
             <div className="grid md:grid-cols-[auto_1fr_auto] items-start md:items-center gap-5 md:gap-12 p-6 sm:p-8 md:p-12">
               <span className="font-display font-extrabold text-5xl sm:text-6xl md:text-8xl text-stroke-orange leading-none">{p.n}</span>
@@ -146,7 +146,7 @@ export function Work() {
     <section id="work" className="relative px-4 sm:px-6 md:px-10 py-20 sm:py-28 md:py-40 max-w-[1500px] mx-auto w-full">
       <SectionTag index="04" label="Selected work" />
       <div className="flex flex-wrap items-end justify-between gap-6">
-        <h2 data-reveal className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl">Real outcomes,<br /><span className="text-stroke">not fluff</span></h2>
+        <h2 data-split className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl">Real outcomes,<br /><span className="text-stroke">not fluff</span></h2>
         <div data-reveal>
           <p className="text-mute max-w-xs leading-relaxed">150+ products in production for founders in the US, UK, UAE, Australia & Canada.</p>
           <Link href="/portfolio" data-hover className="group mt-5 inline-flex items-center gap-3 text-sm font-semibold text-orange">
@@ -180,7 +180,7 @@ export function Work() {
 
       <div className="mt-5 grid md:grid-cols-3 gap-5">
         {WORK.map((w, i) => (
-          <article key={w.t} data-reveal data-delay={i * 0.1} data-hover
+          <article key={w.t} data-anim="flip" data-delay={i * 0.1} data-hover
             className="group rounded-[1.6rem] border border-line bg-coal/85 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:border-cream/25">
             <MockUI g={w.g} glyph={w.glyph} />
             <div className="p-7">
@@ -207,12 +207,12 @@ export function Studio() {
   return (
     <section id="studio" className="relative px-4 sm:px-6 md:px-10 py-20 sm:py-28 md:py-40 max-w-[1500px] mx-auto w-full">
       <SectionTag index="05" label="Why GreeLogix" />
-      <h2 data-reveal className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl max-w-4xl">
+      <h2 data-split className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl max-w-4xl">
         Most agencies sell hours. <span className="text-orange">We sell shipped software.</span>
       </h2>
       <div className="mt-14 grid md:grid-cols-2 gap-4">
         {points.map((p, i) => (
-          <article key={p.t} data-reveal data-delay={(i % 2) * 0.08} data-hover className="group rounded-3xl border border-line bg-coal/80 p-8 md:p-10 flex gap-6 transition-all duration-500 hover:border-orange/50 hover:-translate-y-1.5">
+          <article key={p.t} data-anim="drop" data-delay={(i % 2) * 0.08} data-hover className="spot-card group rounded-3xl border border-line bg-coal/80 p-8 md:p-10 flex gap-6 transition-all duration-500 hover:border-orange/50 hover:-translate-y-1.5">
             <span className="font-display font-extrabold text-orange text-lg shrink-0 mt-1">✦</span>
             <div><h3 className="font-display font-bold text-xl md:text-2xl">{p.t}</h3><p className="mt-2.5 text-mute leading-relaxed text-[15px]">{p.d}</p></div>
           </article>
@@ -220,7 +220,7 @@ export function Studio() {
       </div>
 
       {/* deliverables strip */}
-      <div data-reveal className="mt-5 rounded-3xl border border-line bg-smoke/70 px-8 py-7 flex flex-wrap items-center gap-x-10 gap-y-4 justify-between">
+      <div data-stagger className="mt-5 rounded-3xl border border-line bg-smoke/70 px-8 py-7 flex flex-wrap items-center gap-x-10 gap-y-4 justify-between">
         {[["100%", "Code ownership"], ["Full", "Documentation"], ["90 days", "Free support"], ["Weekly", "Live demos"]].map(([v, l]) => (
           <p key={l} className="text-sm text-mute"><span className="font-display font-extrabold text-cream text-xl mr-2">{v}</span>{l}</p>
         ))}
@@ -235,7 +235,7 @@ export function Voices() {
     <section className="relative py-20 sm:py-28 md:py-36 overflow-hidden w-full">
       <div className="px-4 sm:px-6 md:px-10 max-w-[1500px] mx-auto w-full">
         <SectionTag index="06" label="Client voices" />
-        <h2 data-reveal className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl">Trusted by founders <span className="text-stroke">worldwide</span></h2>
+        <h2 data-split className="font-display font-extrabold uppercase text-[2rem] leading-[1.02] min-[420px]:text-4xl sm:text-6xl lg:text-7xl">Trusted by founders <span className="text-stroke">worldwide</span></h2>
       </div>
       <div className="mt-14 overflow-hidden marquee-paused" aria-label="Client testimonials">
         <div className="flex w-max animate-marquee-slow gap-4 sm:gap-5 px-4 sm:px-6">
@@ -254,7 +254,7 @@ export function Voices() {
 
       {/* tech stack river */}
       <div className="mt-20 border-y border-line py-6 overflow-hidden" aria-label="Our tech stack">
-        <div className="flex w-max animate-marquee gap-0">
+        <div data-velocity className="flex w-max animate-marquee gap-0">
           {[...STACK, ...STACK].map((s, i) => (
             <span key={i} className="flex items-center whitespace-nowrap px-5 font-display font-bold uppercase text-xl md:text-2xl text-cream/35 hover:text-orange transition-colors">
               {s}<span className="text-orange/60 text-sm ml-10">✦</span>
@@ -274,7 +274,7 @@ export function Faq() {
       <SectionTag index="07" label="Questions" />
       <div className="grid lg:grid-cols-[1fr_1.4fr] gap-12">
         <div>
-          <h2 data-reveal className="font-display font-extrabold uppercase leading-[1.02] text-[2rem] min-[420px]:text-4xl sm:text-6xl">Before<br />you <span className="text-orange">book</span></h2>
+          <h2 data-split className="font-display font-extrabold uppercase leading-[1.02] text-[2rem] min-[420px]:text-4xl sm:text-6xl">Before<br />you <span className="text-orange">book</span></h2>
           <p data-reveal className="mt-5 text-mute leading-relaxed max-w-sm">Straight answers, so you know exactly what you're getting before the first call. Still curious?</p>
           <div data-reveal className="mt-8"><ArrowBtn href={CALENDLY} external>Ask on a free call</ArrowBtn></div>
         </div>
@@ -282,7 +282,7 @@ export function Faq() {
           {FAQS.map((f, i) => {
             const isOpen = open === i;
             return (
-              <div key={f.q} data-reveal className={`border-b border-line ${i === 0 ? "border-t" : ""}`}>
+              <div key={f.q} data-anim="slide-left" data-delay={i * 0.07} className={`border-b border-line ${i === 0 ? "border-t" : ""}`}>
                 <button onClick={() => setOpen(isOpen ? -1 : i)} data-hover aria-expanded={isOpen}
                   className="w-full flex items-center justify-between gap-6 py-6 text-left group">
                   <span className={`font-display font-bold text-base min-[420px]:text-lg md:text-[1.35rem] leading-snug transition-colors ${isOpen ? "text-orange" : "group-hover:text-orange"}`}>{f.q}</span>
@@ -337,7 +337,7 @@ export function Footer() {
 
       {/* giant wordmark */}
       <div aria-hidden className="overflow-hidden leading-none select-none pointer-events-none px-2">
-        <p data-parallax="-30" className="font-display font-extrabold uppercase text-center whitespace-nowrap text-[13vw] text-stroke-faint hover:text-orange/10 transition-colors duration-700 translate-y-[18%]">
+        <p data-parallax="-30" data-velocity className="font-display font-extrabold uppercase text-center whitespace-nowrap text-[13vw] text-stroke-faint hover:text-orange/10 transition-colors duration-700 translate-y-[18%]">
           GreeLogix
         </p>
       </div>

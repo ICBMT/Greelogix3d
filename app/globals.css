@@ -75,6 +75,18 @@ body { @apply bg-ink text-cream font-body antialiased overflow-x-hidden; }
 .link-line:hover::after { transform:scaleX(1); transform-origin:left; }
 
 input, textarea { cursor: text !important; }
+
+/* per-character split spans */
+.char { display: inline-block; will-change: transform, opacity; }
+
+/* cursor spotlight that follows the pointer across a card */
+.spot-card { position: relative; }
+.spot-card::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 77, 28, 0.13), transparent 65%);
+  opacity: 0; transition: opacity 0.45s ease;
+}
+.spot-card:hover::after { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee, .animate-marquee-slow, .animate-spin-slow, .animate-float { animation: none !important; }
 }

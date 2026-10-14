@@ -51,7 +51,7 @@ export default function Hero({ loaded }) {
         </div>
 
         {/* stats */}
-        <dl style={fade(1)} className="mt-10 md:mt-16 grid grid-cols-2 md:grid-cols-4 border-t border-line">
+        <dl data-stagger style={fade(1)} className="mt-10 md:mt-16 grid grid-cols-2 md:grid-cols-4 border-t border-line">
           {STATS.map((s, i) => (
             <div key={s.l} className={`pt-5 pr-3 ${i % 2 === 0 ? "pl-0" : "pl-4"} md:pl-5 md:first:pl-0 border-line ${i % 2 === 0 ? "border-r" : ""} md:border-r md:last:border-r-0`}>
               <dd className="font-display font-extrabold text-[1.7rem] leading-none sm:text-4xl md:text-5xl"><span data-count={s.v}>0</span><span className="text-orange">{s.s}</span></dd>
@@ -75,7 +75,7 @@ export function LogoMarquee() {
   const row = [...items, ...items];
   return (
     <section aria-label="Verified on trusted platforms" className="relative border-y border-line bg-ink/70 backdrop-blur-sm overflow-hidden py-5 marquee-paused">
-      <div className="flex w-max animate-marquee gap-0">
+      <div data-velocity className="flex w-max animate-marquee gap-0">
         {row.map((t, i) => (
           <span key={i} className="flex items-center gap-6 px-6 whitespace-nowrap text-sm uppercase tracking-[0.18em] text-cream/60">
             {t} <span className="text-orange">✦</span>
@@ -91,7 +91,7 @@ export function OrangeMarquee() {
   const row = [...items, ...items, ...items];
   return (
     <div aria-hidden className="relative bg-orange text-white overflow-hidden py-3.5 -rotate-1 scale-[1.02] my-4 shadow-[0_20px_60px_rgba(255,77,28,0.25)]">
-      <div className="flex w-max animate-marquee">
+      <div data-velocity className="flex w-max animate-marquee">
         {row.map((t, i) => (
           <span key={i} className="flex items-center gap-6 px-6 whitespace-nowrap font-display font-bold uppercase tracking-wide text-lg">
             {t} <span>✦</span>

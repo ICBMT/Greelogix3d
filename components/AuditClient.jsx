@@ -198,7 +198,7 @@ function ChapterHead({ num, label, title, sub }) {
         Chapter — {label}
         <span className="h-px flex-1 bg-line" />
       </p>
-      <h2 data-reveal className="mt-7 font-display font-extrabold uppercase leading-[1.0] text-[2rem] min-[420px]:text-5xl lg:text-6xl">{title}</h2>
+      <h2 data-split className="mt-7 font-display font-extrabold uppercase leading-[1.0] text-[2rem] min-[420px]:text-5xl lg:text-6xl">{title}</h2>
       {sub && <p data-reveal className="mt-5 text-mute leading-[1.85] max-w-xl">{sub}</p>}
     </div>
   );
@@ -301,7 +301,7 @@ export default function AuditClient() {
       <section id="quiz" className="relative px-4 sm:px-6 md:px-10 py-20 md:py-32 max-w-[1500px] mx-auto w-full scroll-mt-20">
         <div aria-hidden className="pointer-events-none absolute top-1/3 -left-40 w-[26rem] h-[26rem] rounded-full bg-[#ffb020]/[0.07] blur-3xl animate-drift-slow" />
         <ChapterHead num="01" label="The audit" title={<>Five questions.<br /><span className="text-orange">One honest score.</span></>} sub="No email gate before your score, no 40-page PDF you'll never read. Just the signals a senior engineer would look for first — and a conversation about what to fix in what order." />
-        <div data-reveal className="relative mt-12 max-w-4xl"><Quiz /></div>
+        <div data-anim="zoom" className="relative mt-12 max-w-4xl"><Quiz /></div>
       </section>
 
       {/* ---------- Challenges ---------- */}
@@ -309,8 +309,8 @@ export default function AuditClient() {
         <ChapterHead num="02" label="Common challenges" title={<>Problems we help<br />buyers <span className="text-stroke">solve</span></>} sub="Teams searching for a free AI or code audit usually need answers to these questions before committing budget." />
         <div className="mt-12 grid sm:grid-cols-2 gap-4">
           {CHALLENGES.map((c, i) => (
-            <article key={c.t} data-reveal data-delay={(i % 2) * 0.08} data-hover
-              className="card-sheen group rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9 transition-all duration-500 hover:-translate-y-1.5 hover:border-orange/50">
+            <article key={c.t} data-delay={(i % 2) * 0.08} data-hover
+              data-anim="flip" data-tilt className="card-sheen spot-card group rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9 transition-all duration-500 hover:-translate-y-1.5 hover:border-orange/50">
               <span className="font-display text-4xl text-orange/85 block transition-transform duration-500 group-hover:-rotate-12 group-hover:scale-110 origin-left w-max">{c.glyph}</span>
               <h3 className="mt-6 font-display font-bold text-xl sm:text-2xl leading-tight">{c.t}</h3>
               <p className="mt-3 text-mute leading-[1.8] text-[15px]">{c.d}</p>
@@ -325,7 +325,7 @@ export default function AuditClient() {
         <ChapterHead num="03" label="Why GreeLogix" title={<>Why teams<br /><span className="text-orange">choose us</span></>} sub="150+ products shipped · Specialists in hardening AI-generated and rescued codebases." />
         <div className="mt-12 grid md:grid-cols-3 gap-4">
           {WHY.map((w, i) => (
-            <article key={w.t} data-reveal data-delay={(i % 3) * 0.07} data-hover
+            <article key={w.t} data-anim="zoom" data-delay={(i % 3) * 0.07} data-hover
               className={`group rounded-[1.8rem] border p-7 sm:p-9 flex flex-col transition-all duration-500 hover:-translate-y-1.5 ${
                 w.big ? "md:col-span-2 bg-gradient-to-br from-orange-dim/70 via-coal to-coal border-orange/35" : "border-line bg-coal/80 hover:border-orange/40"}`}>
               <span className="font-display font-extrabold text-stroke-faint text-4xl group-hover:text-orange group-hover:[-webkit-text-stroke:0px] transition-all duration-500">0{i + 1}</span>
@@ -333,7 +333,7 @@ export default function AuditClient() {
               <p className="mt-3 text-mute leading-[1.8] text-[15px] max-w-lg">{w.d}</p>
             </article>
           ))}
-          <div data-reveal className="rounded-[1.8rem] bg-orange text-white p-7 sm:p-9 flex flex-col justify-between overflow-hidden relative">
+          <div data-anim="rotate" className="rounded-[1.8rem] bg-orange text-white p-7 sm:p-9 flex flex-col justify-between overflow-hidden relative">
             <span aria-hidden className="absolute -right-6 -bottom-10 font-display font-extrabold text-[9rem] leading-none text-white/10 select-none">✓</span>
             <p className="font-display font-extrabold text-5xl sm:text-6xl leading-none"><span data-count={150}>0</span>+</p>
             <p className="mt-4 text-white/85 leading-relaxed text-[15px] relative">products shipped — including rescues of AI-generated codebases exactly like the ones this audit is built for.</p>
@@ -349,7 +349,7 @@ export default function AuditClient() {
           <span ref={lineRef} className="hidden lg:block absolute left-0 right-0 top-[26px] h-[2px] bg-orange origin-left" style={{ transform: "scaleX(0)" }} aria-hidden />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-6">
             {TIMELINE.map((s, i) => (
-              <article key={s.t} data-reveal data-delay={i * 0.1} className="relative">
+              <article key={s.t} data-anim="drop" data-delay={i * 0.1} className="relative">
                 <span className="relative z-10 grid place-items-center w-[52px] h-[52px] rounded-full bg-ink border-2 border-orange font-display font-extrabold text-orange">{pad2(i + 1)}</span>
                 <p className="mt-6 text-[10px] uppercase tracking-[0.24em] text-orange">{s.when}</p>
                 <h3 className="mt-2 font-display font-extrabold text-xl sm:text-2xl">{s.t}</h3>
@@ -367,9 +367,9 @@ export default function AuditClient() {
         <div aria-hidden className="pointer-events-none absolute bottom-0 left-[20%] w-[26rem] h-[26rem] rounded-full bg-sky-400/[0.05] blur-3xl animate-drift-slow" />
         <ChapterHead num="05" label="Stack & scope" title={<>We audit the stack<br /><span className="text-orange">you actually run</span></>} sub="AI-generated scaffolds, monoliths and microservices — with findings mapped to your deployment target." />
         <div className="mt-12 grid md:grid-cols-3 gap-4">
-          <div data-reveal className="rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9">
+          <div data-anim="slide-left" className="rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9">
             <h3 className="text-[11px] uppercase tracking-[0.24em] text-mute">Technologies</h3>
-            <div className="mt-5 flex flex-wrap gap-2">
+            <div data-stagger className="mt-5 flex flex-wrap gap-2">
               {["Laravel", "React / Next.js", "Flutter", "Node.js", "Supabase", "PostgreSQL", "OpenAI", "Lovable", "Cursor", "AWS"].map((s) => (
                 <span key={s} data-hover className="rounded-full border border-line px-3.5 py-1.5 text-[13px] text-cream/75 hover:border-orange hover:text-orange transition-colors">{s}</span>
               ))}
@@ -381,7 +381,7 @@ export default function AuditClient() {
               ))}
             </div>
           </div>
-          <div data-reveal data-delay="0.08" className="rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9">
+          <div data-anim="zoom" data-delay="0.08" className="rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9">
             <h3 className="text-[11px] uppercase tracking-[0.24em] text-mute">Industries served</h3>
             <ul className="mt-5 space-y-1">
               {["SaaS", "EdTech", "E-commerce", "Healthcare", "Fintech", "Marketplaces"].map((s, i) => (
@@ -391,7 +391,7 @@ export default function AuditClient() {
               ))}
             </ul>
           </div>
-          <div data-reveal data-delay="0.16" className="rounded-[1.8rem] border border-orange/35 bg-gradient-to-b from-orange-dim/50 to-coal p-7 sm:p-9">
+          <div data-anim="slide-right" data-delay="0.16" className="rounded-[1.8rem] border border-orange/35 bg-gradient-to-b from-orange-dim/50 to-coal p-7 sm:p-9">
             <h3 className="text-[11px] uppercase tracking-[0.24em] text-orange">Security & compliance</h3>
             <div className="mt-6 space-y-6">
               <p><b className="font-display text-lg block">Confidential review</b><span className="text-sm text-cream/65 leading-relaxed block mt-1.5">Audit findings stay between your team and GreeLogix engineers — we never share codebase details publicly.</span></p>
@@ -412,7 +412,7 @@ export default function AuditClient() {
           {FAQS.map((f, i) => {
             const open = faqOpen === i;
             return (
-              <div key={f.q} data-reveal className={`border-b border-line ${i === 0 ? "border-t" : ""}`}>
+              <div key={f.q} data-anim="skew" data-delay={i * 0.06} className={`border-b border-line ${i === 0 ? "border-t" : ""}`}>
                 <button onClick={() => setFaqOpen(open ? -1 : i)} data-hover aria-expanded={open} className="w-full flex items-center justify-between gap-6 py-6 text-left group">
                   <span className={`font-display font-bold text-base min-[420px]:text-lg md:text-[1.35rem] leading-snug transition-colors ${open ? "text-orange" : "group-hover:text-orange"}`}>{f.q}</span>
                   <span className={`shrink-0 grid place-items-center w-10 h-10 rounded-full border transition-all duration-500 ${open ? "bg-orange border-orange rotate-45 text-white" : "border-line"}`}>

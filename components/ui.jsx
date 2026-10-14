@@ -27,7 +27,7 @@ export function SectionTag({ index, label, light = false }) {
       <span className={`text-[11px] font-medium uppercase tracking-widest2 ${light ? "text-ink/60" : "text-mute"}`}>
         {index} — {label}
       </span>
-      <span className={`h-px flex-1 ${light ? "bg-ink/15" : "bg-line"}`} />
+      <span data-line className={`h-px flex-1 origin-left ${light ? "bg-ink/15" : "bg-line"}`} />
     </div>
   );
 }

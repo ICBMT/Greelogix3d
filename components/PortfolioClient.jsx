@@ -29,7 +29,7 @@ function Visual({ p }) {
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/10 pointer-events-none" />
       <span className="absolute top-5 left-6 text-[10px] uppercase tracking-[0.28em] text-white/85 backdrop-blur-sm bg-black/20 rounded-full px-3 py-1.5">{p.industry}</span>
-      <span className="absolute -top-8 right-3 text-[9rem] sm:text-[12rem] leading-none font-display font-extrabold text-white/10 select-none">{p.glyph}</span>
+      <span className="animate-float absolute -top-8 right-3 text-[9rem] sm:text-[12rem] leading-none font-display font-extrabold text-white/10 select-none">{p.glyph}</span>
       <span className="absolute bottom-5 left-6 right-6 flex items-end justify-between gap-4">
         <span className="font-display font-extrabold text-white text-xl drop-shadow">{p.title}</span>
         <span className="text-[10px] uppercase tracking-[0.22em] text-white/75">{p.device === "phone" ? "Mobile app" : "Web platform"}</span>
@@ -45,7 +45,7 @@ function StoryCard({ p, index, open, onToggle }) {
       <span aria-hidden className="absolute -top-3 right-0 font-display font-extrabold text-[6rem] sm:text-[9rem] leading-none text-ink/[0.045] select-none pointer-events-none">{pad(index + 1)}</span>
       <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center relative">
         <div className={`lg:col-span-7 ${flipped ? "lg:order-2" : ""}`} data-hover><Visual p={p} /></div>
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-5" data-anim={flipped ? "slide-left" : "slide-right"}>
           <p className="flex flex-wrap items-center gap-3 text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-ink/50">
             <span className="text-orange font-semibold">Story {pad(index + 1)}</span><span aria-hidden>·</span><span>{p.industry}</span>
           </p>
@@ -193,7 +193,7 @@ export default function PortfolioClient() {
         {/* ---------- Stories ---------- */}
         <section className="relative px-4 sm:px-6 md:px-10 max-w-[1500px] mx-auto w-full pb-8" aria-label="Project stories">
           <div className="pt-12 sm:pt-16 flex flex-wrap items-end justify-between gap-5">
-            <h2 data-reveal className="font-display font-extrabold uppercase leading-[1.02] text-[2rem] min-[420px]:text-4xl sm:text-5xl lg:text-6xl">
+            <h2 data-split className="font-display font-extrabold uppercase leading-[1.02] text-[2rem] min-[420px]:text-4xl sm:text-5xl lg:text-6xl">
               Selected <span className="text-orange">work</span>
             </h2>
             <p data-reveal className="max-w-xs text-sm leading-relaxed text-ink/55">A curated selection across SaaS, AI, mobile and web. Open a story to see what went inside.</p>
@@ -204,7 +204,7 @@ export default function PortfolioClient() {
               <div key={p.slug}>
                 <StoryCard p={p} index={i} open={openSlug === p.slug} onToggle={() => setOpenSlug(openSlug === p.slug ? null : p.slug)} />
                 {INTERLUDES[i] && filter === "all" && (
-                  <aside data-reveal className="my-4 rounded-[2rem] bg-ink text-[#f3efe7] px-7 py-10 sm:p-12 grid md:grid-cols-[auto_1fr] items-center gap-6 overflow-hidden relative">
+                  <aside data-anim="zoom" className="my-4 rounded-[2rem] bg-ink text-[#f3efe7] px-7 py-10 sm:p-12 grid md:grid-cols-[auto_1fr] items-center gap-6 overflow-hidden relative">
                     <span aria-hidden className="absolute -right-8 -bottom-14 font-display font-extrabold text-[10rem] leading-none text-white/[0.05] select-none">✦</span>
                     <p className="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl text-orange whitespace-nowrap">{INTERLUDES[i].big}</p>
                     <p className="text-[#f3efe7]/70 leading-[1.85] max-w-md relative">{INTERLUDES[i].small}</p>
@@ -226,13 +226,13 @@ export default function PortfolioClient() {
               <h3 className="mt-5 font-display font-extrabold text-3xl sm:text-4xl leading-tight">End-to-end, across every layer of the stack.</h3>
               <div className="mt-8 grid grid-cols-2 gap-3">
                 {["AI & Automation", "Mobile Apps", "Web & SaaS", "UI/UX Design"].map((t, i) => (
-                  <p key={t} className="rounded-2xl border border-ink/10 bg-[#f3efe7] px-5 py-4 font-display font-bold flex items-center gap-3"><span className="text-orange text-sm">0{i + 1}</span>{t}</p>
+                  <p key={t} data-anim="drop" data-delay={i * 0.07} className="rounded-2xl border border-ink/10 bg-[#f3efe7] px-5 py-4 font-display font-bold flex items-center gap-3"><span className="text-orange text-sm">0{i + 1}</span>{t}</p>
                 ))}
               </div>
             </div>
             <div data-reveal className="rounded-[2rem] border border-ink/10 bg-white/55 backdrop-blur p-7 sm:p-10">
               <p className="text-[10px] uppercase tracking-[0.26em] text-ink/50 flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-orange" />Why clients choose us</p>
-              <ul className="mt-6 space-y-6">
+              <ul data-stagger className="mt-6 space-y-6">
                 {[
                   ["5★ rated on Upwork", "Top Rated Plus agency with a 100% Job Success Score across 90+ completed contracts."],
                   ["Fast delivery", "MVPs in 4–8 weeks, complex builds in 6–10 — without cutting corners."],
