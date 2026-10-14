@@ -5,13 +5,25 @@ import gsap from "gsap";
 export default function Cursor() {
   const dot = useRef(null);
   const ring = useRef(null);
+  const label = useRef(null);
 
   useEffect(() => {
     if (window.matchMedia("(hover: none), (pointer: coarse)").matches) return;
     const d = dot.current, r = ring.current;
     let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my, scale = 1, target = 1;
     const onMove = (e) => { mx = e.clientX; my = e.clientY; };
-    const onOver = (e) => { target = e.target.closest("a,button,[data-hover]") ? 2.6 : 1; };
+    const onOver = (e) => {
+      const tagged = e.target.closest("[data-cursor]");
+      if (tagged) {
+        target = 4.4;
+        if (label.current) label.current.textContent = tagged.dataset.cursor;
+        if (d) d.style.opacity = "0";
+      } else {
+        target = e.target.closest("a,button,[data-hover]") ? 2.6 : 1;
+        if (label.current) label.current.textContent = "";
+        if (d) d.style.opacity = "1";
+      }
+    };
     let raf;
     const loop = () => {
       rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16; scale += (target - scale) * 0.18;
@@ -45,7 +57,9 @@ export default function Cursor() {
   return (
     <div className="hidden md:block" aria-hidden>
       <div ref={dot} className="fixed top-0 left-0 z-[120] w-1.5 h-1.5 rounded-full bg-orange pointer-events-none" />
-      <div ref={ring} className="fixed top-0 left-0 z-[119] w-9 h-9 rounded-full border border-cream/40 pointer-events-none mix-blend-difference" />
+      <div ref={ring} className="fixed top-0 left-0 z-[119] w-9 h-9 rounded-full border border-cream/40 pointer-events-none mix-blend-difference flex items-center justify-center">
+        <span ref={label} className="text-[6.5px] font-bold uppercase tracking-[0.14em] text-cream whitespace-nowrap" />
+      </div>
     </div>
   );
 }

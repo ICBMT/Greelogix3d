@@ -137,7 +137,7 @@ function Quiz() {
             </div>
             <h3 className="mt-6 font-display font-extrabold text-3xl sm:text-4xl md:text-[2.6rem] leading-[1.05]">{QUESTIONS[step].q}</h3>
             <p className="mt-3 text-mute">{QUESTIONS[step].hint}</p>
-            <div className="mt-8 grid sm:grid-cols-2 gap-3" role="radiogroup" aria-label={QUESTIONS[step].q}>
+            <div data-batch className="mt-8 grid sm:grid-cols-2 gap-3" role="radiogroup" aria-label={QUESTIONS[step].q}>
               {QUESTIONS[step].options.map((o) => (
                 <button key={o.label} role="radio" aria-checked="false" onClick={() => pick(o)} data-hover
                   className="group text-left rounded-2xl border border-line bg-white/[0.03] p-5 transition-all duration-300 hover:border-orange hover:bg-orange/[0.08] hover:-translate-y-0.5">
@@ -192,7 +192,7 @@ function Quiz() {
 /* ---------------- Chapters ---------------- */
 function ChapterHead({ num, label, title, sub }) {
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-3xl" data-anim={parseInt(num, 10) % 2 ? "left-far" : "right-far"}>
       <p data-reveal className="flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-mute">
         <span className="grid place-items-center w-8 h-8 rounded-full border border-orange/50 text-orange font-bold text-[10px]">{num}</span>
         Chapter — {label}
@@ -277,7 +277,7 @@ export default function AuditClient() {
           ]} />
         </h1>
         <div className="relative mt-10 md:mt-12 grid lg:grid-cols-[1fr_auto] gap-10 items-end">
-          <p className="max-w-xl text-base md:text-lg text-cream/70 leading-[1.85]" style={{ opacity: ready ? 1 : 0, transition: "opacity .9s ease .55s" }}>
+          <p data-scrub-words className="max-w-xl text-base md:text-lg text-cream/70 leading-[1.85]" style={{ opacity: ready ? 1 : 0, transition: "opacity .9s ease .55s" }}>
             Answer 5 quick questions. Get your <b className="text-cream">Production Readiness Score</b> and a free
             60-minute debrief with a senior engineer — built for teams shipping with Lovable, Cursor, or legacy stacks.
           </p>
@@ -310,7 +310,7 @@ export default function AuditClient() {
         <div className="mt-12 grid sm:grid-cols-2 gap-4">
           {CHALLENGES.map((c, i) => (
             <article key={c.t} data-delay={(i % 2) * 0.08} data-hover
-              data-anim={["flip", "mask-left", "mask-right", "cinematic"][i % 4]} data-tilt className="card-sheen spot-card group rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9 transition-all duration-500 hover:-translate-y-1.5 hover:border-orange/50">
+              data-anim={["mask-right", "cinematic", "flip", "mask-left"][i % 4]} data-tilt className="card-sheen spot-card group rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9 transition-all duration-500 hover:-translate-y-1.5 hover:border-orange/50">
               <span data-glitch className="font-display text-4xl text-orange/85 block transition-transform duration-500 group-hover:-rotate-12 group-hover:scale-110 origin-left w-max">{c.glyph}</span>
               <h3 className="mt-6 font-display font-bold text-xl sm:text-2xl leading-tight">{c.t}</h3>
               <p data-words className="mt-3 text-mute leading-[1.8] text-[15px]">{c.d}</p>
@@ -325,7 +325,7 @@ export default function AuditClient() {
         <ChapterHead num="03" label="Why GreeLogix" title={<>Why teams<br /><span className="text-orange">choose us</span></>} sub="150+ products shipped · Specialists in hardening AI-generated and rescued codebases." />
         <div className="mt-12 grid md:grid-cols-3 gap-4">
           {WHY.map((w, i) => (
-            <article key={w.t} data-anim={w.big ? "cinematic" : "zoom"} data-delay={(i % 3) * 0.07} data-hover
+            <article key={w.t} data-anim={w.big ? "cinematic" : i % 2 ? "br" : "bl"} data-delay={(i % 3) * 0.07} data-hover
               className={`group rounded-[1.8rem] border p-7 sm:p-9 flex flex-col transition-all duration-500 hover:-translate-y-1.5 ${
                 w.big ? "md:col-span-2 bg-gradient-to-br from-orange-dim/70 via-coal to-coal border-orange/35" : "border-line bg-coal/80 hover:border-orange/40"}`}>
               <span className="font-display font-extrabold text-stroke-faint text-4xl group-hover:text-orange group-hover:[-webkit-text-stroke:0px] transition-all duration-500">0{i + 1}</span>
@@ -367,7 +367,7 @@ export default function AuditClient() {
         <div aria-hidden className="pointer-events-none absolute bottom-0 left-[20%] w-[26rem] h-[26rem] rounded-full bg-sky-400/[0.05] blur-3xl animate-drift-slow" />
         <ChapterHead num="05" label="Stack & scope" title={<>We audit the stack<br /><span className="text-orange">you actually run</span></>} sub="AI-generated scaffolds, monoliths and microservices — with findings mapped to your deployment target." />
         <div className="mt-12 grid md:grid-cols-3 gap-4">
-          <div data-anim="slide-left" className="rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9">
+          <div data-anim="tl" className="rounded-[1.8rem] border border-line bg-coal/80 p-7 sm:p-9">
             <h3 className="text-[11px] uppercase tracking-[0.24em] text-mute">Technologies</h3>
             <div data-stagger data-proximity className="mt-5 flex flex-wrap gap-2">
               {["Laravel", "React / Next.js", "Flutter", "Node.js", "Supabase", "PostgreSQL", "OpenAI", "Lovable", "Cursor", "AWS"].map((s) => (
@@ -391,7 +391,7 @@ export default function AuditClient() {
               ))}
             </ul>
           </div>
-          <div data-anim="slide-right" data-delay="0.16" className="rounded-[1.8rem] border border-orange/35 bg-gradient-to-b from-orange-dim/50 to-coal p-7 sm:p-9">
+          <div data-anim="tr" data-delay="0.16" className="rounded-[1.8rem] border border-orange/35 bg-gradient-to-b from-orange-dim/50 to-coal p-7 sm:p-9">
             <h3 className="text-[11px] uppercase tracking-[0.24em] text-orange">Security & compliance</h3>
             <div className="mt-6 space-y-6">
               <p><b className="font-display text-lg block">Confidential review</b><span className="text-sm text-cream/65 leading-relaxed block mt-1.5">Audit findings stay between your team and GreeLogix engineers — we never share codebase details publicly.</span></p>

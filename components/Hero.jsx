@@ -31,7 +31,7 @@ export default function Hero({ loaded }) {
         </h1>
 
         <div className="mt-8 md:mt-10 flex flex-col md:flex-row md:items-end gap-8 md:gap-14">
-          <p style={fade(0.7)} className="max-w-md text-base md:text-lg text-cream/75 leading-relaxed">
+          <p data-scrub-words style={fade(0.7)} className="max-w-md text-base md:text-lg text-cream/75 leading-relaxed">
             A senior software agency for startups, SMEs and nonprofits. AI products, web & mobile apps —
             no junior hand-offs, no endless discovery. Just weekly demos and production-ready code.
           </p>

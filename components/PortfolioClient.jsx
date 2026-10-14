@@ -21,7 +21,7 @@ const pad = (n) => String(n).padStart(2, "0");
 /* Product artwork — generated per project, unveiled with a cinematic wipe */
 function Visual({ p }) {
   return (
-    <div data-wipe className={`group/visual relative overflow-hidden rounded-[1.8rem] sm:rounded-[2.2rem] bg-gradient-to-br ${p.g} aspect-[4/3] sm:aspect-[16/10] shadow-[0_30px_80px_rgba(20,16,8,0.22)]`} aria-hidden>
+    <div data-cursor="View" data-wipe className={`group/visual relative overflow-hidden rounded-[1.8rem] sm:rounded-[2.2rem] bg-gradient-to-br ${p.g} aspect-[4/3] sm:aspect-[16/10] shadow-[0_30px_80px_rgba(20,16,8,0.22)]`} aria-hidden>
       <div data-parallax="-14" className="absolute inset-0">
         <div data-wipe-img className="absolute inset-[-6%]">
           <Image src={`/projects/${p.slug}.jpg`} alt="" fill sizes="(max-width: 1024px) 92vw, 760px" className="object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover/visual:scale-[1.06]" />
@@ -147,7 +147,7 @@ export default function PortfolioClient() {
           </h1>
 
           <div className="mt-10 md:mt-14 grid lg:grid-cols-[1.2fr_auto] gap-10 items-end">
-            <p style={fade(0.45)} className="max-w-xl text-base md:text-lg leading-[1.85] text-ink/65">
+            <p data-scrub-words style={fade(0.45)} className="max-w-xl text-base md:text-lg leading-[1.85] text-ink/65">
               From AI-powered SaaS platforms to consumer mobile apps — real products, designed, built and shipped
               for founders and businesses worldwide. Ten stories below. Take your time; each one opens up.
             </p>

@@ -77,6 +77,9 @@ const ANIMS = {
   tl: { from: { x: -76, y: -88, rotation: -2, opacity: 0 }, ease: "power3.out", dur: 1.05 },
   tr: { from: { x: 76, y: -88, rotation: 2, opacity: 0 }, ease: "power3.out", dur: 1.05 },
   "left-far": { from: { x: -160, opacity: 0 }, ease: "power4.out", dur: 1.2 },
+  perspective: { from: { rotationX: 38, y: 60, opacity: 0, transformPerspective: 900, transformOrigin: "50% 0%" }, ease: "power3.out", dur: 1.2 },
+  curtain: { from: { clipPath: "inset(100% 0 0 0)", y: 40, opacity: 0 }, to: { clipPath: "inset(0% 0 0 0)", y: 0 }, ease: "power4.out", dur: 1.2 },
+  expand: { from: { scaleX: 0.55, opacity: 0 }, ease: "power3.inOut", dur: 1.1 },
   "right-far": { from: { x: 160, opacity: 0 }, ease: "power4.out", dur: 1.2 },
 };
 
@@ -131,6 +134,39 @@ export default function Smooth({ ready }) {
         scrollTrigger: { trigger: el, start: "top 86%" },
       });
     });
+
+    // Scroll-scrubbed reading — words ignite one by one as you read down
+    gsap.utils.toArray("[data-scrub-words]").forEach((el) => {
+      const words = splitWords(el);
+      gsap.fromTo(words, { opacity: 0.13 }, {
+        opacity: 1, ease: "none", stagger: 0.06,
+        scrollTrigger: { trigger: el, start: "top 82%", end: "bottom 45%", scrub: 0.6 },
+      });
+    });
+
+    // Perpetual bobbing — decorations that never sit still
+    gsap.utils.toArray("[data-bob]").forEach((el, i) => {
+      gsap.to(el, {
+        y: -8 - (i % 3) * 3, rotation: (i % 2 ? 7 : -7),
+        duration: 1.7 + (i % 4) * 0.22, ease: "sine.inOut", yoyo: true, repeat: -1, delay: i * 0.13,
+      });
+    });
+
+    // Magnetic headline letters — chars lean toward the cursor like GSAP's variable-font demo
+    if (window.matchMedia("(hover: hover)").matches) {
+      gsap.utils.toArray("[data-split]").forEach((el) => {
+        const chars = el.querySelectorAll(".char");
+        el.addEventListener("pointermove", (e) => {
+          chars.forEach((c) => {
+            const r = c.getBoundingClientRect();
+            const d = Math.abs(e.clientX - (r.left + r.width / 2));
+            const strength = Math.max(0, 1 - d / 130);
+            gsap.to(c, { scale: 1 + strength * 0.32, y: -strength * 7, duration: 0.35, ease: "power2.out", overwrite: "auto" });
+          });
+        }, { signal });
+        el.addEventListener("pointerleave", () => gsap.to(chars, { scale: 1, y: 0, duration: 0.6, ease: "elastic.out(1,0.45)", overwrite: "auto" }), { signal });
+      });
+    }
 
     // Text scramble — labels decode from noise into place (GSAP demo classic)
     const GLYPHS = "!<>-_/[]{}=+*^?#";

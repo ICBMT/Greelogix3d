@@ -162,7 +162,7 @@ export function Work() {
           <div className="p-6 sm:p-8 md:p-12">
             <span className="text-[10px] uppercase tracking-widest2 bg-orange text-white font-semibold rounded-full px-3 py-1.5">Featured · EdTech Rescue</span>
             <h3 className="mt-7 font-display font-extrabold text-3xl md:text-[2.6rem] leading-[1.05]">We shipped what <span className="text-orange">70 engineers</span> couldn't.</h3>
-            <p className="mt-4 text-cream/70 leading-relaxed max-w-md">An education platform stuck in limbo with a previous vendor. We took over, stabilised the codebase, and shipped the core student & teacher experience — dead to live.</p>
+            <p data-scrub-words className="mt-4 text-cream/70 leading-relaxed max-w-md">An education platform stuck in limbo with a previous vendor. We took over, stabilised the codebase, and shipped the core student & teacher experience — dead to live.</p>
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-6">
               {[["Dead → Live", "Rescued & shipped"], ["3", "Platforms stabilised"], ["70+", "Engineers replaced"]].map(([v, l]) => (
                 <div key={l}><p className="font-display font-extrabold text-2xl md:text-3xl">{v}</p><p className="text-[11px] uppercase tracking-[0.18em] text-mute mt-1">{l}</p></div>
@@ -213,7 +213,7 @@ export function Studio() {
       <div className="mt-14 grid md:grid-cols-2 gap-4">
         {points.map((p, i) => (
           <article key={p.t} data-anim={i % 2 ? "br" : "bl"} data-delay={(i % 2) * 0.08} data-hover className="spot-card group rounded-3xl border border-line bg-coal/80 p-8 md:p-10 flex gap-6 transition-all duration-500 hover:border-orange/50 hover:-translate-y-1.5">
-            <span className="font-display font-extrabold text-orange text-lg shrink-0 mt-1">✦</span>
+            <span data-bob className="font-display font-extrabold text-orange text-lg shrink-0 mt-1">✦</span>
             <div><h3 className="font-display font-bold text-xl md:text-2xl">{p.t}</h3><p className="mt-2.5 text-mute leading-relaxed text-[15px]">{p.d}</p></div>
           </article>
         ))}
