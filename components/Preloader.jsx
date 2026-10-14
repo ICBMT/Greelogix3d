@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import Image from "next/image";
+import LogoMark from "./Logo";
 
 const WORDS = ["AI PRODUCTS", "MVPs IN 4–8 WEEKS", "150+ SHIPPED", "SENIOR ENGINEERS ONLY"];
 
@@ -34,8 +34,9 @@ export default function Preloader({ onDone }) {
       <div className="pre-panel-l absolute inset-y-0 left-0 w-1/2 bg-[#0a0a09]" />
       <div className="pre-panel-r absolute inset-y-0 right-0 w-1/2 bg-[#0a0a09]" />
       <div className="pre-inner relative z-10 h-full flex flex-col items-center justify-center px-6">
-        <div className="relative w-40 h-40 md:w-52 md:h-52">
-          <Image src="/logo.png" alt="GreeLogix" fill className="object-contain" priority />
+        <div className="text-cream">
+          <LogoMark className="w-36 h-auto md:w-48" />
+          <p className="mt-4 text-center font-display font-extrabold tracking-wide text-xl md:text-2xl">GREE<span className="text-orange">LOGIX</span></p>
         </div>
         <div className="mt-6 h-5 overflow-hidden">
           <p key={word} className="text-[11px] tracking-widest2 text-mute uppercase text-center">{WORDS[word]}</p>

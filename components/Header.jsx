@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { NAV, CALENDLY } from "@/lib/data";
 import { Magnetic, RollText } from "./ui";
+import LogoMark from "./Logo";
 
 export default function Header({ loaded, light = false }) {
   const pathname = usePathname();
@@ -56,7 +56,7 @@ export default function Header({ loaded, light = false }) {
       >
         <div className={`mx-auto max-w-[1500px] px-4 sm:px-6 md:px-10 h-16 md:h-[72px] flex items-center justify-between gap-3 backdrop-blur-md border-b ${light ? "bg-[#f3efe7]/80 border-ink/10" : "bg-ink/55 border-line"}`}>
           <a href={onHome ? "#top" : "/"} data-hover className="flex items-center gap-2.5 sm:gap-3 shrink-0 min-w-0" aria-label="GreeLogix home">
-            <span className="relative w-9 h-9 md:w-10 md:h-10 block shrink-0"><Image src="/logo.png" alt="" fill className="object-contain" /></span>
+            <LogoMark className="w-8 h-8 md:w-9 md:h-9 shrink-0" />
             <span className="font-display font-extrabold tracking-wide text-base sm:text-lg leading-none hidden min-[380px]:block">GREE<span className="text-orange">LOGIX</span></span>
           </a>
           <nav className={`hidden lg:flex items-center gap-9 text-[13px] uppercase tracking-[0.18em] ${light ? "text-ink/65" : "text-cream/75"}`}>

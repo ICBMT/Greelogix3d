@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" fill="none" role="img" aria-label="GreeLogix">
+  <!-- GL mark: orange G + ink L (for light backgrounds; use logo-dark.svg style currentColor variant in-app) -->
+  <path d="M211 29 H27 L123 209" stroke="#FF4D1C" stroke-width="19" stroke-linejoin="miter"/>
+  <path d="M85 83 H183 L129 165" stroke="#FF4D1C" stroke-width="15" stroke-linejoin="miter"/>
+  <path d="M237 29 L149 205 H277" stroke="#141310" stroke-width="17" stroke-linejoin="miter"/>
+  <!-- Wordmark -->
+  <text x="18" y="272" font-family="Archivo, Arial, sans-serif" font-size="41" font-weight="800" letter-spacing="1">
+    <tspan fill="#FF4D1C">GREE</tspan><tspan fill="#141310" dx="10">LOGIX</tspan>
+  </text>
+</svg>
