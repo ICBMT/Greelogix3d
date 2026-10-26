@@ -65,6 +65,7 @@ export function BlogModal({ post, onClose, onSwap }) {
   const first = useRef(true);
 
   useEffect(() => {
+    const prevFocus = document.activeElement;
     window.__lenis?.stop();
     document.body.style.overflow = "hidden";
     const onKey = (e) => { if (e.key === "Escape") onClose(); };
@@ -74,7 +75,8 @@ export function BlogModal({ post, onClose, onSwap }) {
       .fromTo(panel.current, { y: 90, scale: 0.94, opacity: 0, clipPath: "inset(6% 4% 6% 4% round 28px)" },
         { y: 0, scale: 1, opacity: 1, clipPath: "inset(0% 0% 0% 0% round 28px)", duration: 0.65, ease: "power4.out" }, "-=0.12")
       .fromTo(".post-item", { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, stagger: 0.05, ease: "power3.out" }, "-=0.25");
-    return () => { removeEventListener("keydown", onKey); document.body.style.overflow = ""; window.__lenis?.start(); tl.kill(); };
+    panel.current?.querySelector('[aria-label^="Close"]')?.focus({ preventScroll: true });
+    return () => { removeEventListener("keydown", onKey); document.body.style.overflow = ""; window.__lenis?.start(); tl.kill(); if (prevFocus && typeof prevFocus.focus === "function") prevFocus.focus({ preventScroll: true }); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -108,7 +110,7 @@ export function BlogModal({ post, onClose, onSwap }) {
         <div className="px-6 sm:px-10 py-8 sm:py-10">
           {post.img ? (
             <div className="post-item relative rounded-3xl overflow-hidden aspect-[16/8] mb-8">
-              <Image src={post.img} alt="" fill sizes="(max-width: 768px) 92vw, 720px" className="object-cover" />
+              <Image src={post.img} alt={post.title} fill sizes="(max-width: 768px) 92vw, 720px" className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
             </div>
           ) : (
@@ -198,6 +200,8 @@ export default function BlogClient() {
   useEffect(() => {
     const wrap = hWrap.current, track = hTrack.current;
     if (!wrap || !track) return;
+    // Reduced motion: no pin/scrub — the section falls back to native horizontal scroll.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const dist = () => Math.max(track.scrollWidth - wrap.clientWidth, 0);
     const tween = gsap.to(track, {
       x: () => -dist(), ease: "none",
@@ -207,7 +211,7 @@ export default function BlogClient() {
   }, []);
 
   return (
-    <main className="relative min-h-screen overflow-x-clip">
+    <main id="main" tabIndex={-1} className="relative min-h-screen overflow-x-clip">
       <Cursor />
       <Smooth ready={ready} />
       <Header loaded={ready} />
@@ -263,7 +267,7 @@ export default function BlogClient() {
                 </p>
               </div>
               <div className="relative min-h-[240px] lg:min-h-[430px] overflow-hidden">
-                <Image src={featured.img} alt="" fill sizes="(max-width: 1024px) 92vw, 720px" data-zoom-img className="object-cover" />
+                <Image src={featured.img} alt={featured.title} fill sizes="(max-width: 1024px) 92vw, 720px" data-zoom-img className="object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                 <span data-bob className="absolute top-5 right-6 text-4xl select-none" aria-hidden>{featured.glyph}</span>
                 <p className="absolute bottom-6 left-6 right-6">
@@ -276,7 +280,7 @@ export default function BlogClient() {
         </section>
 
         {/* AI cluster — pinned horizontal gallery */}
-        <section ref={hWrap} aria-label="The AI cluster" className="relative overflow-hidden border-y border-line bg-coal/40 py-20 md:py-24">
+        <section ref={hWrap} aria-label="The AI cluster" className="hwrap-scroll relative overflow-hidden border-y border-line bg-coal/40 py-20 md:py-24">
           <div className="max-w-[1500px] mx-auto px-4 sm:px-6 md:px-10 flex items-center gap-3">
             <p data-scramble className="text-[11px] uppercase tracking-[0.28em] text-mute shrink-0">The AI cluster</p>
             <span data-line className="h-px flex-1 bg-line origin-left" />
@@ -287,7 +291,7 @@ export default function BlogClient() {
               <button key={post.slug} onClick={() => setPicked(post)} data-hover data-cursor="Read"
                 className="group relative w-[78vw] sm:w-[30rem] shrink-0 text-left rounded-[1.8rem] border border-line bg-coal/90 overflow-hidden transition-colors duration-500 hover:border-orange/60">
                 <span className="relative block h-52 sm:h-60 overflow-hidden">
-                  {post.img && <Image src={post.img} alt="" fill sizes="(max-width: 768px) 80vw, 480px" className="object-cover" />}
+                  {post.img && <Image src={post.img} alt={post.title} fill sizes="(max-width: 768px) 80vw, 480px" className="object-cover" />}
                   <span className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <span className="absolute top-4 left-5 text-[10px] uppercase tracking-[0.2em] text-white/85 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1.5">{post.cat}</span>
                   <span aria-hidden className="absolute bottom-3 right-5 font-display font-extrabold text-stroke text-5xl">{String(i + 1).padStart(2, "0")}</span>
@@ -318,7 +322,7 @@ export default function BlogClient() {
             <div className="flex gap-2" role="tablist" aria-label="Filter articles by category">
               {BLOG_FILTERS.map((f) => (
                 <button key={f.id} role="tab" aria-selected={filter === f.id} onClick={() => chooseFilter(f.id)} data-hover
-                  className={`shrink-0 rounded-full px-5 py-2.5 text-[13px] font-semibold transition-all duration-300 ${filter === f.id ? "bg-orange text-white shadow-lg" : "border border-line text-cream/65 hover:border-orange hover:text-orange"}`}>
+                  className={`shrink-0 inline-flex items-center justify-center min-h-11 rounded-full px-5 py-2.5 text-[13px] font-semibold transition-all duration-300 ${filter === f.id ? "bg-orange text-white shadow-lg" : "border border-line text-cream/65 hover:border-orange hover:text-orange"}`}>
                   {f.label}
                 </button>
               ))}
@@ -339,7 +343,7 @@ export default function BlogClient() {
                   data-tilt data-cursor="Read" data-hover
                   className="post-card spot-card group relative cursor-pointer rounded-[1.8rem] border border-line bg-coal/85 backdrop-blur overflow-hidden flex flex-col transition-colors duration-500 hover:border-orange/60">
                   <div className={`relative h-36 sm:h-40 bg-gradient-to-br ${GRADS[gi % GRADS.length]} overflow-hidden shrink-0`}>
-                    {post.img && <Image src={post.img} alt="" fill sizes="(max-width: 768px) 92vw, 460px" data-zoom-img className="object-cover opacity-90" />}
+                    {post.img && <Image src={post.img} alt={post.title} fill sizes="(max-width: 768px) 92vw, 460px" data-zoom-img className="object-cover opacity-90" />}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
                     <span data-scrub-rotate aria-hidden className="absolute -right-3 -top-6 font-display font-extrabold text-[6.5rem] leading-none text-white/[0.07] select-none">{post.glyph}</span>
                     <span data-bob className="absolute top-4 right-5 text-4xl select-none" aria-hidden>{post.glyph}</span>

@@ -13,6 +13,10 @@ export default function Template({ children }) {
   useEffect(() => {
     const names = { "/": "GreeLogix", "/portfolio": "Portfolio", "/free-ai-audit": "Free AI Audit", "/services": "Services", "/case-studies": "Case Studies", "/about": "About", "/blog": "Blog", "/resources": "Resources", "/ai-solutions": "AI Solutions" };
     if (label.current) label.current.textContent = names[pathname] || (pathname.startsWith("/ai") ? "AI Solutions" : "GreeLogix");
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (panel.current) panel.current.style.display = "none";
+      return;
+    }
     const tl = gsap.timeline();
     tl.set(panel.current, { scaleY: 1, transformOrigin: "top" })
       .set(edge.current, { scaleX: 1 })

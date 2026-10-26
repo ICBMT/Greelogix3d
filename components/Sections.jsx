@@ -144,7 +144,7 @@ function MockUI({ g, glyph, img, title }) {
         </div>
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-black/15 pointer-events-none" />
-      <span data-bob className="absolute top-4 right-5 text-5xl leading-none text-white/35 select-none">{glyph}</span>
+      <span data-bob aria-hidden="true" className="absolute top-4 right-5 text-5xl leading-none text-white/35 select-none">{glyph}</span>
       <span className="absolute bottom-4 left-5 text-[10px] uppercase tracking-[0.24em] text-white/85 bg-black/25 backdrop-blur-sm rounded-full px-3 py-1.5">{title}</span>
       <span className="absolute bottom-4 right-5 flex gap-1.5"><span className="w-2 h-2 rounded-full bg-white/40" /><span className="w-2 h-2 rounded-full bg-white/40" /><span className="w-2 h-2 rounded-full bg-orange" /></span>
     </div>

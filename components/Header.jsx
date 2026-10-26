@@ -103,11 +103,11 @@ export default function Header({ loaded, light = false }) {
           </nav>
           <div className="flex items-center gap-3">
             <Magnetic className="hidden sm:block">
-              <a href={CALENDLY} target="_blank" rel="noreferrer" data-hover className="inline-flex items-center gap-2 rounded-full bg-orange px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-cream hover:text-ink">
+              <a href={CALENDLY} target="_blank" rel="noreferrer" data-hover className="inline-flex items-center gap-2 rounded-full bg-orange px-5 py-2.5 min-h-11 text-[13px] font-semibold text-white transition-colors hover:bg-cream hover:text-ink">
                 <RollText text="Book a free call" /> <span aria-hidden>↗</span>
               </a>
             </Magnetic>
-            <button onClick={() => setOpen(!open)} data-hover aria-label={open ? "Close menu" : "Open menu"}
+            <button onClick={() => setOpen(!open)} data-hover aria-expanded={open} aria-controls="site-menu" aria-label={open ? "Close menu" : "Open menu"}
               className={`min-[1440px]:hidden grid place-items-center w-11 h-11 shrink-0 rounded-full border ${light ? "border-ink/15 bg-ink/5" : "border-line bg-white/5"}`}>
               <span className="relative block w-5 h-3">
                 <span className={`absolute left-0 w-full h-[2px] transition-all duration-300 ${light ? "bg-ink" : "bg-cream"} ${open ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"}`} />
@@ -121,7 +121,7 @@ export default function Header({ loaded, light = false }) {
       </header>
 
       {/* Full-screen menu */}
-      <div ref={menu} className="fixed inset-0 z-[75] hidden flex-col overflow-y-auto overscroll-contain bg-[#0a0a09] pt-24 md:pt-28 px-5 sm:px-8 pb-10" style={{ clipPath: "inset(0 0 100% 0)" }}>
+      <div ref={menu} id="site-menu" className="fixed inset-0 z-[75] hidden flex-col overflow-y-auto overscroll-contain bg-[#0a0a09] pt-24 md:pt-28 px-5 sm:px-8 pb-10" style={{ clipPath: "inset(0 0 100% 0)" }}>
         <p className="text-[11px] tracking-widest2 uppercase text-mute mb-8">Menu — Where to?</p>
         <nav className="flex flex-col gap-1">
           {[...NAV, { label: "Book a Call ↗", href: "#cta" }].map((n, i) => (
@@ -132,7 +132,7 @@ export default function Header({ loaded, light = false }) {
               {n.children && (
                 <span className="menu-link flex flex-wrap gap-2 mt-3 mb-4 pl-1">
                   {n.children.slice(1).map((c) => (
-                    <button key={c.href} onClick={() => go(c.href)} className="rounded-full border border-line px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-cream/70 hover:border-orange hover:text-orange transition-colors">
+                    <button key={c.href} onClick={() => go(c.href)} className="inline-flex items-center min-h-11 rounded-full border border-line px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-cream/70 hover:border-orange hover:text-orange transition-colors">
                       {c.label}
                     </button>
                   ))}

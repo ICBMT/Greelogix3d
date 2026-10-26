@@ -2,7 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { --orange: #ff4d1c; }
+:root {
+  --orange: #ff4d1c;
+  --ink: #060606;
+  --coal: #0c0c0c;
+  --cream: #f4f1ea;
+  --mute: #9b978e;
+  --paper: #f3efe7;
+}
 html { background: #060606; overflow-x: clip; }
 body { max-width: 100vw; }
 img, svg, canvas { max-width: 100%; }
@@ -11,6 +18,13 @@ html.lenis, html.lenis body { height: auto; }
 
 body { @apply bg-ink text-cream font-body antialiased overflow-x-hidden; }
 ::selection { background: #ff4d1c; color: #fff; }
+
+/* UI/UX Pro Max P1 — visible keyboard focus everywhere */
+:focus-visible { outline: 2px solid #ff4d1c; outline-offset: 3px; border-radius: 6px; }
+
+/* UI/UX Pro Max P9 — skip link, first tab stop on every page */
+.skip-link { position: fixed; top: -120px; left: 16px; z-index: 300; background: #ff4d1c; color: #fff; padding: 12px 22px; border-radius: 999px; font-size: 14px; font-weight: 600; box-shadow: 0 12px 32px rgba(0,0,0,.45); transition: top .3s cubic-bezier(.22,1,.36,1); }
+.skip-link:focus-visible { top: 14px; }
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: #060606; }
 ::-webkit-scrollbar-thumb { background: #2a2a28; border-radius: 8px; border: 2px solid #060606; }
@@ -105,7 +119,12 @@ body { letter-spacing: -0.011em; }
 }
 .spot-card:hover::after { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee, .animate-marquee-slow, .animate-spin-slow, .animate-float { animation: none !important; }
+  .animate-marquee, .animate-marquee-slow, .animate-spin-slow, .animate-float,
+  .animate-drift, .animate-drift-slow, .animate-pulse-dot, .animate-scroll-line,
+  .noise::after, .logo-draw path { animation: none !important; }
+  .roll-char-inner, .card-sheen::before, .char, .link-line::after { transition: none !important; }
+  .hwrap-scroll { overflow-x: auto !important; scrollbar-width: thin; }
+  html { scroll-behavior: auto !important; }
 }
 
 /* the logo draws itself, stroke by stroke */

@@ -28,6 +28,7 @@ function CaseModal({ cs, onClose }) {
   const panel = useRef(null);
   useEffect(() => {
     if (!cs) return;
+    const prevFocus = document.activeElement;
     window.__lenis?.stop();
     document.body.style.overflow = "hidden";
     const onKey = (e) => { if (e.key === "Escape") onClose(); };
@@ -37,7 +38,8 @@ function CaseModal({ cs, onClose }) {
       .fromTo(panel.current, { y: 90, scale: 0.94, opacity: 0, clipPath: "inset(6% 4% 6% 4% round 28px)" },
         { y: 0, scale: 1, opacity: 1, clipPath: "inset(0% 0% 0% 0% round 28px)", duration: 0.65, ease: "power4.out" }, "-=0.12")
       .fromTo(".case-item", { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, stagger: 0.06, ease: "power3.out" }, "-=0.25");
-    return () => { removeEventListener("keydown", onKey); document.body.style.overflow = ""; window.__lenis?.start(); tl.kill(); };
+    panel.current?.querySelector('[aria-label^="Close"]')?.focus({ preventScroll: true });
+    return () => { removeEventListener("keydown", onKey); document.body.style.overflow = ""; window.__lenis?.start(); tl.kill(); if (prevFocus && typeof prevFocus.focus === "function") prevFocus.focus({ preventScroll: true }); };
   }, [cs, onClose]);
 
   if (!cs) return null;
@@ -60,7 +62,7 @@ function CaseModal({ cs, onClose }) {
         <div className="px-6 sm:px-10 py-8 sm:py-10">
           {cs.img && (
             <div className="case-item relative rounded-3xl overflow-hidden aspect-[16/8] mb-8">
-              <Image src={cs.img} alt="" fill sizes="(max-width: 768px) 92vw, 720px" className="object-cover" />
+              <Image src={cs.img} alt={cs.title} fill sizes="(max-width: 768px) 92vw, 720px" className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
             </div>
           )}
@@ -116,7 +118,7 @@ function FeaturedBand({ cs, index, kicker, title, stats, onOpen }) {
           </p>
         </div>
         <div className="relative min-h-[230px] lg:min-h-[430px] overflow-hidden">
-          {cs.img && <Image src={cs.img} alt="" fill sizes="(max-width: 1024px) 92vw, 720px" data-zoom-img className="object-cover" />}
+          {cs.img && <Image src={cs.img} alt={cs.title} fill sizes="(max-width: 1024px) 92vw, 720px" data-zoom-img className="object-cover" />}
           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
           <span data-bob className="absolute top-5 right-6 text-4xl select-none" aria-hidden>{cs.glyph}</span>
           <p className="absolute bottom-6 left-6 right-6">
@@ -182,7 +184,7 @@ export default function CasesClient() {
   const reelLeave = () => { reelHover.current = false; if (reelTween.current) gsap.to(reelTween.current, { timeScale: 1, duration: 0.7, ease: "power2.out" }); };
 
   return (
-    <main className="relative min-h-screen overflow-x-clip">
+    <main id="main" tabIndex={-1} className="relative min-h-screen overflow-x-clip">
       <Cursor />
       <Smooth ready={ready} />
       <Header loaded={ready} />
@@ -230,7 +232,7 @@ export default function CasesClient() {
                   aria-hidden={i >= CASE_STUDIES.length ? true : undefined} tabIndex={i >= CASE_STUDIES.length ? -1 : 0}
                   className="group w-[268px] sm:w-[300px] shrink-0 mx-2 text-left rounded-[1.4rem] border border-line bg-coal/85 backdrop-blur overflow-hidden transition-colors duration-500 hover:border-orange/60">
                   <span className={`relative block h-28 overflow-hidden bg-gradient-to-br ${GRADS[i % GRADS.length]}`}>
-                    {cs.img && <Image src={cs.img} alt="" fill sizes="300px" className="object-cover opacity-90" />}
+                    {cs.img && <Image src={cs.img} alt={cs.title} fill sizes="300px" className="object-cover opacity-90" />}
                     <span className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
                     <span className="absolute bottom-2.5 left-4 text-[10px] uppercase tracking-[0.18em] text-white/85">{cs.client}</span>
                     <span className="absolute top-2.5 right-3.5 text-lg" aria-hidden>{cs.glyph}</span>
@@ -275,7 +277,7 @@ export default function CasesClient() {
             <div className="flex gap-2" role="tablist" aria-label="Filter case studies">
               {CASE_FILTERS.map((f) => (
                 <button key={f.id} role="tab" aria-selected={filter === f.id} onClick={() => chooseFilter(f.id)} data-hover
-                  className={`shrink-0 rounded-full px-5 py-2.5 text-[13px] font-semibold transition-all duration-300 ${filter === f.id ? "bg-orange text-white shadow-lg" : "border border-line text-cream/65 hover:border-orange hover:text-orange"}`}>
+                  className={`shrink-0 inline-flex items-center justify-center min-h-11 rounded-full px-5 py-2.5 text-[13px] font-semibold transition-all duration-300 ${filter === f.id ? "bg-orange text-white shadow-lg" : "border border-line text-cream/65 hover:border-orange hover:text-orange"}`}>
                   {f.label}
                 </button>
               ))}
@@ -294,7 +296,7 @@ export default function CasesClient() {
                 data-tilt data-cursor="Read" data-hover
                 className="case-card spot-card group relative cursor-pointer rounded-[1.8rem] border border-line bg-coal/85 backdrop-blur overflow-hidden flex flex-col transition-colors duration-500 hover:border-orange/60">
                 <div className={`relative h-36 sm:h-40 bg-gradient-to-br ${GRADS[i % GRADS.length]} overflow-hidden shrink-0`}>
-                  {cs.img && <Image src={cs.img} alt="" fill sizes="(max-width: 768px) 92vw, 460px" data-zoom-img className="object-cover opacity-90" />}
+                  {cs.img && <Image src={cs.img} alt={cs.title} fill sizes="(max-width: 768px) 92vw, 460px" data-zoom-img className="object-cover opacity-90" />}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
                   <span data-bob className="absolute top-4 right-5 text-4xl select-none" aria-hidden>{cs.glyph}</span>
                   <span className="absolute bottom-4 left-5 right-5 flex items-end justify-between gap-3">

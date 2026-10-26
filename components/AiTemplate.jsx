@@ -90,7 +90,7 @@ export default function AiTemplate({ page, hub = false }) {
   ];
 
   return (
-    <main className="relative min-h-screen overflow-x-clip">
+    <main id="main" tabIndex={-1} className="relative min-h-screen overflow-x-clip">
       <Cursor />
       <Smooth ready={ready} />
       <Header loaded={ready} />

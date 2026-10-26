@@ -16,7 +16,7 @@ export default function Home() {
   const done = useCallback(() => setLoaded(true), []);
 
   return (
-    <main className="relative">
+    <main id="main" tabIndex={-1} className="relative">
       {!loaded && <Preloader onDone={done} />}
       <Cursor />
       <Smooth ready={loaded} />

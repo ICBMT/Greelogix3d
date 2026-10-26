@@ -24,7 +24,7 @@ export default function AnchorNav({ items, light = false }) {
     const el = document.getElementById(id);
     if (!el) return;
     if (window.__lenis) window.__lenis.scrollTo(el, { offset: id === "top" ? 0 : -76, duration: 1.35 });
-    else el.scrollIntoView({ behavior: "smooth" });
+    else el.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   };
 
   return (
@@ -35,7 +35,7 @@ export default function AnchorNav({ items, light = false }) {
           light ? "bg-white/85 border-ink/10 text-ink" : "bg-coal/85 border-line text-cream"}`}>
         {items.map((item) => (
           <button key={item.id} onClick={() => jump(item.id)} data-hover aria-current={active === item.id ? "true" : undefined}
-            className={`shrink-0 rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] transition-all duration-300 ${
+            className={`shrink-0 inline-flex items-center justify-center min-h-11 rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] transition-all duration-300 ${
               active === item.id ? "bg-orange text-white" : light ? "text-ink/60" : "text-cream/60"}`}>
             {item.label}
           </button>

@@ -87,6 +87,12 @@ const ANIMS = {
 export default function Smooth({ ready }) {
   useEffect(() => {
     if (!ready) return;
+    // UI/UX Pro Max P1/P7 — reduced motion: no Lenis, no scroll choreography.
+    // Every reveal is a gsap.from, so skipping renders the final readable state.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.querySelectorAll("[data-count]").forEach((el) => { el.textContent = el.dataset.count; });
+      return;
+    }
     const lenis = new Lenis({ duration: 1.15, smoothWheel: true, touchMultiplier: 1.4 });
     window.__lenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);

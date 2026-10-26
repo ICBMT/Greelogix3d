@@ -14,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="noise">{children}</body>
+      <body className="noise"><a href="#main" className="skip-link">Skip to content</a>{children}</body>
     </html>
   );
 }

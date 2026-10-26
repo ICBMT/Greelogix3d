@@ -11,6 +11,12 @@ export default function Preloader({ onDone }) {
   const root = useRef(null);
 
   useEffect(() => {
+    // Reduced motion: skip the count-up ceremony, hand over immediately.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setCount(100);
+      const t = setTimeout(onDone, 150);
+      return () => clearTimeout(t);
+    }
     const obj = { v: 0 };
     const wi = setInterval(() => setWord((w) => (w + 1) % WORDS.length), 480);
     const tween = gsap.to(obj, {

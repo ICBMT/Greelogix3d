@@ -7,7 +7,7 @@ export function Magnetic({ children, strength = 0.35, className = "" }) {
   const ref = useRef(null);
   useEffect(() => {
     const el = ref.current;
-    if (!el || window.matchMedia("(hover: none)").matches) return;
+    if (!el || window.matchMedia("(hover: none)").matches || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const inner = el.firstElementChild;
     const move = (e) => {
       const r = el.getBoundingClientRect();

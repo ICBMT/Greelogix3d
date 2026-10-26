@@ -51,7 +51,7 @@ export default function AboutClient() {
   useEffect(() => { const r = requestAnimationFrame(() => setReady(true)); return () => cancelAnimationFrame(r); }, []);
 
   return (
-    <main className="relative min-h-screen overflow-x-clip">
+    <main id="main" tabIndex={-1} className="relative min-h-screen overflow-x-clip">
       <Cursor />
       <Smooth ready={ready} />
       <Header loaded={ready} />

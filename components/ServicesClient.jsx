@@ -28,6 +28,7 @@ function ServiceModal({ picked, onClose }) {
 
   useEffect(() => {
     if (!picked) return;
+    const prevFocus = document.activeElement;
     window.__lenis?.stop();
     document.body.style.overflow = "hidden";
     const onKey = (e) => { if (e.key === "Escape") onClose(); };
@@ -38,8 +39,10 @@ function ServiceModal({ picked, onClose }) {
         { y: 90, scale: 0.94, opacity: 0, clipPath: "inset(6% 4% 6% 4% round 28px)" },
         { y: 0, scale: 1, opacity: 1, clipPath: "inset(0% 0% 0% 0% round 28px)", duration: 0.65, ease: "power4.out" }, "-=0.12")
       .fromTo(".modal-item", { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, stagger: 0.06, ease: "power3.out" }, "-=0.25");
+    panel.current?.querySelector('[aria-label^="Close"]')?.focus({ preventScroll: true });
     return () => {
       removeEventListener("keydown", onKey);
+      if (prevFocus && typeof prevFocus.focus === "function") prevFocus.focus({ preventScroll: true });
       document.body.style.overflow = "";
       window.__lenis?.start();
       tl.kill();
@@ -112,7 +115,7 @@ function ServiceModal({ picked, onClose }) {
               <li key={n} className="modal-item rounded-2xl border border-line p-5">
                 <span className="font-display font-extrabold text-orange">{n}</span>
                 <b className="block font-display mt-2">{t}</b>
-                <span className="block text-sm text-mute leading-relaxed mt-1.5">{d}</span>
+                <span className="block text-[15px] text-mute leading-relaxed mt-1.5">{d}</span>
               </li>
             ))}
           </ol>
@@ -188,7 +191,7 @@ export default function ServicesClient() {
   const closeModal = () => setPicked(null);
 
   return (
-    <main className="relative min-h-screen overflow-x-clip">
+    <main id="main" tabIndex={-1} className="relative min-h-screen overflow-x-clip">
       <Cursor />
       <Smooth ready={ready} />
       <Header loaded={ready} />

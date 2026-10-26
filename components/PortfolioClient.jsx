@@ -48,7 +48,7 @@ function StoryCard({ p, index, open, onToggle }) {
       <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center relative">
         <div className={`lg:col-span-7 ${flipped ? "lg:order-2" : ""}`} data-hover><Visual p={p} /></div>
         <div className="lg:col-span-5" data-anim={flipped ? "slide-left" : "slide-right"}>
-          <p className="flex flex-wrap items-center gap-3 text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-ink/50">
+          <p className="flex flex-wrap items-center gap-3 text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-ink/65">
             <span className="text-orange font-semibold">Story {pad(index + 1)}</span><span aria-hidden>·</span><span>{p.industry}</span>
           </p>
           <h3 data-glitch className="mt-4 font-display font-extrabold leading-[0.98] text-4xl min-[420px]:text-5xl xl:text-6xl">{p.title}</h3>
@@ -135,7 +135,7 @@ export default function PortfolioClient() {
   });
 
   return (
-    <main className="relative bg-[#f3efe7] text-[#141310] overflow-x-clip min-h-screen">
+    <main id="main" tabIndex={-1} className="relative bg-[#f3efe7] text-[#141310] overflow-x-clip min-h-screen">
       <Cursor />
       <Smooth ready={ready} />
       <Header loaded={ready} light />
@@ -156,7 +156,7 @@ export default function PortfolioClient() {
         {/* ---------- Hero ---------- */}
         <section id="top" className="relative px-4 sm:px-6 md:px-10 pt-32 md:pt-44 pb-16 md:pb-24 max-w-[1500px] mx-auto w-full">
           <span aria-hidden className="hidden xl:block absolute right-10 top-44 text-[10px] uppercase tracking-[0.4em] text-ink/40 [writing-mode:vertical-rl]">Selected work — scroll gently ↓</span>
-          <nav style={fade(0.05)} aria-label="Breadcrumb" className="flex items-center gap-2.5 text-[11px] uppercase tracking-[0.22em] text-ink/50">
+          <nav style={fade(0.05)} aria-label="Breadcrumb" className="flex items-center gap-2.5 text-[11px] uppercase tracking-[0.22em] text-ink/65">
             <Link href="/" className="hover:text-orange transition-colors">Home</Link><span className="text-orange">/</span><span className="text-ink font-semibold">Portfolio</span>
           </nav>
 
@@ -185,7 +185,7 @@ export default function PortfolioClient() {
             {[[150, "+", "Projects delivered"], [75, "+", "AI solutions built"], [90, "+", "Happy clients"], [20, "+", "Apps on Play Store"]].map(([v, s, l]) => (
               <div key={l}>
                 <dd className="font-display font-extrabold text-4xl md:text-5xl"><span data-count={v}>0</span><span className="text-orange">{s}</span></dd>
-                <dt className="mt-2 text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-ink/50">{l}</dt>
+                <dt className="mt-2 text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-ink/65">{l}</dt>
               </div>
             ))}
           </dl>
@@ -195,7 +195,7 @@ export default function PortfolioClient() {
         {/* ---------- Sticky filter ---------- */}
         <div id="stories" className="sticky top-16 md:top-[72px] z-40 bg-[#f3efe7]/85 backdrop-blur-md border-y border-ink/10">
           <div className="max-w-[1500px] mx-auto px-4 sm:px-6 md:px-10 py-3.5 flex items-center gap-3 overflow-x-auto">
-            <span className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-ink/50 shrink-0"><span className="w-1.5 h-1.5 rounded-full bg-orange animate-pulse-dot" />Browse</span>
+            <span className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-ink/65 shrink-0"><span className="w-1.5 h-1.5 rounded-full bg-orange animate-pulse-dot" />Browse</span>
             <div data-anim="mask-left" className="flex gap-2" role="tablist" aria-label="Filter projects">
               {FILTERS.map((f) => (
                 <button key={f.id} role="tab" aria-selected={filter === f.id} onClick={() => chooseFilter(f.id)} data-hover
@@ -204,7 +204,7 @@ export default function PortfolioClient() {
                 </button>
               ))}
             </div>
-            <span className="ml-auto shrink-0 text-[11px] uppercase tracking-[0.18em] text-ink/50" aria-live="polite">
+            <span className="ml-auto shrink-0 text-[11px] uppercase tracking-[0.18em] text-ink/65" aria-live="polite">
               {shown.length} {shown.length === 1 ? "story" : "stories"}
             </span>
           </div>
@@ -234,7 +234,7 @@ export default function PortfolioClient() {
             ))}
           </div>
 
-          {shown.length === 0 && <p className="py-24 text-center text-ink/50">No stories here yet — try another shelf.</p>}
+          {shown.length === 0 && <p className="py-24 text-center text-ink/65">No stories here yet — try another shelf.</p>}
           <p className="py-14 text-center text-[11px] uppercase tracking-[0.28em] text-ink/40">— plus 140 more products we can't show here —</p>
         </section>
 
@@ -242,7 +242,7 @@ export default function PortfolioClient() {
         <section id="build" className="relative px-4 sm:px-6 md:px-10 pb-24 md:pb-36 max-w-[1500px] mx-auto w-full scroll-mt-24">
           <div className="grid lg:grid-cols-2 gap-5">
             <div data-reveal className="rounded-[2rem] border border-ink/10 bg-white/55 backdrop-blur p-7 sm:p-10">
-              <p className="text-[10px] uppercase tracking-[0.26em] text-ink/50 flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-orange" />What we build</p>
+              <p className="text-[10px] uppercase tracking-[0.26em] text-ink/65 flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-orange" />What we build</p>
               <h3 className="mt-5 font-display font-extrabold text-3xl sm:text-4xl leading-tight">End-to-end, across every layer of the stack.</h3>
               <div className="mt-8 grid grid-cols-2 gap-3">
                 {["AI & Automation", "Mobile Apps", "Web & SaaS", "UI/UX Design"].map((t, i) => (
@@ -251,7 +251,7 @@ export default function PortfolioClient() {
               </div>
             </div>
             <div data-reveal className="rounded-[2rem] border border-ink/10 bg-white/55 backdrop-blur p-7 sm:p-10">
-              <p className="text-[10px] uppercase tracking-[0.26em] text-ink/50 flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-orange" />Why clients choose us</p>
+              <p className="text-[10px] uppercase tracking-[0.26em] text-ink/65 flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-orange" />Why clients choose us</p>
               <ul data-stagger className="mt-6 space-y-6">
                 {[
                   ["5★ rated on Upwork", "Top Rated Plus agency with a 100% Job Success Score across 90+ completed contracts."],

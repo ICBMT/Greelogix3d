@@ -52,7 +52,7 @@ export default function ResourcesClient() {
   const proof = CASE_STUDIES.filter((c) => PROOF_CLIENTS.includes(c.client));
 
   return (
-    <main className="relative min-h-screen overflow-x-clip">
+    <main id="main" tabIndex={-1} className="relative min-h-screen overflow-x-clip">
       <Cursor />
       <Smooth ready={ready} />
       <Header loaded={ready} />
@@ -144,7 +144,7 @@ export default function ResourcesClient() {
                 </p>
               </div>
               <div className="relative min-h-[220px] lg:min-h-[380px] overflow-hidden">
-                <Image src={featuredGuide.img} alt="" fill sizes="(max-width: 1024px) 92vw, 720px" data-zoom-img className="object-cover" />
+                <Image src={featuredGuide.img} alt={featuredGuide.title} fill sizes="(max-width: 1024px) 92vw, 720px" data-zoom-img className="object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               </div>
             </div>
@@ -155,7 +155,7 @@ export default function ResourcesClient() {
               <button key={post.slug} onClick={() => setPicked(post)} data-hover data-cursor="Read" data-anim={i % 2 ? "mask-right" : "mask-left"}
                 className="group w-full text-left rounded-3xl border border-line bg-coal/80 backdrop-blur p-5 sm:p-6 flex items-center gap-5 transition-colors duration-300 hover:border-orange/60">
                 <span className="relative w-20 h-16 sm:w-24 sm:h-[4.5rem] rounded-2xl overflow-hidden shrink-0 hidden min-[420px]:block">
-                  {post.img ? <Image src={post.img} alt="" fill sizes="120px" className="object-cover" /> : <span className={`absolute inset-0 bg-gradient-to-br ${GRADS[i % GRADS.length]}`} />}
+                  {post.img ? <Image src={post.img} alt={post.title} fill sizes="120px" className="object-cover" /> : <span className={`absolute inset-0 bg-gradient-to-br ${GRADS[i % GRADS.length]}`} />}
                   <span className="absolute inset-0 grid place-items-center text-2xl" aria-hidden>{post.img ? "" : post.glyph}</span>
                 </span>
                 <span className="min-w-0">
@@ -184,7 +184,7 @@ export default function ResourcesClient() {
                 data-anim={CARD_ANIMS[i % CARD_ANIMS.length]} data-delay={i * 0.08} data-tilt data-cursor="Read" data-hover
                 className="spot-card group relative cursor-pointer rounded-[1.8rem] border border-line bg-coal/85 backdrop-blur overflow-hidden flex flex-col transition-colors duration-500 hover:border-orange/60">
                 <div className="relative h-36 overflow-hidden shrink-0">
-                  {post.img && <Image src={post.img} alt="" fill sizes="(max-width: 768px) 92vw, 460px" data-zoom-img className="object-cover opacity-90" />}
+                  {post.img && <Image src={post.img} alt={post.title} fill sizes="(max-width: 768px) 92vw, 460px" data-zoom-img className="object-cover opacity-90" />}
                   {!post.img && <span className={`absolute inset-0 bg-gradient-to-br ${GRADS[i % GRADS.length]}`} />}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
                   <span data-bob className="absolute top-4 right-5 text-3xl select-none" aria-hidden>{post.glyph}</span>
@@ -219,7 +219,7 @@ export default function ResourcesClient() {
               <Link key={cs.title} href="/case-studies" data-anim={CARD_ANIMS[i % CARD_ANIMS.length]} data-delay={(i % 3) * 0.07} data-tilt data-cursor="Open"
                 className="spot-card group relative rounded-[1.8rem] border border-line bg-coal/85 backdrop-blur overflow-hidden flex flex-col transition-colors duration-500 hover:border-orange/60">
                 <div className="relative h-36 sm:h-40 overflow-hidden shrink-0">
-                  {cs.img && <Image src={cs.img} alt="" fill sizes="(max-width: 768px) 92vw, 460px" data-zoom-img className="object-cover opacity-90" />}
+                  {cs.img && <Image src={cs.img} alt={cs.title} fill sizes="(max-width: 768px) 92vw, 460px" data-zoom-img className="object-cover opacity-90" />}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/10" />
                   <span data-bob className="absolute top-4 right-5 text-3xl select-none" aria-hidden>{cs.glyph}</span>
                   <span className="absolute bottom-4 left-5 text-[10px] uppercase tracking-[0.2em] text-white/85 bg-black/25 backdrop-blur-sm rounded-full px-3 py-1.5">{cs.industry}</span>
